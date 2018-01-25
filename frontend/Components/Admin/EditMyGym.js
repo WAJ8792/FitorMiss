@@ -12,29 +12,39 @@ export default class EditMyGym extends React.Component {
         lockers: false,
         towels: false,
         mat_rentals: false,
-      }
+      },
+      user: "",
     }
-    this.user_id = "4";
 
     this.gymRef = firebase.database().ref("vendor");
+    this.fetchUserInfo = this.fetchUserInfo.bind(this);
   }
 
+  fetchUserInfo(user) {
+    let newState = this.state;
+    let gymName, neighborhood, amenities, amenityKey
 
-  componentWillMount() {
-    this.gymRef.orderByKey().equalTo(this.user_id).on("value", snap => {
-      let newState = this.state;
-      newState.gymName = snap.val()[this.user_id].gym_name;
-      newState.neighborhood = snap.val()[this.user_id].neighborhood;
-      this.setState({newState});
+    this.gymRef.orderByKey().equalTo(user).on("value", snap => {
+      gymName = snap.val()[user].gym_name;
+      neighborhood = snap.val()[user].neighborhood;
+      this.setState({gymName, neighborhood});
     })
     firebase.database().ref('amenities')
     .orderByChild("vendor_id")
-    .equalTo(this.user_id).on("value", snap => {
-      let newState = this.state;
-      newState.amenities = snap.val()[1];
-      this.state.amenityKey = Object.keys(snap.toJSON())[0];
-      this.setState({newState});
+    .equalTo(user).on("value", snap => {
+      amenityKey = Object.keys(snap.toJSON())[0];
+      amenities = snap.val()[amenityKey];
+      console.log(snap.val());
+      this.setState({amenities, amenityKey});
     });
+  }
+
+  componentDidMount() {
+    let user = this.props.user.uid;
+    this.setState({user});
+    if (user != "") {
+      this.fetchUserInfo(user);
+    }
   }
 
   handleChange(e, field) {
@@ -48,11 +58,17 @@ export default class EditMyGym extends React.Component {
   }
 
   handleSaveChanges() {
-    firebase.database().ref('vendor/' + this.user_id).set({
+    firebase.database().ref('vendor/' + this.state.uid).set({
       gym_name: this.state.gymName,
       neighborhood: this.state.neighborhood,
     });
-    firebase.database().ref('amenities/' + this.state.amenityKey).set(this.state.amenities);
+    if (this.state.amenityKey) {
+      firebase.database().ref('amenities/' + this.state.amenityKey).set(this.state.amenities);
+    } else {
+      let amenities = this.state.amenities;
+      amenities.vendor_id = this.state.uid;
+      firebase.database().ref('amenities').push().set(amenities);
+    }
   }
 
   getField(amenity) {
@@ -71,7 +87,6 @@ export default class EditMyGym extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     let amenities = [
       "Parking",
       "Mat Rentals",
@@ -85,7 +100,7 @@ export default class EditMyGym extends React.Component {
     amenities.forEach( amenity => {
       let field = this.getField(amenity)
 
-        if (this.state.amenities[field]) {
+        if ((!this.state.amenities === undefined) && this.state.amenities[field]) {
           amenityOptions.push(<section key={field}>
               <input
                 onClick={() => this.handleChoose(field)}

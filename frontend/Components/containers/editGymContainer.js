@@ -4,7 +4,8 @@ import EditMyGym from '../Admin/EditMyGym';
 import { editGym } from '../../actions/gym_actions';
 
 const mapStateToProps = ( state ) => ({
-  state;
+  state,
+  user: state.sessions.user,
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -9,30 +9,33 @@ export default class SignIn extends React.Component {
     this.state = {
       email: "",
       password: "",
-      loggedIn: false,
+      newEmail: "",
+      newPassword: "",
+      gymName: "",
+      neighborhood: "",
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(field) {
     return e => this.setState({[field]: e.target.value})
   }
 
-
-
-  handleSubmit(e) {
+  handleLogin(e) {
     e.preventDefault();
-
     this.props.login(this.state, app);
-    this.props.checkLoggedIn();
+  }
 
+  handleSignup(e) {
+    e.preventDefault();
+    this.props.signup(this.state, app);
   }
 
   render() {
 
     return(
       <div id="firebaseui-auth-container">
-        <form onSubmit={(e) => this.handleSubmit(e)}>
+
+        <form onSubmit={(e) => this.handleLogin(e)}>
           <input
             type="text"
             value={this.state.email}
@@ -41,8 +44,35 @@ export default class SignIn extends React.Component {
             type="password"
             value={this.state.password}
             onChange={this.handleChange("password")}/>
-          <input type="submit" />
+          <input type="submit" value="login"/>
         </form>
+
+        <h3>Create a new account below</h3>
+
+        <form onSubmit={(e) => this.handleSignup(e)}>
+        <p>email</p>
+        <input
+          type="text"
+          value={this.state.newEmail}
+          onChange={this.handleChange("newEmail")}/>
+        <p>password</p>
+        <input
+          type="password"
+          value={this.state.newPassword}
+          onChange={this.handleChange("newPassword")}/>
+        <p>Gym name</p>
+        <input
+          type="text"
+          value={this.state.gymName}
+          onChange={this.handleChange("gymName")}/>
+        <p>Neighborhoos</p>
+        <input
+          type="text"
+          value={this.state.neighborhood}
+          onChange={this.handleChange("neighborhood")}/>
+        <input type="submit" value="signup"/>
+        </form>
+
       </div>
     )
   }

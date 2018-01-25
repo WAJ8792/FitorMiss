@@ -62,6 +62,7 @@ export default class Classes extends React.Component {
   }
 
   render() {
+    console.log(this.state.user);
     let classes;
 
     if (this.state.classes.length > 0) {

@@ -19,11 +19,8 @@ class Header extends React.Component {
     this.checkLoggedIn();
   }
 
-  componentWillReceiveProps() {
-    // if (this.props.user.uid.length > 1) {
-    //   console.log("working");
-    //   this.setState({loggedOut: false});
-    // }
+  componentDidMount() {
+    this.checkLoggedIn();
   }
 
   logout(e) {
@@ -42,25 +39,22 @@ class Header extends React.Component {
       app.auth().onAuthStateChanged((user) => {
         if (user) {
           this.setState({ user, loggedOut: false });
+          this.props.dispatchUser(user);
           return true;
         } else {
           this.setState({loggedOut: true})
           return false;
         }
       });
-    }
-  }
-
-  componentDidUpdate() {
-    // this.props.dispatchUser(this.state.user);
+    } else { this.props.dispatchUser(this.state.user) }
   }
 
   render() {
-    console.log(this.state);
+
     if (this.state.loggedOut === true) {
       return (
         <div className="app">
-          <SignIn checkLoggedIn={this.checkLoggedIn} />
+          <SignIn />
         </div>
       )
     } else {

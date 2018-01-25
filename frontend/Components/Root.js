@@ -1,21 +1,17 @@
 import React from 'react';
-
 import { Provider } from 'react-redux';
-
-import { configureStore } from '../store';
-
-import createBrowserHistory from 'history/createBrowserHistory'
-
-import { ProtectedRoute } from '../util/root_util';
-
 import { Switch, HashRouter, Route, Redirect, withRouter,
   IndexRoute, BrowserRouter, hashHistory } from 'react-router-dom';
+import createBrowserHistory from 'history/createBrowserHistory'
+
+import { configureStore } from '../store';
+import { ProtectedRoute } from '../util/root_util';
 
 import { App } from './App';
 import Test from './Test';
 import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
-import EditMyGym from './Admin/EditMyGym';
+import EditMyGym from './containers/editGymContainer';
 import Billing from './Admin/Billing';
 import Account from './Admin/Account';
 import Sidebar from './admin/Sidebar';
