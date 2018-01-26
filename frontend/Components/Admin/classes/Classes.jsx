@@ -2,40 +2,46 @@ import React from 'react';
 
 import AddClass from './AddClass';
 import GymClass from './Class';
+import ClassesList from './ClassesList';
 
 export default class Classes extends React.Component {
   constructor() {
     super();
     this.state = {
       classes: [],
+      user: "",
+      day: "",
     }
-    this.user_id = "4";
     this.classesRef = firebase.database().ref("classes");
     this.populateClasses = this.populateClasses.bind(this);
-    this.populateClasses();
   }
 
   componentDidMount() {
-    this.setState({user: this.props.user});
+    let user = this.props.user.uid;
+    this.setState({user});
+    if (user != "") {
+      this.populateClasses(user);
+    }
   }
 
-  populateClasses() {
-    this.classesRef.orderByChild("vendor_id").equalTo(this.user_id).on("child_added", snap => {
+  populateClasses(user) {
+    this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_added", snap => {
       this.addClassToList(snap.val(), snap.getRef().key);
     });
 
-    this.classesRef.orderByChild("vendor_id").equalTo(this.user_id).on("child_removed", snap => {
+    this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_removed", snap => {
       this.removeFromClassList(snap.getRef().key)
     });
   }
 
-  addClassToList(thisClass, key) {
+  addClassToList(thisClass, class_id) {
     let newState = this.state;
 
     newState.classes.push({
-      key: key,
+      class_id: class_id,
       name: thisClass.name,
       date: thisClass.date,
+      day: thisClass.day,
       time: thisClass.time,
       duration: thisClass.duration,
       seats: thisClass.seats,
@@ -44,11 +50,11 @@ export default class Classes extends React.Component {
     this.setState({classes: newState.classes});
   }
 
-  removeFromClassList(classId) {
+  removeFromClassList(class_id) {
     let classes = this.state.classes;
 
     for (let i = 0; i < classes.length; i++) {
-      if (classes[i].key === classId) {
+      if (classes[i].class_id === class_id) {
         classes.splice(i, 1);
         break;
       }
@@ -56,36 +62,53 @@ export default class Classes extends React.Component {
     this.setState({classes});
   }
 
-
   handleAdd(newClass) {
     firebase.database().ref('classes/').push().set(newClass);
   }
 
+  updateDay(day) {
+    this.setState({day});
+  }
+
   render() {
+    let day = this.state.day;
     let classes;
 
     if (this.state.classes.length > 0) {
       classes = [];
       this.state.classes.forEach( thisClass => {
-        classes.push(<GymClass
-          props={thisClass}
-          addClass={this.addClass}
-          key={thisClass.key} />)
+        if (thisClass.day === day){
+          classes.push(<GymClass
+            props={thisClass}
+            addClass={this.addClass}
+            key={thisClass.key} />)
+        }
       });
     } else { classes = <h3>You have no classes</h3> }
+
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day =>
+      <div onClick={() => this.updateDay(day)}>
+        {day}
+      </div>
+    )
 
     return(
       <section className="classes">
         <div>
-          <h1>Your Classes</h1>
+          <h1>Your Class Schedule</h1>
 
-          <span>
-            {classes}
-          </span>
+            <section style={{display: 'flex', width: '100%'}} >
+              {days}
+            </section>
 
-          <AddClass handleAdd={ this.handleAdd.bind(this) }/>
+            <span>
+              {classes}
+            </span>
+
+          <AddClass handleAdd={ this.handleAdd.bind(this)} user={this.props.user.uid} />
       </div>
       </section>
     )
   }
 }
+// <ClassesList classes={classes} />

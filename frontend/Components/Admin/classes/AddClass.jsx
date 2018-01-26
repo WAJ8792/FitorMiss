@@ -4,14 +4,19 @@ export default class AddClass extends React.Component {
   constructor() {
     super();
     this.state = {
+      vendor_id: "",
       name: "",
       date: "",
       time: "",
       duration: "",
       seats: ""
     }
-    this.vendor_id = "4";
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    let vendor_id = this.props.user;
+    this.setState({vendor_id});
   }
 
   handleChange(e, field) {
@@ -19,8 +24,6 @@ export default class AddClass extends React.Component {
   }
 
   handleAdd() {
-    let newClass = this.state;
-    this.state.vendor_id = this.vendor_id;
     this.props.handleAdd(this.state);
     this.setState({
       name: "",
@@ -34,13 +37,21 @@ export default class AddClass extends React.Component {
   render() {
     return(
       <div className="add-class">
-        <section>
+        <section style={{backgroundColor: "#f2f2f2"}}>
           <div>
             <p>Class Title</p>
             <input
               type="text"
               onChange={e => this.handleChange(e, 'name')}
               value={this.state.name}/>
+          </div>
+
+          <div>
+            <p>Day</p>
+            <input
+              type="day"
+              onChange={e => this.handleChange(e, 'day')}
+              value={this.state.day}/>
           </div>
 
           <div>
