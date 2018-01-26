@@ -213,3 +213,16 @@ ul {
   color: white;
   font-size: 13px;
 }
+
+.account {
+  width: 90%;
+}
+
+.account h2 {
+  text-align: center;
+}
+
+.account section {
+  display: flex;
+  justify-content: space-around;
+}

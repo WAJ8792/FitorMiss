@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import EditMyGym from '../Admin/EditMyGym';
 import { editGym } from '../../actions/gym_actions';
 
-const mapStateToProps = ( state ) => ({
-  state,
-  user: state.sessions.user,
-})
+const mapStateToProps = ( state ) => {
+  return {
+    state,
+    user: state.sessions.user,
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   editGym: (gym, gymRef) => dispatch(editGym(gym, gymRef)),

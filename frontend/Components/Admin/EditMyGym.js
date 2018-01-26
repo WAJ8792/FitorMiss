@@ -21,7 +21,6 @@ export default class EditMyGym extends React.Component {
   }
 
   fetchUserInfo(user) {
-    let newState = this.state;
     let gymName, neighborhood, amenities, amenityKey
 
     this.gymRef.orderByKey().equalTo(user).on("value", snap => {
@@ -34,7 +33,6 @@ export default class EditMyGym extends React.Component {
     .equalTo(user).on("value", snap => {
       amenityKey = Object.keys(snap.toJSON())[0];
       amenities = snap.val()[amenityKey];
-      console.log(snap.val());
       this.setState({amenities, amenityKey});
     });
   }
@@ -58,7 +56,7 @@ export default class EditMyGym extends React.Component {
   }
 
   handleSaveChanges() {
-    firebase.database().ref('vendor/' + this.state.uid).set({
+    firebase.database().ref('vendor/' + this.state.user).set({
       gym_name: this.state.gymName,
       neighborhood: this.state.neighborhood,
     });
@@ -78,7 +76,7 @@ export default class EditMyGym extends React.Component {
       case "Mat Rentals":
         return "mat_rentals";
       case "Showers":
-        return "shower";
+        return "showers";
       case "Lockers":
         return "lockers";
       case "Towels":
@@ -87,6 +85,7 @@ export default class EditMyGym extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     let amenities = [
       "Parking",
       "Mat Rentals",

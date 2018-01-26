@@ -13,7 +13,7 @@ import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
 import EditMyGym from './containers/editGymContainer';
 import Billing from './Admin/Billing';
-import Account from './Admin/Account';
+import Account from './containers/Accounts_container';
 import Sidebar from './admin/Sidebar';
 import Classes from './containers/classes_container';
 
