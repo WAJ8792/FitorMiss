@@ -10,11 +10,12 @@ export default class Account extends React.Component {
         city: "",
         state: "",
       },
+      addressKey: false,
       email: "",
-      newData: false,
     }
-    this.create = this.create.bind(this);
-    this.edit = this.edit.bind(this);
+    this.createAddress = this.createAddress.bind(this);
+    this.editAddress = this.editAddress.bind(this);
+    this.editUserInfo = this.editUserInfo.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +41,7 @@ export default class Account extends React.Component {
             state: info.state,
           }
           this.setState({address: newAddress, addressKey});
-        } else { this.setState({newData: true}); }
+        }
       });
   }
 
@@ -56,12 +57,12 @@ export default class Account extends React.Component {
     this.setState({address});
   }
 
-  edit(e) {
+  editAddress() {
     firebase.database().ref('address/' + this.state.addressKey)
       .set(this.state.address);
   }
 
-  create(e) {
+  createAddress() {
     let info = this.state.address;
     let address = {
       street: info.street, city: info.city, state: info.state, vendor_id: info.user,
@@ -69,13 +70,15 @@ export default class Account extends React.Component {
     firebase.database().ref('address/').push().set(address);
   }
 
+  editUserInfo() {
+    firebase.database().ref('vendor/' + this.state.user + "/email")
+      .set(this.state.email);
+  }
 
   render() {
-    let submit;
     let address = this.state.address;
-    if (this.state.newData) {
-      submit = (this.create);
-    } else { submit = this.edit; }
+    let submitAddress = (this.state.addressKey) ? this.editAddress : this.createAddress
+
     console.log(this.state);
 
     return(
@@ -97,17 +100,20 @@ export default class Account extends React.Component {
             <input type="text"
               onChange={e => this.handleAddressChange(e, "state")}
               value={address.state}/>
+
+              <button onClick={() => submitAddress()} style={{float: 'right'}}>Submit</button>
           </div>
 
           <div>
             <h3>Email</h3>
             <p>This is not necessarily the email used for login</p>
             <input type="text" onChange={this.handleChange("email")} />
+
+            <button onClick={() => this.editUserInfo()} style={{float: 'right'}}>Submit</button>
           </div>
 
         </section>
 
-        <button onClick={() => submit()} style={{float: 'right'}}>Submit</button>
       </div>
     )
   }
