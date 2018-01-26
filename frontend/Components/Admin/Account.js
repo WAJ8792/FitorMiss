@@ -14,6 +14,7 @@ export default class Account extends React.Component {
       newData: false,
     }
     this.create = this.create.bind(this);
+    this.edit = this.edit.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +34,7 @@ export default class Account extends React.Component {
           let addressKey = Object.keys(snap.toJSON())[0];
           let info = snap.val()[addressKey];
           newAddress = {
-            user: info.vendor_id,
+            vendor_id: info.vendor_id,
             street: info.street,
             city: info.city,
             state: info.state,
@@ -47,13 +48,21 @@ export default class Account extends React.Component {
     return e => this.setState({[field]: e.target.value});
   }
 
+  handleAddressChange(e, field) {
+    e.preventDefault();
+
+    let address = this.state.address;
+    address[field] = e.target.value;
+    this.setState({address});
+  }
+
   edit(e) {
-    // takes an address object as in state and send it with user id for validation.
-    // takes an email as above, also with a uid.
+    firebase.database().ref('address/' + this.state.addressKey)
+      .set(this.state.address);
   }
 
   create(e) {
-    let info = this.state;
+    let info = this.state.address;
     let address = {
       street: info.street, city: info.city, state: info.state, vendor_id: info.user,
     };
@@ -78,15 +87,15 @@ export default class Account extends React.Component {
             <h3>Adress</h3>
             <p>Street Address</p>
             <input type="text"
-              onChange={this.handleChange("street")}
+              onChange={e => this.handleAddressChange(e, "street")}
               value={address.street}/>
             <p>City</p>
             <input type="text"
-              onChange={this.handleChange("city")}
+              onChange={e => this.handleAddressChange(e, "city")}
               value={address.city}/>
             <p>State</p>
             <input type="text"
-              onChange={this.handleChange("state")}
+              onChange={e => this.handleAddressChange(e, "state")}
               value={address.state}/>
           </div>
 
