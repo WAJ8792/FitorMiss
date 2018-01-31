@@ -47,7 +47,7 @@ class MyGym extends React.Component {
         <section className="my-gym">
         <div>
           <h1> Hello {this.state.gymName}! </h1>
-          <h3>Here is some userful info...</h3>
+          <h3>Here is some useful info...</h3>
           <ul>
             <li>Your gym is located at: {this.state.neighborhood}</li>
           </ul>

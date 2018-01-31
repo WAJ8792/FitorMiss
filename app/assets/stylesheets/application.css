@@ -215,6 +215,16 @@ ul {
   font-size: 13px;
 }
 
+.account button {
+  height: 34px;
+  width: 78px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1ed0b1;
+  color: white;
+  font-size: 13px;
+}
+
 .class-info p {
   margin: 0 0 7px 0;
 }
@@ -230,4 +240,9 @@ ul {
 .account section {
   display: flex;
   justify-content: space-around;
+}
+
+.cc-info section {
+  display: flex;
+  justify-content:
 }

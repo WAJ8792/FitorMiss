@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import Account from '../Admin/Account';
 import { getAddress } from '../../actions/account_actions';
@@ -14,7 +15,7 @@ const mapDispatchToProps = ( dispatch ) => ({
   getAddress: (uid, db) => dispatch(getAddress(uid, db)),
 })
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Account);
+)(Account));

@@ -65,7 +65,7 @@ export default class SignIn extends React.Component {
           type="text"
           value={this.state.gymName}
           onChange={this.handleChange("gymName")}/>
-        <p>Neighborhoos</p>
+        <p>Neighborhood</p>
         <input
           type="text"
           value={this.state.neighborhood}
