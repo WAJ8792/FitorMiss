@@ -10,10 +10,11 @@ export default class Classes extends React.Component {
     this.state = {
       classes: [],
       user: "",
-      day: "",
+      day: "Monday",
     }
     this.classesRef = firebase.database().ref("classes");
     this.populateClasses = this.populateClasses.bind(this);
+    this.saveChanges = this.saveChanges.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +46,7 @@ export default class Classes extends React.Component {
       time: thisClass.time,
       duration: thisClass.duration,
       seats: thisClass.seats,
+      type: 'read',
     });
 
     this.setState({classes: newState.classes});
@@ -70,6 +72,25 @@ export default class Classes extends React.Component {
     this.setState({day});
   }
 
+   // getClass(thisClass) {
+  //    let c = {
+  //      vendor_id, thisClass.vendor_id,
+  //      name, thisClass.name,
+  //      date, thisClass.date,
+  //      time, thisClass.time,
+  //      duration, thisClass.duration,
+  //      seats: thisClass.seats
+  //   };
+  //   return c;
+  // }
+
+  saveChanges(e, thisClass) {
+    e.preventDefault();
+
+    firebase.database().ref('classes' + thisClass.class_id)
+      .set(this.getClass(thisClass));
+  }
+
   render() {
     let day = this.state.day;
     let classes;
@@ -77,11 +98,12 @@ export default class Classes extends React.Component {
     if (this.state.classes.length > 0) {
       classes = [];
       this.state.classes.forEach( thisClass => {
-        if (thisClass.day === day){
+        if (thisClass.day === day) {
           classes.push(<GymClass
             props={thisClass}
             addClass={this.addClass}
-            key={thisClass.key} />)
+            saveChanges={this.saveChanges}
+            key={thisClass.class_id} />)
         }
       });
     } else { classes = <h3>You have no classes</h3> }

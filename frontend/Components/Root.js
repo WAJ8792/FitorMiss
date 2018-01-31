@@ -12,7 +12,8 @@ import Test from './Test';
 import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
 import EditMyGym from './containers/editGymContainer';
-import Billing from './Admin/Billing';
+import Billing from './Admin/Billing/Billing';
+import BillingHistory from './Admin/Billing/BillingHistory';
 import Account from './containers/Accounts_container';
 import Sidebar from './admin/Sidebar';
 import Classes from './containers/classes_container';
@@ -37,6 +38,7 @@ const Root = ({ store }) => {
             <Route path="/edit" component={EditMyGym} />
             <Route path="/account" component={Account} />
             <Route path="/billing" component={Billing} />
+            <Route path="/billing-history" component={BillingHistory} />
             <Route path="/myclasses" component={Classes} />
           </App>
         </HashRouter>

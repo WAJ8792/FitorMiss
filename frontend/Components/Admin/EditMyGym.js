@@ -6,6 +6,7 @@ export default class EditMyGym extends React.Component {
     this.state = {
       gymName: "",
       neighborhood: "",
+      email: "",
       amenities: {
         parking: false,
         showers: false,
@@ -21,12 +22,13 @@ export default class EditMyGym extends React.Component {
   }
 
   fetchUserInfo(user) {
-    let gymName, neighborhood, amenities, amenityKey
+    let gymName, neighborhood, amenities, amenityKey, email
 
     this.gymRef.orderByKey().equalTo(user).on("value", snap => {
       gymName = snap.val()[user].gym_name;
       neighborhood = snap.val()[user].neighborhood;
-      this.setState({gymName, neighborhood});
+      email = snap.val()[user].email;
+      this.setState({gymName, neighborhood, email});
     })
     firebase.database().ref('amenities')
     .orderByChild("vendor_id")
@@ -59,12 +61,13 @@ export default class EditMyGym extends React.Component {
     firebase.database().ref('vendor/' + this.state.user).set({
       gym_name: this.state.gymName,
       neighborhood: this.state.neighborhood,
+      email: this.state.email,
     });
     if (this.state.amenityKey) {
       firebase.database().ref('amenities/' + this.state.amenityKey).set(this.state.amenities);
     } else {
       let amenities = this.state.amenities;
-      amenities.vendor_id = this.state.uid;
+      amenities.vendor_id = this.state.user;
       firebase.database().ref('amenities').push().set(amenities);
     }
   }

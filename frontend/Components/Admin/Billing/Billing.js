@@ -13,7 +13,8 @@ export default class Billing extends React.Component {
     return(
       <div>
         <h2>Billing</h2>
-        <p>And more later</p>
+        <h3>Your plan:</h3>
+        
       </div>
     )
   }

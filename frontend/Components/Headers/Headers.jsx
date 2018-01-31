@@ -20,6 +20,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    console.log("Header did mount");
     this.checkLoggedIn();
   }
 
@@ -36,6 +37,7 @@ class Header extends React.Component {
 
   checkLoggedIn() {
     if (this.state.user.uid.length < 1) {
+      console.log("found no user");
       app.auth().onAuthStateChanged((user) => {
         if (user) {
           this.setState({ user, loggedOut: false });
@@ -46,7 +48,10 @@ class Header extends React.Component {
           return false;
         }
       });
-    } else { this.props.dispatchUser(this.state.user) }
+    } else {
+      console.log("Found a user");
+      this.props.dispatchUser(this.state.user)
+    }
   }
 
   render() {
