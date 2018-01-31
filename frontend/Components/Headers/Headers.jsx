@@ -16,11 +16,9 @@ class Header extends React.Component {
     }
     this.logout = this.logout.bind(this);
     this.checkLoggedIn = this.checkLoggedIn.bind(this);
-    this.checkLoggedIn();
   }
 
-  componentDidMount() {
-    console.log("Header did mount");
+  componentWillMount() {
     this.checkLoggedIn();
   }
 
@@ -37,7 +35,6 @@ class Header extends React.Component {
 
   checkLoggedIn() {
     if (this.state.user.uid.length < 1) {
-      console.log("found no user");
       app.auth().onAuthStateChanged((user) => {
         if (user) {
           this.setState({ user, loggedOut: false });
@@ -49,13 +46,11 @@ class Header extends React.Component {
         }
       });
     } else {
-      console.log("Found a user");
       this.props.dispatchUser(this.state.user)
     }
   }
 
   render() {
-
     if (this.state.loggedOut === true) {
       return (
         <div className="app">

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import firebaseui from 'firebaseui';
+import { withRouter } from 'react-router-dom';
 
 class MyGym extends React.Component {
   constructor(props) {
@@ -16,11 +15,16 @@ class MyGym extends React.Component {
   }
 
   componentDidMount() {
-    let user = this.props.user.uid;
-    this.setState({user});
-    if (user != "") {
-      this.fetchUserInfo(user);
-    }
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid, loggedOut: false });
+        this.fetchUserInfo(user.uid);
+      }
+    });
   }
 
   fetchUserInfo(user) {
@@ -34,7 +38,8 @@ class MyGym extends React.Component {
   }
 
   render() {
-    if (this.state.user === "" ) {
+
+    if (!this.state.gymName) {
       return (<h1>Loading . . .</h1>)
     } else {
 
@@ -53,10 +58,13 @@ class MyGym extends React.Component {
   }
 }
 
-const mapStateToProps = ( state ) => ({
-  user: state.sessions.user
-})
+const mapStateToProps = ( state ) => {
+  return {
+    user: state.sessions.user,
 
-export default connect(
+  }
+}
+
+export default withRouter(connect(
   mapStateToProps, null
-)(MyGym);
+)(MyGym));

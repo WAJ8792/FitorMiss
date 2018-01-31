@@ -13,16 +13,20 @@ export default class Classes extends React.Component {
       day: "Monday",
     }
     this.classesRef = firebase.database().ref("classes");
-    this.populateClasses = this.populateClasses.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
   }
 
   componentDidMount() {
-    let user = this.props.user.uid;
-    this.setState({user});
-    if (user != "") {
-      this.populateClasses(user);
-    }
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid, loggedOut: false });
+        this.populateClasses(user.uid);
+      }
+    });
   }
 
   populateClasses(user) {
@@ -100,13 +104,14 @@ export default class Classes extends React.Component {
       this.state.classes.forEach( thisClass => {
         if (thisClass.day === day) {
           classes.push(<GymClass
+            key={thisClass.class_id}
             props={thisClass}
             addClass={this.addClass}
             saveChanges={this.saveChanges}
-            key={thisClass.class_id} />)
+             />)
         }
       });
-    } else { classes = <h3>You have no classes</h3> }
+    } else { classes = <h3>Loading your classes!</h3> }
 
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day =>
       <div onClick={() => this.updateDay(day)}>
@@ -133,4 +138,3 @@ export default class Classes extends React.Component {
     )
   }
 }
-// <ClassesList classes={classes} />

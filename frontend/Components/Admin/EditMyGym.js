@@ -40,11 +40,16 @@ export default class EditMyGym extends React.Component {
   }
 
   componentDidMount() {
-    let user = this.props.user.uid;
-    this.setState({user});
-    if (user != "") {
-      this.fetchUserInfo(user);
-    }
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid, loggedOut: false });
+        this.fetchUserInfo(user.uid);
+      }
+    });
   }
 
   handleChange(e, field) {
@@ -88,7 +93,11 @@ export default class EditMyGym extends React.Component {
   }
 
   render() {
-    console.log(this.state);
+    let loading;
+    if (!this.state.gymName) {
+      loading = <p style={{color: 'red'}}>Retrieving your information...</p>
+    } else { loading = null }
+
     let amenities = [
       "Parking",
       "Mat Rentals",
@@ -127,7 +136,7 @@ export default class EditMyGym extends React.Component {
       <section className="my-gym">
         <div className="edit-gym">
           <h1> Edit Gym Info </h1>
-
+          {loading}
           <section>
             <div>
               <p>Your Gym Name</p>

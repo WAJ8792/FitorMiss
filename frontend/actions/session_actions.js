@@ -12,6 +12,10 @@ export const logoutUser = () => ({
   type: LOGOUT_USER,
 });
 
+// export const getUser = (db) => dispatch => () => (
+//
+// )
+
 export const logout = (user, db) => dispatch => (
   db.auth().signOut()
     .then(user => dispatch(logoutUser()))

@@ -12,3 +12,18 @@ export const createUser = function(user, db) {
     mat_rentals: false,
   })
 }
+
+// getCurrentUser is not being used but might be a nice way to dry up code
+// at a later point when there is time to configure this code to work alongside redux fow.
+// export const getCurrentUser = function(db) {
+//   app.auth().onAuthStateChanged((user) => {
+//     if (user) {
+//       console.log(user.uid);
+//       this.setState({ user: user.uid, loggedOut: false });
+//       return user;
+//     } else {
+//       this.setState({loggedOut: true})
+//       return false;
+//     }
+//   });
+// }

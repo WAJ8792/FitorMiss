@@ -19,11 +19,16 @@ export default class Account extends React.Component {
   }
 
   componentDidMount() {
-    let user = this.props.user.uid;
-    this.setState({user});
-    if (user != "") {
-      this.fetchAccountInfo(user);
-    }
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid, loggedOut: false });
+        this.fetchAccountInfo(user.uid);
+      }
+    });
   }
 
   fetchAccountInfo(user) {
@@ -65,7 +70,7 @@ export default class Account extends React.Component {
   createAddress() {
     let info = this.state.address;
     let address = {
-      street: info.street, city: info.city, state: info.state, vendor_id: info.user,
+      street: info.street, city: info.city, state: info.state, vendor_id: this.state.user,
     };
     firebase.database().ref('address/').push().set(address);
   }
@@ -78,12 +83,16 @@ export default class Account extends React.Component {
   render() {
     let address = this.state.address;
     let submitAddress = (this.state.addressKey) ? this.editAddress : this.createAddress
+    let loading;
 
-    console.log(this.state);
+    if (this.state.user === "") {
+      loading = <p style={{color: 'red'}}>Retrieving your accounnt info...</p>
+    } else { loading = null }
 
     return(
       <div className="account">
         <h2>Edit Account</h2>
+        {loading}
         <section>
 
           <div>
