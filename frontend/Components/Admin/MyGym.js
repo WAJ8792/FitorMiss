@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 
 class MyGym extends React.Component {
   constructor(props) {
@@ -23,8 +23,16 @@ class MyGym extends React.Component {
       if (user) {
         this.setState({ user: user.uid, loggedOut: false });
         this.fetchUserInfo(user.uid);
+        this.getUserType(user.uid);
       }
     });
+  }
+
+  getUserType(user) {
+    firebase.database().ref('user_type')
+    .orderByKey().equalTo(user).on('value', snap => {
+        this.setState({type: snap.val()[user]});
+      })
   }
 
   fetchUserInfo(user) {
@@ -38,6 +46,10 @@ class MyGym extends React.Component {
   }
 
   render() {
+
+    if (this.state.type === "customer") {
+      return (<Redirect to="/customerclasses" />);
+    }
 
     if (!this.state.gymName) {
       return (<h1>Loading . . .</h1>)

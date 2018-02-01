@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import firebaseui from 'firebaseui';
-import SignupCustomer from './Signup_Customer';
+import SignupCustomer from './Customers/Signup_Customer';
 
 export default class SignIn extends React.Component {
   constructor() {

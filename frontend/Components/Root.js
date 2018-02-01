@@ -8,7 +8,7 @@ import { configureStore } from '../store';
 import { ProtectedRoute } from '../util/root_util';
 
 import { App } from './App';
-import Test from './Test';
+// Admin
 import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
 import EditMyGym from './containers/editGymContainer';
@@ -18,14 +18,10 @@ import Account from './containers/Accounts_container';
 import Sidebar from './admin/Sidebar';
 import Classes from './containers/classes_container';
 
+// Customer
+import ClassList from './Customers/ClassList';
+
 let store = configureStore();
-
-const customHistory = createBrowserHistory()
-
-function loggedIn(session) {
-  console.log(session.user.uid.length > 1);
-  session.user.uid.length > 1;
-};
 
 const Root = ({ store }) => {
     return(
@@ -34,12 +30,15 @@ const Root = ({ store }) => {
         <HashRouter>
           <App>
             <Route exact path="/SignIn" component={SignIn} />
+
             <Route exact path="/" component={MyGym}/>
             <Route path="/edit" component={EditMyGym} />
             <Route path="/account" component={Account} />
             <Route path="/billing" component={Billing} />
             <Route path="/billing-history" component={BillingHistory} />
             <Route path="/myclasses" component={Classes} />
+
+            <Route path="/customerclasses" component={ClassList} />
           </App>
         </HashRouter>
       </Provider>

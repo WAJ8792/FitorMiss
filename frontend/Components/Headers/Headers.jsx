@@ -62,27 +62,32 @@ class Header extends React.Component {
     if (this.state.loggedOut === true) {
       return (
         <div className="app">
+          <TopHeader />
           <SignIn />
         </div>
       )
     } else if (this.state.type === "customer") {
       return (
         <div className="app">
-          <h1>Hello Customer</h1>
+          <TopHeader logout={this.logout} />
+
+          <UserHeader type={this.state.type}/>
+
+          <section className="app-body">
+            <Sidebar type={this.state.type}/>
+            { this.props.children }
+          </section>
         </div>
       )
     } else {
       return (
         <div className="app">
-          <section className="app-header">
-            <h2>FitOrMiss</h2>
-              <h3 onClick={e => this.logout(e)}>Sign Out</h3>
-          </section>
+          <TopHeader logout={this.logout} />
 
-          <AdminHeader />
+          <UserHeader type={this.state.type}/>
 
           <section className="app-body">
-            <Sidebar />
+            <Sidebar type={this.state.type}/>
             { this.props.children }
           </section>
 
@@ -92,14 +97,39 @@ class Header extends React.Component {
   }
 }
 
-class AdminHeader extends React.Component {
+class TopHeader extends React.Component {
   render() {
+    let logout;
+
+    if (this.props.logout) {
+      logout = <h3 onClick={e => this.props.logout(e)}>Sign Out</h3>
+    } else { logout = null; }
+
     return(
-      <section className="admin-header">
-        <h2><Link to="/">MyGym</Link></h2>
-        <h2><Link to="/myclasses">Classes</Link></h2>
+      <section className="app-header">
+        <h2>FitOrMiss</h2>
+        {logout}
       </section>
     )
+  }
+}
+
+class UserHeader extends React.Component {
+  render() {
+    if (this.props.type === "vendor") {
+      return(
+        <section className="user-header">
+          <h2><Link to="/">MyGym</Link></h2>
+          <h2><Link to="/myclasses">Classes</Link></h2>
+        </section>
+      )
+    } else {
+        return(
+          <section className="user-header">
+            <h2><Link to="/customerclasses">MyGym</Link></h2>
+          </section>
+        )
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 export default class SignupCustomer extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class SignupCustomer extends React.Component {
     e.preventDefault();
 
     this.props.signupCustomer(this.state, app);
+    <Redirect to="/customerclasses" />
   }
 
   render() {

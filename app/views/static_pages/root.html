@@ -24,6 +24,24 @@
       };
       const app = firebase.initializeApp(config);
 
+      // app.auth().onAuthStateChanged((user) => {
+      //   if (user) {
+      //     redirectUser(user.uid);
+      //   }
+      // });
+
+      // redirectUser(user) {
+      //   firebase.database().ref('user_type').orderByKey().equalTo(user)
+      //     .on('value', snap => {
+      //       if (snap.val() === 'vendor') {
+      //         window.location = "/";
+      //       } else if (snap.val() === 'customer') {
+      //         console.log("logged in as customer");
+      //         window.location = '.customerclasses';
+      //       } else { console.log("Unable to find user type"); }
+      //     })
+      // }
+
     </script>
 
 
