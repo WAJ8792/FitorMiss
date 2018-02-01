@@ -39,6 +39,7 @@ class Header extends React.Component {
         if (user) {
           this.setState({ user, loggedOut: false });
           this.props.dispatchUser(user);
+          this.getUserType(user.uid);
           return true;
         } else {
           this.setState({loggedOut: true})
@@ -50,11 +51,24 @@ class Header extends React.Component {
     }
   }
 
+  getUserType(user) {
+    firebase.database().ref('user_type')
+    .orderByKey().equalTo(user).on('value', snap => {
+        this.setState({type: snap.val()[user]});
+      })
+  }
+
   render() {
     if (this.state.loggedOut === true) {
       return (
         <div className="app">
           <SignIn />
+        </div>
+      )
+    } else if (this.state.type === "customer") {
+      return (
+        <div className="app">
+          <h1>Hello Customer</h1>
         </div>
       )
     } else {

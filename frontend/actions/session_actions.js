@@ -1,4 +1,4 @@
-import {createUser} from '../util/session_util';
+import { createVendor, createCustomer } from '../util/session_util';
 
 export const RECEIVE_USER = "RECEIVE_USER";
 export const LOGOUT_USER = "LOGOUT_USER";
@@ -27,9 +27,16 @@ export const login = (user, db) => dispatch => (
     .then(user => dispatch(receiveUser(user.user)))
 );
 
-export const signup = (user, db) => dispatch =>  (
+export const signupVendor = (userInfo, db) => dispatch =>  (
   db.auth()
-    .createUserWithEmailAndPassword(user.newEmail, user.newPassword)
+    .createUserWithEmailAndPassword(userInfo.newEmail, userInfo.newPassword)
     .then(user => dispatch(receiveUser(user)))
-    .then(user => createUser(user, db))
+    .then(user => createVendor(user, db, userInfo))
 );
+
+export const signupCustomer = (userInfo, db) => dispatch => (
+  db.auth()
+  .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
+  .then(user => dispatch(receiveUser(user)))
+  .then(user => createCustomer(user, db, userInfo))
+)

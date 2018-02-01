@@ -113,11 +113,21 @@ export default class Classes extends React.Component {
       });
     } else { classes = <h3>Loading your classes!</h3> }
 
-    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day =>
-      <div onClick={() => this.updateDay(day)}>
-        {day}
-      </div>
-    )
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day => {
+      if (this.state.day === day) {
+        return (
+          <div className="day-selectors" style={{backgroundColor: "lightgray"}} key={day}>
+            {day}
+          </div>
+        )
+      } else {
+        return(
+          <div className="day-selectors" onClick={() => this.updateDay(day)} key={day}>
+            {day}
+          </div>
+        )
+      }
+    })
 
     return(
       <section className="classes">

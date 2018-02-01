@@ -246,3 +246,15 @@ ul {
   display: flex;
   justify-content:
 }
+
+.day-selectors {
+  width: 75px;
+  margin-right: 28px;
+  padding-bottom: 12px;
+  cursor: pointer;
+}
+
+.signup-forms {
+  display: flex;
+  justify-content: space-around;
+}

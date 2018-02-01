@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import firebaseui from 'firebaseui';
+import SignupCustomer from './Signup_Customer';
 
 export default class SignIn extends React.Component {
   constructor() {
@@ -27,7 +28,7 @@ export default class SignIn extends React.Component {
 
   handleSignup(e) {
     e.preventDefault();
-    this.props.signup(this.state, app);
+    this.props.signupVendor(this.state, app);
   }
 
   render() {
@@ -49,29 +50,37 @@ export default class SignIn extends React.Component {
 
         <h3>Create a new account below</h3>
 
-        <form onSubmit={(e) => this.handleSignup(e)}>
-        <p>email</p>
-        <input
-          type="text"
-          value={this.state.newEmail}
-          onChange={this.handleChange("newEmail")}/>
-        <p>password</p>
-        <input
-          type="password"
-          value={this.state.newPassword}
-          onChange={this.handleChange("newPassword")}/>
-        <p>Gym name</p>
-        <input
-          type="text"
-          value={this.state.gymName}
-          onChange={this.handleChange("gymName")}/>
-        <p>Neighborhood</p>
-        <input
-          type="text"
-          value={this.state.neighborhood}
-          onChange={this.handleChange("neighborhood")}/>
-        <input type="submit" value="signup"/>
-        </form>
+        <section className="signup-forms">
+          <div>
+            <h4>Sign up as a vendor!</h4>
+            <form onSubmit={(e) => this.handleSignup(e)}>
+            <p>email</p>
+            <input
+              type="text"
+              value={this.state.newEmail}
+              onChange={this.handleChange("newEmail")}/>
+            <p>password</p>
+            <input
+              type="password"
+              value={this.state.newPassword}
+              onChange={this.handleChange("newPassword")}/>
+            <p>Gym name</p>
+            <input
+              type="text"
+              value={this.state.gymName}
+              onChange={this.handleChange("gymName")}/>
+            <p>Neighborhood</p>
+            <input
+              type="text"
+              value={this.state.neighborhood}
+              onChange={this.handleChange("neighborhood")}/>
+            <input type="submit" value="signup"/>
+            </form>
+          </div>
+
+          <SignupCustomer signupCustomer={this.props.signupCustomer}/>
+
+        </section>
 
       </div>
     )

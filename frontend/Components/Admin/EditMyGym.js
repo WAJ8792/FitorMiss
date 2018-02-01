@@ -56,10 +56,13 @@ export default class EditMyGym extends React.Component {
     this.setState({[field]: e.target.value});
   }
 
-  handleChoose(field) {
+  handleChoose(e, field) {
+    e.preventDefault();
+    let v = e.target.checked;
     let amenities = this.state.amenities;
-    amenities[field] = (amenities[field]) ? false : true
-    return e => this.setState({amenities});
+    amenities[field] = v;
+
+    this.setState({amenities});
   }
 
   handleSaveChanges() {
@@ -105,32 +108,21 @@ export default class EditMyGym extends React.Component {
       "Lockers",
       "Towels",
     ]
+    let list = this.state.amenities;
 
     let amenityOptions = [];
 
     amenities.forEach( amenity => {
       let field = this.getField(amenity)
-
-        if ((!this.state.amenities === undefined) && this.state.amenities[field]) {
-          amenityOptions.push(<section key={field}>
-              <input
-                onClick={() => this.handleChoose(field)}
-                type="checkbox"
-                className="checkbox-input"
-                checked/>
-              <label>{amenity}</label>
-            </section>
-          )
-        } else {
-          amenityOptions.push(<section key={field}>
-              <input
-                onClick={() => this.handleChoose(field)}
-                className="checkbox-input"
-                type="checkbox" />
-              <label>{amenity}</label>
-            </section>
-          )
-        }
+      amenityOptions.push(<section key={field}>
+          <input
+            onChange={(e) => this.handleChoose(e, field)}
+            type="checkbox"
+            className="checkbox-input"
+            checked={this.state.amenities[field]} />
+          <label>{amenity}</label>
+        </section>
+      )
     })
     return(
       <section className="my-gym">
