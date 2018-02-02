@@ -260,3 +260,7 @@ ul {
   display: flex;
   justify-content: space-around;
 }
+
+.page-container {
+  margin-left: 350px;
+}

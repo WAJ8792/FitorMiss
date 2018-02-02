@@ -74,12 +74,12 @@ class Header extends React.Component {
     else if (this.state.type === "customer")
     {
       if (!this.props.location.pathname.includes('customer')) {
-        console.log(this.props.location.pathname);
         return (<Redirect to="/customer" />)
       } else {
         return (
           <div className="top-header">
             <TopHeader logout={this.logout}/>
+            <CustomerHeader />
             <Sidebar />
           </div>
         )

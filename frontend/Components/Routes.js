@@ -8,9 +8,9 @@ import { configureStore } from '../store';
 import { ProtectedRoute } from '../util/root_util';
 
 import Header from './Headers';
+import SignIn from './containers/Sessions_Container';
 
 // Admin
-import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
 import EditMyGym from './containers/editGymContainer';
 import Billing from './Admin/Billing/Billing';
@@ -19,6 +19,7 @@ import Account from './containers/Accounts_container';
 import Classes from './containers/classes_container';
 
 // Customer
+import CustomerPage from './Customers/Customer';
 import ClassList from './Customers/ClassList';
 
 let store = configureStore();
@@ -47,7 +48,8 @@ const Root = ({ store }) => {
             <Route path="/admin/billing-history" component={BillingHistory} />
             <Route path="/admin/classes" component={Classes} />
 
-            <Route path="/customer" component={ClassList} />
+            <Route exact path="/customer" component={CustomerPage} />
+            <Route path="/customer/classes" component={ClassList} />
 
           </App>
         </HashRouter>

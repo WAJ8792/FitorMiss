@@ -9,7 +9,21 @@ export default class SignupCustomer extends React.Component {
       lastName: "",
       email: "",
       password: "",
+      neighborhood: "",
+      neighborhoods: [],
     }
+    this.getNeighborhoods();
+  }
+
+  getNeighborhoods() {
+    let neighborhoods = [];
+    app.database().ref('neighborhoods').on('value', snap => {
+      Object.keys(snap.val())
+        .forEach(id => {
+          neighborhoods.push({[snap.val()[id]]: id});
+        });
+      this.setState({neighborhoods});
+    })
   }
 
   handleChange(field) {
@@ -24,6 +38,18 @@ export default class SignupCustomer extends React.Component {
   }
 
   render() {
+
+    let neighborhoods = [];
+    this.state.neighborhoods.forEach(neighborhood => {
+      let name = Object.keys(neighborhood)[0];
+      neighborhoods.push(<option
+        key={name}
+        value={neighborhood[name]}>
+        {name}
+        </option>
+      )
+    })
+
     return(
       <div>
         <h4>Sign up as a customer!</h4>
@@ -41,6 +67,11 @@ export default class SignupCustomer extends React.Component {
             value={this.state.lastName}
             onChange={this.handleChange("lastName")}
             />
+
+          <p>Neighborhood</p>
+            <select onChange={this.handleChange("neighborhood")}>
+              {neighborhoods}
+            </select>
 
           <p>email</p>
             <input

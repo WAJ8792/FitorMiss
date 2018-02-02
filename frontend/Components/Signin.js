@@ -15,8 +15,10 @@ export default class SignIn extends React.Component {
       newPassword: "",
       gymName: "",
       neighborhood: "",
+      neighborhoods: [],
       loggedOut: "loading",
     }
+    this.getNeighborhoods();
   }
 
   getUserType(user) {
@@ -25,6 +27,17 @@ export default class SignIn extends React.Component {
         let subject = snap.val()[user];
         this.setState({type: subject});
       })
+  }
+
+  getNeighborhoods() {
+    let neighborhoods = [];
+    app.database().ref('neighborhoods').on('value', snap => {
+      Object.keys(snap.val())
+        .forEach(id => {
+          neighborhoods.push({[snap.val()[id]]: id});
+        });
+      this.setState({neighborhoods});
+    })
   }
 
   logout(e) {
@@ -58,6 +71,17 @@ export default class SignIn extends React.Component {
     } else if (this.state.type === "admin") {
       return (<Redirect to="/admin" />)
     } else {
+
+    let neighborhoods = [];
+    this.state.neighborhoods.forEach(neighborhood => {
+      let name = Object.keys(neighborhood)[0];
+      neighborhoods.push(<option
+        key={name}
+        value={neighborhood[name]}>
+        {name}
+        </option>
+      )
+    })
 
     return(
       <div id="firebaseui-auth-container">
@@ -96,10 +120,9 @@ export default class SignIn extends React.Component {
               value={this.state.gymName}
               onChange={this.handleChange("gymName")}/>
             <p>Neighborhood</p>
-            <input
-              type="text"
-              value={this.state.neighborhood}
-              onChange={this.handleChange("neighborhood")}/>
+            <select onChange={this.handleChange("neighborhood")}>
+              {neighborhoods}
+            </select>
             <input type="submit" value="signup"/>
             </form>
           </div>

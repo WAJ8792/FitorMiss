@@ -1,7 +1,7 @@
 export const createVendor = function(user, db, userInfo) {
   db.database().ref('vendor/' + user.user.uid).set({
     gym_name: userInfo.gymName,
-    neighborhood: userInfo.neighborhood,
+    neighborhood_id: userInfo.neighborhood,
     email: user.user.email,
   });
   db.database().ref('amenities').push({
@@ -32,9 +32,12 @@ export const createCustomer = function(user, db, userInfo) {
     first_name: userInfo.firstName,
     last_name: userInfo.lastName,
     email: userInfo.email,
+    neighborhood_id: userInfo.neighborhood,
   });
   db.database().ref('user_type/' + user.user.uid).set("customer");
 }
+
+
 
 // getCurrentUser is not being used but might be a nice way to dry up code
 // at a later point when there is time to configure this code to work alongside redux fow.
