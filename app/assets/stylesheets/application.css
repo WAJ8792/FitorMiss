@@ -264,3 +264,49 @@ ul {
 .page-container {
   margin-left: 350px;
 }
+
+.display-class-info {
+  padding: 0;
+}
+
+.display-class-info section:first-child {
+  border-top: solid gray 1px;
+}
+
+.display-class-info section {
+  display: flex;
+  border-bottom: solid gray 1px;
+}
+
+.display-class-info section div:first-child {
+  margin: 0;
+}
+
+.display-class-info section div {
+  margin-left: 37px;
+  width: 100px;
+}
+
+.display-class-info button {
+  height: 40px;
+  width: 132px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1ed0b1;
+  color: white;
+  font-size: 13px;
+  margin: 21px 0 12px 37px;
+}
+
+.display-class-info h5 {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.display-class-info p {
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+}

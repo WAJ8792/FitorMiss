@@ -19,7 +19,7 @@ import Account from './containers/Accounts_container';
 import Classes from './containers/classes_container';
 
 // Customer
-import CustomerPage from './Customers/Customer';
+import CustomerPage from './Customers/HomePage/Customer';
 import ClassList from './Customers/ClassList';
 
 let store = configureStore();
