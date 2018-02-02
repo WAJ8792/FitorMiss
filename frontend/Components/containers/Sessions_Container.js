@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  signupVendor, signupCustomer, login
+  signupVendor, signupCustomer, login, receiveUser, logout
 } from '../../actions/session_actions';
 import { withRouter } from 'react-router';
 
@@ -13,7 +13,9 @@ const mapStateToProps = ( state ) => {
 const mapDispatchToProps = (dispatch) => ({
   login: (user, db) => dispatch(login(user, db)),
   signupVendor: (user, db) => dispatch(signupVendor(user, db)),
-  signupCustomer: (user, db) => dispatch(signupCustomer(user, db))
+  signupCustomer: (user, db) => dispatch(signupCustomer(user, db)),
+  dispatchUser: (user) => dispatch(receiveUser(user)),
+  logout: (user, db) => dispatch(logout(user, db)),
 })
 
 export default connect(

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import CC from './CC_Info';
-
 export default class Account extends React.Component {
   constructor(props) {
     super(props);

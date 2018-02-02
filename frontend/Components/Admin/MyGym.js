@@ -47,10 +47,6 @@ class MyGym extends React.Component {
 
   render() {
 
-    if (this.state.type === "customer") {
-      return (<Redirect to="/customerclasses" />);
-    }
-
     if (!this.state.gymName) {
       return (<h1>Loading . . .</h1>)
     } else {

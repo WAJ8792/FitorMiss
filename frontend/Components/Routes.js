@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { Switch, HashRouter, Route, Redirect, withRouter,
   IndexRoute, BrowserRouter, hashHistory } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -7,7 +7,8 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { configureStore } from '../store';
 import { ProtectedRoute } from '../util/root_util';
 
-import { App } from './App';
+import Header from './Headers';
+
 // Admin
 import SignIn from './containers/Sessions_Container';
 import MyGym from './Admin/MyGym';
@@ -15,7 +16,6 @@ import EditMyGym from './containers/editGymContainer';
 import Billing from './Admin/Billing/Billing';
 import BillingHistory from './Admin/Billing/BillingHistory';
 import Account from './containers/Accounts_container';
-import Sidebar from './admin/Sidebar';
 import Classes from './containers/classes_container';
 
 // Customer
@@ -23,26 +23,37 @@ import ClassList from './Customers/ClassList';
 
 let store = configureStore();
 
+const ConnectedApp = ({ children }) => (
+  <div className="app">
+    { children }
+  </div>
+)
+
+const App = withRouter(connect()(ConnectedApp));
+
 const Root = ({ store }) => {
     return(
 
       <Provider store={ store }>
         <HashRouter>
           <App>
-            <Route exact path="/SignIn" component={SignIn} />
+            <Route path="/" component={Header} />
+            <Route path="/signin" component={SignIn} />
 
-            <Route exact path="/" component={MyGym}/>
-            <Route path="/edit" component={EditMyGym} />
-            <Route path="/account" component={Account} />
-            <Route path="/billing" component={Billing} />
-            <Route path="/billing-history" component={BillingHistory} />
-            <Route path="/myclasses" component={Classes} />
+            <Route exact path="/admin" component={MyGym}/>
+            <Route path="/admin/edit" component={EditMyGym} />
+            <Route path="/admin/account" component={Account} />
+            <Route path="/admin/billing" component={Billing} />
+            <Route path="/admin/billing-history" component={BillingHistory} />
+            <Route path="/admin/classes" component={Classes} />
 
-            <Route path="/customerclasses" component={ClassList} />
+            <Route path="/customer" component={ClassList} />
+
           </App>
         </HashRouter>
       </Provider>
     )
 }
+
 
 export default Root;

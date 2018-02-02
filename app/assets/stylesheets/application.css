@@ -48,11 +48,13 @@ ul {
   display: flex;
   color: #f0efef;
   background-color: #13192f;
+  height: 50px;
 }
 
 .admin-header * {
   margin-right: 14px;
-  margin-left: 10px
+  margin-left: 10px;
+  font-size: 30px;
 }
 
 .sidebar {
@@ -61,6 +63,7 @@ ul {
   min-width: 285px;
   color: #f0efef;
   background-color: #262b40;
+  position: absolute;
 }
 
 .radio-input {
@@ -102,8 +105,7 @@ ul {
 }
 
 .my-gym {
-  display: flex;
-  width: 90%;
+  margin-left: 250px;
 }
 
 .my-gym p {

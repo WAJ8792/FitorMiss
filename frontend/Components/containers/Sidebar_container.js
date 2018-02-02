@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 import { toggleBilling, toggleAccounts } from '../../actions/sidebar_actions';
 
-import SideBar from '../Admin/Sidebar';
+import Sidebar from '../Sidebar';
 
 const mapStateToProps = ( state ) => {
   return {
@@ -22,4 +22,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(SideBar));
+)(Sidebar));

@@ -8,13 +8,34 @@ export default class SignIn extends React.Component {
   constructor() {
     super();
     this.state = {
+      uid: "",
       email: "",
       password: "",
       newEmail: "",
       newPassword: "",
       gymName: "",
       neighborhood: "",
+      loggedOut: "loading",
     }
+  }
+
+  getUserType(user) {
+    firebase.database().ref('user_type')
+    .orderByKey().equalTo(user).on('value', snap => {
+        let subject = snap.val()[user];
+        this.setState({type: subject});
+      })
+  }
+
+  logout(e) {
+    // e.preventDefault();
+
+    let user = {
+      uid: this.state.uid,
+      email: this.state.email,
+    }
+    this.props.logout(user, app);
+    this.setState({loggedOut: true});
   }
 
   handleChange(field) {
@@ -32,6 +53,11 @@ export default class SignIn extends React.Component {
   }
 
   render() {
+    if (this.state.type === "customer") {
+      return ( <Redirect to="/customer/classes" />);
+    } else if (this.state.type === "admin") {
+      return (<Redirect to="/admin" />)
+    } else {
 
     return(
       <div id="firebaseui-auth-container">
@@ -84,5 +110,6 @@ export default class SignIn extends React.Component {
 
       </div>
     )
+  }
   }
 }
