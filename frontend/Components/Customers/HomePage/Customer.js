@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
+import { orderClassesByDate, getClassesByDay } from  '../../../util/classes_util';
 
 import ClassInfo from './DisplayClassInfo';
 
@@ -17,7 +18,8 @@ class CustomerPage extends React.Component {
         email: "",
         neighborhood: "",
       },
-      classes: [],
+      todaysClasses: [],
+      tomorrowsClasses: [],
     }
     this.getCurrentUser();
     this.handleReserve = this.handleReserve.bind(this);
@@ -48,38 +50,30 @@ class CustomerPage extends React.Component {
     .orderByChild('neighborhood_id').equalTo(parseInt(neighborhood))
     .on("value", snap => {
       if (snap.val() != null) {
-        Object.keys(snap.val()).forEach(classId => {
-          let thisClass = snap.val()[classId];
-          classes.push({
-            classId: classId,
-            name: thisClass.name,
-            date: thisClass.date,
-            day: thisClass.day,
-            time: thisClass.time,
-            duration: thisClass.duration,
-            seats: thisClass.seats,
-            vendor: thisClass.vendor,
-            neighborhood: thisClass.neighborhood
-          });
-        });
+        classes = getClassesByDay(snap.val());
       }
-      this.setState({classes});
+      this.setState({
+        todaysClasses: classes.today,
+        tomorrowsClasses: classes.tomorrow,
+      });
     })
   }
 
-  handleReserve(classId) {
+  handleReserve(thisClass) {
     firebase.database().ref("reservations").push().set({
-      class_id: classId,
+      class_id: thisClass.id,
       customer_id: this.state.user,
+      date: thisClass.date,
+      time: thisClass.time,
     })
   }
 
-  displayClasses() {
+  displayClasses(classList) {
     let classes = [];
-    this.state.classes.forEach(thisClass => {
+    classList.forEach(thisClass => {
       classes.push(
         <ClassInfo
-          key={thisClass.classId}
+          key={thisClass.id}
           thisClass={thisClass}
           handleReserve={this.handleReserve} />
       )
@@ -88,12 +82,22 @@ class CustomerPage extends React.Component {
   }
 
   render() {
-    let classes = this.displayClasses();
+    let todaysClasses = this.state.todaysClasses;
+    let tomorrowsClasses = this.state.tomorrowsClasses;
+
+    if (todaysClasses.length > 0) {
+      todaysClasses = this.displayClasses(todaysClasses);
+    } if (tomorrowsClasses.length > 0) {
+      tomorrowsClasses = this.displayClasses(tomorrowsClasses);
+    }
     return(
       <div className="page-container">
         <WelcomeHeader user={this.state.userInfo}/>
         <ul className="display-class-info">
-          {classes}
+          <h4 className="day-label">Today</h4>
+          {todaysClasses}
+          <h4 className="day-label">Tomorrow</h4>
+          {tomorrowsClasses}
         </ul>
       </div>
     )

@@ -10,10 +10,12 @@ export default class Classes extends React.Component {
     this.state = {
       classes: [],
       user: "",
+      userInfo: {},
       day: "Monday",
     }
     this.classesRef = firebase.database().ref("classes");
     this.saveChanges = this.saveChanges.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   componentDidMount() {
@@ -23,10 +25,20 @@ export default class Classes extends React.Component {
   getCurrentUser() {
     app.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.getUserInfo(user.uid);
         this.setState({ user: user.uid, loggedOut: false });
         this.populateClasses(user.uid);
       }
     });
+  }
+
+  getUserInfo(user) {
+    firebase.database().ref('vendor')
+    .orderByKey().equalTo(user).on('value', snap => {
+      if (snap.val() != null)  {
+        this.setState({userInfo: snap.val()[user]});
+      }
+    })
   }
 
   populateClasses(user) {
@@ -69,6 +81,11 @@ export default class Classes extends React.Component {
   }
 
   handleAdd(newClass) {
+    let userInfo = this.state.userInfo;
+    newClass.neighborhood = userInfo.neighborhood;
+    newClass.neighborhood_id = 1;
+    newClass.vendor = userInfo.gym_name;
+    newClass.vendor_id = this.state.user;
     firebase.database().ref('classes/').push().set(newClass);
   }
 
@@ -130,8 +147,8 @@ export default class Classes extends React.Component {
     })
 
     return(
-      <section className="classes">
-        <div>
+      <div className="page-container">
+        <section className="classes">
           <h1>Your Class Schedule</h1>
 
             <section style={{display: 'flex', width: '100%'}} >
@@ -143,8 +160,8 @@ export default class Classes extends React.Component {
             </span>
 
           <AddClass handleAdd={ this.handleAdd.bind(this)} user={this.props.user.uid} />
-      </div>
       </section>
+    </div>
     )
   }
 }

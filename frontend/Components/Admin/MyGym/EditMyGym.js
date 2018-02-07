@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Amenities from './Amenities';
+
 export default class EditMyGym extends React.Component {
   constructor(props) {
     super(props);
@@ -58,9 +60,10 @@ export default class EditMyGym extends React.Component {
 
   handleChoose(e, field) {
     e.preventDefault();
-    let v = e.target.checked;
     let amenities = this.state.amenities;
-    amenities[field] = v;
+    if (amenities[field] === true) {
+      amenities[field] = false;
+    } else { amenities[field] = true; }
 
     this.setState({amenities});
   }
@@ -80,91 +83,62 @@ export default class EditMyGym extends React.Component {
     }
   }
 
-  getField(amenity) {
-    switch (amenity) {
-      case "Parking":
-        return "parking";
-      case "Mat Rentals":
-        return "mat_rentals";
-      case "Showers":
-        return "showers";
-      case "Lockers":
-        return "lockers";
-      case "Towels":
-        return "towels";
-    }
-  }
-
   render() {
     let loading;
     if (!this.state.gymName) {
       loading = <p style={{color: 'red'}}>Retrieving your information...</p>
     } else { loading = null }
 
-    let amenities = [
-      "Parking",
-      "Mat Rentals",
-      "Showers",
-      "Lockers",
-      "Towels",
-    ]
-    let list = this.state.amenities;
-
-    let amenityOptions = [];
-
-    amenities.forEach( amenity => {
-      let field = this.getField(amenity)
-      amenityOptions.push(<section key={field}>
-          <input
-            onChange={(e) => this.handleChoose(e, field)}
-            type="checkbox"
-            className="checkbox-input"
-            checked={this.state.amenities[field]} />
-          <label>{amenity}</label>
-        </section>
-      )
-    })
     return(
-      <section className="my-gym">
+      <div className="page-container">
         <div className="edit-gym">
           <h1> Edit Gym Info </h1>
           {loading}
-          <section>
-            <div>
-              <p>Your Gym Name</p>
-              <input
-                onChange={e => this.handleChange(e, 'gymName')}
-                value={this.state.gymName}
-                className="input-text"
-                type="text" />
-            </div>
-            <div>
-              <p>Your Photo</p>
-              <input value="Not available yet" type="text" className="input-text" readOnly/>
-            </div>
-          </section>
+          <div
+            style={{display: "flex"}}
+            >
+            <div style={{float: 'left', marginRight: "200px"}}>
+              <section>
+                <div>
+                  <p>Your Gym Name</p>
+                  <input
+                    onChange={e => this.handleChange(e, 'gymName')}
+                    value={this.state.gymName}
+                    className="input-text"
+                    type="text" />
+                </div>
+                <div>
+                  <p>Your Photo</p>
+                  <input value="Not available yet" type="text" className="input-text" readOnly/>
+                </div>
+              </section>
 
-          <section>
-            <div>
-              <p>Displayed Address</p>
-              <input
-                onChange={e => this.handleChange(e, 'neighborhood')}
-                value={this.state.neighborhood}
-                className="input-text"
-                type="text" />
+              <section>
+                <div>
+                  <p>Displayed Address</p>
+                  <input
+                    onChange={e => this.handleChange(e, 'neighborhood')}
+                    value={this.state.neighborhood}
+                    className="input-text"
+                    type="text" />
+                </div>
+              </section>
             </div>
-          </section>
 
-          <section>
-            <div>
-              <p>MyGym Amenities:</p>
-              {amenityOptions}
-            </div>
-          </section>
+            <section>
+              <div>
+                <p>MyGym Amenities:</p>
+                <Amenities
+                amenities={this.state.amenities}
+                handleChoose={this.handleChoose.bind(this)}
+                />
+              </div>
+            </section>
 
+          </div>
           <button onClick={e => this.handleSaveChanges()}>Save Changes</button>
         </div>
-      </section>
+      </div>
     )
   }
 }

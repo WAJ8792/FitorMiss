@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Account from '../Admin/Account';
+import Account from '../Admin/MyGym/Account';
 import { getAddress } from '../../actions/account_actions';
 
 const mapStateToProps = (state) => {

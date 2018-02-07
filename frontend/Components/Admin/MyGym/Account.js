@@ -138,7 +138,7 @@ export default class Account extends React.Component {
     } else { loading = null }
 
     return(
-      <div className="account">
+      <div className="page-container">
         <h2>Edit Account</h2>
         {loading}
         <section>

@@ -1,26 +1,11 @@
 import React from 'react';
 
+import { getTime } from '../../../util/classes_util';
+
 export default class DisplayClassInfo extends React.Component {
-
-  getTime(time) {
-    let hour = parseInt(time.slice(0, 2))
-    if (hour > 12 ) {
-      hour -= 12
-      let min = time.slice(2, 5);
-      time = hour.toString() + min;
-      time += " PM";
-    } else { time += " AM"}
-
-    let firstDigit = time.slice(0, 1);
-    if (firstDigit === '0') {
-      time = time.slice(1, 5);
-    }
-    return time;
-  }
-
   render() {
     let thisClass = this.props.thisClass;
-    let time = this.getTime(thisClass.time);
+    let time = getTime(thisClass.time);
     return (
       <section>
         <div>
@@ -41,9 +26,11 @@ export default class DisplayClassInfo extends React.Component {
           <h5>{thisClass.name}</h5>
         </div>
 
-        <button onClick={() => this.props.handleReserve(thisClass.classId)}>
-          RESERVE CLASS
-        </button>
+        <div>
+          <button onClick={() => this.props.handleReserve(thisClass)}>
+            RESERVE CLASS
+          </button>
+        </div>
       </section>
     )
   }

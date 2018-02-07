@@ -52,15 +52,15 @@ class MyGym extends React.Component {
     } else {
 
       return (
-        <section className="my-gym">
-        <div>
-          <h1> Hello {this.state.gymName}! </h1>
-          <h3>Here is some useful info...</h3>
-          <ul>
-            <li>Your gym is located at: {this.state.neighborhood}</li>
-          </ul>
+        <div className="page-container">
+          <section className="my-gym">
+            <h1> Hello {this.state.gymName}! </h1>
+            <h3>Here is some useful info...</h3>
+            <ul>
+              <li>Your gym is located at: {this.state.neighborhood}</li>
+            </ul>
+          </section>
         </div>
-        </section>
       )
     }
   }

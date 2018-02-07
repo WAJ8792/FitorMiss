@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import EditMyGym from '../Admin/EditMyGym';
+import EditMyGym from '../Admin/MyGym/EditMyGym';
 import { editGym } from '../../actions/gym_actions';
 
 const mapStateToProps = ( state ) => {

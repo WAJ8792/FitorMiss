@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getTime } from '../../../util/classes_util';
+
 export default class AddClass extends React.Component {
   constructor() {
     super();
@@ -7,16 +9,11 @@ export default class AddClass extends React.Component {
       vendor_id: "",
       name: "",
       date: "",
-      time: "",
+      time: "1:00 PM",
       duration: "",
       seats: ""
     }
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentDidMount() {
-    let vendor_id = this.props.user;
-    this.setState({vendor_id});
   }
 
   handleChange(e, field) {
@@ -34,7 +31,32 @@ export default class AddClass extends React.Component {
     });
   }
 
+  getTimes() {
+    let times = [];
+    for (let i = 0; i < 24; i++) {
+      let time;
+      if (i === 0) {
+        time = "12:";
+      } else if (i < 10) {
+        time = '0' + i.toString() + ':';
+      } else {
+        time = i.toString() + ':';
+      }
+      for (let j = 0; j < 4; j++) {
+        if (j === 0) {
+          times.push(<option key={j+i}>{ getTime(time + '00')}</option>);
+        } else {
+          let min = j * 15;
+          times.push(<option key={j+i}>{ getTime(time + min.toString())}</option>);
+        }
+      }
+    }
+    return times;
+  }
+
   render() {
+    let times = this.getTimes();
+
     return(
       <div className="add-class">
         <section style={{backgroundColor: "#f2f2f2"}}>
@@ -48,26 +70,27 @@ export default class AddClass extends React.Component {
 
           <div>
             <p>Day</p>
-            <input
-              type="day"
+            <select
               onChange={e => this.handleChange(e, 'day')}
-              value={this.state.day}/>
-          </div>
-
-          <div>
-            <p>Date</p>
-            <input
-              type="date"
-              onChange={e => this.handleChange(e, 'date')}
-              value={this.state.date}/>
+              value={this.state.day}>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
           </div>
 
           <div>
             <p>Time</p>
-            <input
+            <select
               type="time"
               onChange={e => this.handleChange(e, 'time')}
-              value={this.state.time}/>
+              value={this.state.time} >
+              {times}
+            </select>
           </div>
 
           <div>

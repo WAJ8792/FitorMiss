@@ -2,7 +2,8 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 import { Switch, HashRouter, Route, Redirect, withRouter,
   IndexRoute, BrowserRouter, hashHistory } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory'
+import createBrowserHistory from 'history/createBrowserHistory';
+import {StripeProvider} from 'react-stripe-elements';
 
 import { configureStore } from '../store';
 import { ProtectedRoute } from '../util/root_util';
@@ -11,7 +12,7 @@ import Header from './Headers';
 import SignIn from './containers/Sessions_Container';
 
 // Admin
-import MyGym from './Admin/MyGym';
+import MyGym from './Admin/MyGym/MyGym';
 import EditMyGym from './containers/editGymContainer';
 import Billing from './Admin/Billing/Billing';
 import BillingHistory from './Admin/Billing/BillingHistory';
@@ -20,13 +21,15 @@ import Classes from './containers/classes_container';
 
 // Customer
 import CustomerPage from './Customers/HomePage/Customer';
-import ClassList from './Customers/ClassList';
+import ClassList from './Customers/ClassesList/ClassesList';
+import CustomerAccounts from './Customers/Accounts/Accounts';
 
 let store = configureStore();
 
 const ConnectedApp = ({ children }) => (
   <div className="app">
-    { children }
+
+      { children }
   </div>
 )
 
@@ -50,6 +53,9 @@ const Root = ({ store }) => {
 
             <Route exact path="/customer" component={CustomerPage} />
             <Route path="/customer/classes" component={ClassList} />
+            <StripeProvider apiKey="pk_test_MAnzzDoroKej8r9QoAEGEjjl">
+              <Route path="/customer/account" component={CustomerAccounts} />
+            </StripeProvider>
 
           </App>
         </HashRouter>

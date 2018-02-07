@@ -9,7 +9,7 @@ export default class SignupCustomer extends React.Component {
       lastName: "",
       email: "",
       password: "",
-      neighborhood: "",
+      neighborhood: 1,
       neighborhoods: [],
     }
     this.getNeighborhoods();
@@ -69,7 +69,9 @@ export default class SignupCustomer extends React.Component {
             />
 
           <p>Neighborhood</p>
-            <select onChange={this.handleChange("neighborhood")}>
+            <select
+            onChange={this.handleChange("neighborhood")}
+            value={this.state.neighborhood} >
               {neighborhoods}
             </select>
 

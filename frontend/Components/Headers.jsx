@@ -22,7 +22,7 @@ class Header extends React.Component {
   }
 
   logout(e) {
-    // e.preventDefault();
+    e.preventDefault();
 
     let user = {
       uid: this.state.user.uid,
@@ -88,7 +88,6 @@ class Header extends React.Component {
     else if (this.state.type === "vendor")
     {
       if (!this.props.location.pathname.includes('admin')) {
-        console.log(this.state.type);
         return (<Redirect to="/admin" />)
       } else {
         return (
@@ -117,7 +116,7 @@ class AdminHeader extends React.Component {
     return(
       <section className="admin-header">
         <Link to="/admin">MyGym</Link>
-        <Link to="admin/classes">Classes</Link>
+        <Link to="/admin/classes">Classes</Link>
       </section>
     )
   }
@@ -128,7 +127,7 @@ class CustomerHeader extends React.Component {
     return(
       <section className="admin-header">
         <Link to="/customer">My Fitness</Link>
-        <Link to="customer/classes">Classes</Link>
+        <Link to="/customer/classes">Classes</Link>
       </section>
     );
   }

@@ -47,7 +47,7 @@ export default class Billing extends React.Component {
 
 
     return(
-      <div>
+      <div className="page-container">
         <h2>Billing</h2>
         {loading}
         <h3>Your plan:</h3>
