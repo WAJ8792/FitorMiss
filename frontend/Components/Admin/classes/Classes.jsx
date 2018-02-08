@@ -86,6 +86,7 @@ export default class Classes extends React.Component {
     newClass.neighborhood_id = 1;
     newClass.vendor = userInfo.gym_name;
     newClass.vendor_id = this.state.user;
+    newClass.created_at = new Date().getTime();
     firebase.database().ref('classes/').push().set(newClass);
   }
 

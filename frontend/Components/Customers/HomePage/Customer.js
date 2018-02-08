@@ -65,6 +65,7 @@ class CustomerPage extends React.Component {
       customer_id: this.state.user,
       date: thisClass.date,
       time: thisClass.time,
+      created_at: new Data().getTime(),
     })
   }
 

@@ -17,6 +17,7 @@ export default class SignIn extends React.Component {
       neighborhood: "",
       neighborhoods: [],
       loggedOut: "loading",
+      error: "",
     }
     this.getNeighborhoods();
   }

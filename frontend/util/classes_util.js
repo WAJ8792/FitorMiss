@@ -39,10 +39,14 @@ export const getClassesByDay = classes => {
     let thisClass = classes[id];
     switch (indexOfDay(thisClass.day)) {
       case todaysIndex:
+        thisClass.date = getReservationDate(0);
+        thisClass.id = id;
         today = orderByTime(today, thisClass);
         break;
       case tomorrowsIndex:
         if (in24Hours(thisClass.time)) {
+          thisClass.date = getReservationDate(1);
+          thisClass.id = id;
           tomorrow = orderByTime(tomorrow, thisClass);
         }
         break;
@@ -122,4 +126,10 @@ export const getTime = (time) => {
     time = time.slice(1, 8);
   }
   return time;
+}
+
+export const getReservationDate = (daysAway) => {
+  let classDate = new Date();
+  classDate.setDate(classDate.getDate() + daysAway);
+  return classDate.toString().slice(4, 15);
 }

@@ -1,9 +1,10 @@
-import { RECEIVE_USER, LOGOUT_USER } from '../actions/session_actions';
+import { RECEIVE_USER, LOGOUT_USER, RECEIVE_ERROR } from '../actions/session_actions';
 
 let defaultState = {
   user: {
     uid: "",
-    email: ""
+    email: "",
+    error: "",
   }
 }
 
@@ -17,6 +18,9 @@ export function session_reducer(state = defaultState, action) {
       return newState;
     case LOGOUT_USER:
       return defaultState;
+    case RECEIVE_ERROR:
+      newState.error = action.error;
+      return newState;
     default:
       return state;
   }
