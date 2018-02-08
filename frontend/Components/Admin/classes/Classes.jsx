@@ -5,8 +5,8 @@ import GymClass from './Class';
 import ClassesList from './ClassesList';
 
 export default class Classes extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       classes: [],
       user: "",
@@ -57,7 +57,6 @@ export default class Classes extends React.Component {
     newState.classes.push({
       class_id: class_id,
       name: thisClass.name,
-      date: thisClass.date,
       day: thisClass.day,
       time: thisClass.time,
       duration: thisClass.duration,
@@ -87,7 +86,7 @@ export default class Classes extends React.Component {
     newClass.vendor = userInfo.gym_name;
     newClass.vendor_id = this.state.user;
     newClass.created_at = new Date().getTime();
-    firebase.database().ref('classes/').push().set(newClass);
+    this.props.addClass(newClass, app);
   }
 
   updateDay(day) {
@@ -160,7 +159,10 @@ export default class Classes extends React.Component {
               {classes}
             </span>
 
-          <AddClass handleAdd={ this.handleAdd.bind(this)} user={this.props.user.uid} />
+          <AddClass
+            handleAdd={ this.handleAdd.bind(this)}
+            user={this.props.user.uid}
+            error={this.props.classes.error} />
       </section>
     </div>
     )

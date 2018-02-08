@@ -8,10 +8,11 @@ export default class AddClass extends React.Component {
     this.state = {
       vendor_id: "",
       name: "",
-      date: "",
       time: "1:00 PM",
       duration: "",
-      seats: ""
+      day: "-",
+      seats: "",
+      errors: [],
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -20,15 +21,33 @@ export default class AddClass extends React.Component {
     this.setState({[field]: e.target.value});
   }
 
+  checkValidInput() {
+    let errors = [];
+    let state = this.state;
+    if (state.name.length < 1) { errors.push("Please enter a valid class name."); }
+    if (state.time.length < 1) { errors.push("Please choose a valid time."); }
+    if (0 >= parseInt(state.duration)) { errors.push("Please enter a duration above 0.")}
+    if (!state.day.includes("day")) { errors.push("Please choose a valid day."); }
+    if (0 >= parseInt(state.seats)) { errors.push("Please enter an availability number greate than 0 under 'seats'"); }
+
+    if (errors.length < 1) { return true; }
+    else {
+      this.setState({errors});
+      return false;
+    }
+  }
+
   handleAdd() {
-    this.props.handleAdd(this.state);
-    this.setState({
-      name: "",
-      date: "",
-      time: "",
-      duration: "",
-      seats: ""
-    });
+    if (this.checkValidInput()) {
+      this.props.handleAdd(this.state)
+      this.setState({
+        name: "",
+        time: "1:00 PM",
+        duration: "",
+        seats: "",
+        errors: [],
+      });
+    }
   }
 
   getTimes() {
@@ -44,10 +63,10 @@ export default class AddClass extends React.Component {
       }
       for (let j = 0; j < 4; j++) {
         if (j === 0) {
-          times.push(<option key={j+i}>{ getTime(time + '00')}</option>);
+          times.push(<option key={time+j+i}>{ getTime(time + '00')}</option>);
         } else {
           let min = j * 15;
-          times.push(<option key={j+i}>{ getTime(time + min.toString())}</option>);
+          times.push(<option key={time+j+i}>{ getTime(time + min.toString())}</option>);
         }
       }
     }
@@ -55,7 +74,16 @@ export default class AddClass extends React.Component {
   }
 
   render() {
+    let error;
+    let errors;
     let times = this.getTimes();
+
+    if (this.props.error.length > 0) {
+      error = this.reportError();
+    }
+    if (this.state.errors.length > 0) {
+      errors = this.state.errors;
+    }
 
     return(
       <div className="add-class">
@@ -73,6 +101,7 @@ export default class AddClass extends React.Component {
             <select
               onChange={e => this.handleChange(e, 'day')}
               value={this.state.day}>
+              <option>-</option>
               <option>Monday</option>
               <option>Tuesday</option>
               <option>Wednesday</option>
@@ -109,7 +138,12 @@ export default class AddClass extends React.Component {
               value={this.state.seats}/>
           </div>
         </section>
-        <button onClick={e => this.handleAdd(e)}>Add Class</button>
+
+        <span>
+          {error}
+          {errors}
+          <button onClick={e => this.handleAdd(e)}>Add Class</button>
+        </span>
       </div>
     )
   }

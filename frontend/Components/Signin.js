@@ -17,23 +17,8 @@ export default class SignIn extends React.Component {
       neighborhood: "",
       neighborhoods: [],
       loggedOut: "loading",
-      error: ""
     }
     this.getNeighborhoods();
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentDidUpdate() {
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    if (nextProps.user.error.length > 0) [
-      this.setState({error: nextProps.user.error})
-    ]
   }
 
   getUserType(user) {
@@ -82,10 +67,9 @@ export default class SignIn extends React.Component {
 
   render() {
     let error;
-    if (this.state.error.length > 0) {
-      error = this.state.error;
+    if (this.props.user.error.length > 0) {
+      error = this.props.user.error;
     }
-    console.log(error);
     if (this.state.type === "customer") {
       return ( <Redirect to="/customer/classes" />);
     } else if (this.state.type === "admin") {

@@ -39,6 +39,7 @@ export const signupVendor = (userInfo, db) => dispatch =>  (
     .createUserWithEmailAndPassword(userInfo.newEmail, userInfo.newPassword)
     .then(user => dispatch(receiveUser(user)))
     .then(user => createVendor(user, db, userInfo))
+    .catch(error => dispatch(receiveErrors(error.message)))
 );
 
 export const signupCustomer = (userInfo, db) => dispatch => (
@@ -46,4 +47,5 @@ export const signupCustomer = (userInfo, db) => dispatch => (
   .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
   .then(user => dispatch(receiveUser(user)))
   .then(user => createCustomer(user, db, userInfo))
+  .catch(error => dispatch(receiveErrors(error.message)))
 )
