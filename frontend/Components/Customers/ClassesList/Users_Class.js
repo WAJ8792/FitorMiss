@@ -34,7 +34,7 @@ export default class UsersClassInfo extends React.Component {
       <section>
       <div>
         <h5>{time}</h5>
-        <p></p>
+        <p>{this.props.thisClass.date.slice(0, 6)}</p>
       </div>
 
       <div>

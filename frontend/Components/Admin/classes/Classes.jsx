@@ -16,6 +16,7 @@ export default class Classes extends React.Component {
     this.classesRef = firebase.database().ref("classes");
     this.saveChanges = this.saveChanges.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.getClass = this.getClass.bind(this);
   }
 
   componentDidMount() {
@@ -93,17 +94,22 @@ export default class Classes extends React.Component {
     this.setState({day});
   }
 
-   // getClass(thisClass) {
-  //    let c = {
-  //      vendor_id, thisClass.vendor_id,
-  //      name, thisClass.name,
-  //      date, thisClass.date,
-  //      time, thisClass.time,
-  //      duration, thisClass.duration,
-  //      seats: thisClass.seats
-  //   };
-  //   return c;
-  // }
+   getClass(thisClass) {
+     let userInfo = this.state.userInfo;
+     let c = {
+       vendor_id: this.state.user,
+       neighborhood: userInfo.neighborhood,
+       neighborhood_id: 1,
+       vendor: userInfo.gym_name,
+       updated_at: new Date().getTime(),
+       name: thisClass.name,
+       day: thisClass.day,
+       time: thisClass.time,
+       duration: thisClass.duration,
+       seats: thisClass.seats
+    };
+    return c;
+  }
 
   saveChanges(e, thisClass) {
     e.preventDefault();

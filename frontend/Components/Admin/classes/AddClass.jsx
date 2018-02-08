@@ -63,10 +63,16 @@ export default class AddClass extends React.Component {
       }
       for (let j = 0; j < 4; j++) {
         if (j === 0) {
-          times.push(<option key={time+j+i}>{ getTime(time + '00')}</option>);
+          times.push(<option
+            key={time+j+i}
+            value={time + '00'}
+            >{ getTime(time + '00')}</option>);
         } else {
           let min = j * 15;
-          times.push(<option key={time+j+i}>{ getTime(time + min.toString())}</option>);
+          times.push(<option
+            key={time+j+i}
+            value={time + min.toString()}
+            >{ getTime(time + min.toString())}</option>);
         }
       }
     }

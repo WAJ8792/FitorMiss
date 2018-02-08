@@ -20,9 +20,13 @@ class CustomerPage extends React.Component {
       },
       todaysClasses: [],
       tomorrowsClasses: [],
+      errors: [],
+      modal: null,
     }
     this.getCurrentUser();
     this.handleReserve = this.handleReserve.bind(this);
+    this.isValidReservation = this.isValidReservation.bind(this);
+    this.confirmReserve = this.confirmReserve.bind(this);
   }
 
   getCurrentUser() {
@@ -59,14 +63,49 @@ class CustomerPage extends React.Component {
     })
   }
 
-  handleReserve(thisClass) {
+  isValidReservation(thisClass) {
+    let errors = [];
+    if (thisClass.id.length < 1) { errors.push("This class is not available.")}
+    if (this.state.user.length < 1) { errors.push("Something is wrong with your registration. Please try signing out and try again.")}
+    if (thisClass.date.length != 11) {
+      errors.push("This class is unavailable.")
+      console.log("The date for this class is not valid");
+    }
+    if (thisClass.time.length < 1) {
+      errors.push("This class is unavailable.")
+      console.log("The time for this class is not valid");
+    }
+
+    if (errors.length < 1) { return true; }
+    else {
+      this.setState({errors});
+      return false;
+    }
+  }
+
+  confirmReserve(e) {
+    e.preventDefault();
+
+    let thisClass = this.state.thisClass;
+    console.log("We got there");
     firebase.database().ref("reservations").push().set({
       class_id: thisClass.id,
       customer_id: this.state.user,
       date: thisClass.date,
       time: thisClass.time,
-      created_at: new Data().getTime(),
-    })
+      created_at: new Date().getTime(),
+    });
+    this.setState({modal: null});
+  }
+
+  handleReserve(thisClass) {
+    if (this.isValidReservation(thisClass)) {
+      this.setState({
+        thisClass,
+        errors: [],
+        modal: <ConfirmReservation confirmReserve={this.confirmReserve}/>
+      });
+    }
   }
 
   displayClasses(classList) {
@@ -83,6 +122,7 @@ class CustomerPage extends React.Component {
   }
 
   render() {
+    let errors;
     let todaysClasses = this.state.todaysClasses;
     let tomorrowsClasses = this.state.tomorrowsClasses;
 
@@ -91,9 +131,16 @@ class CustomerPage extends React.Component {
     } if (tomorrowsClasses.length > 0) {
       tomorrowsClasses = this.displayClasses(tomorrowsClasses);
     }
+
+    if (this.state.errors.length > 0) {
+      let errors = this.state.errors;
+    }
+
     return(
       <div className="page-container">
         <WelcomeHeader user={this.state.userInfo}/>
+        {errors}
+        {this.state.modal}
         <ul className="display-class-info">
           <h4 className="day-label">Today</h4>
           {todaysClasses}
@@ -111,6 +158,26 @@ class WelcomeHeader extends React.Component {
       <div>
         <h1>Welcome {this.props.user.first_name}</h1>
         <h2>Check out these classes in your area!</h2>
+      </div>
+    )
+  }
+}
+
+class ConfirmReservation extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="confirmation">
+        <div>
+          <h2>Are you sure you want to reserve this class?</h2>
+          <p>class info here</p>
+          <button onClick={e => this.props.confirmReserve(e)}>
+          RESERVE
+          </button>
+        </div>
       </div>
     )
   }
