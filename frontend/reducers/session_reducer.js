@@ -1,3 +1,5 @@
+import merge from 'lodash/merge';
+
 import { RECEIVE_USER, LOGOUT_USER, RECEIVE_ERROR } from '../actions/session_actions';
 
 let defaultState = {
@@ -9,7 +11,8 @@ let defaultState = {
 }
 
 export function session_reducer(state = defaultState, action) {
-  let newState = state;
+  Object.freeze(state)
+  let newState = merge({}, state);
 
   switch (action.type) {
     case RECEIVE_USER:
@@ -19,7 +22,7 @@ export function session_reducer(state = defaultState, action) {
     case LOGOUT_USER:
       return defaultState;
     case RECEIVE_ERROR:
-      newState.error = action.error;
+      newState.user.error = action.error;
       return newState;
     default:
       return state;

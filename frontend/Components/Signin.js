@@ -5,8 +5,8 @@ import firebaseui from 'firebaseui';
 import SignupCustomer from './Customers/Signup_Customer';
 
 export default class SignIn extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       uid: "",
       email: "",
@@ -17,9 +17,23 @@ export default class SignIn extends React.Component {
       neighborhood: "",
       neighborhoods: [],
       loggedOut: "loading",
-      error: "",
+      error: ""
     }
     this.getNeighborhoods();
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentDidUpdate() {
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.user.error.length > 0) [
+      this.setState({error: nextProps.user.error})
+    ]
   }
 
   getUserType(user) {
@@ -67,6 +81,11 @@ export default class SignIn extends React.Component {
   }
 
   render() {
+    let error;
+    if (this.state.error.length > 0) {
+      error = this.state.error;
+    }
+    console.log(error);
     if (this.state.type === "customer") {
       return ( <Redirect to="/customer/classes" />);
     } else if (this.state.type === "admin") {
@@ -98,6 +117,7 @@ export default class SignIn extends React.Component {
             onChange={this.handleChange("password")}/>
           <input type="submit" value="login"/>
         </form>
+        {error}
 
         <h3>Create a new account below</h3>
 

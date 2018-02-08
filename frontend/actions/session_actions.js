@@ -31,7 +31,7 @@ export const login = (user, db) => dispatch => (
   db.auth()
     .signInAndRetrieveDataWithEmailAndPassword(user.email, user.password)
     .then(user => dispatch(receiveUser(user.user)))
-    .catch(error => dispatch(receiveErrors(error.message))
+    .catch(error => dispatch(receiveErrors(error.message)))
 );
 
 export const signupVendor = (userInfo, db) => dispatch =>  (

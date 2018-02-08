@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
   logout: (user, db) => dispatch(logout(user, db)),
 })
 
-export default connect (
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(SignIn);
+)(SignIn));
