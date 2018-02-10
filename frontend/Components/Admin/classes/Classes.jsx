@@ -111,11 +111,13 @@ export default class Classes extends React.Component {
     return c;
   }
 
-  saveChanges(e, thisClass) {
-    e.preventDefault();
-
-    firebase.database().ref('classes' + thisClass.class_id)
-      .set(this.getClass(thisClass));
+  saveChanges(thisClass) {
+    firebase.database().ref('classes/' + thisClass.class_id)
+      .set(this.getClass(thisClass)).then(value => {
+        console.log(value);
+        firebase.database().ref('reservations').orderByChild('class_id')
+        .equalTo(thisClass.class_id)
+      });
   }
 
   render() {

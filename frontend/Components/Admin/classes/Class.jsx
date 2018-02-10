@@ -21,6 +21,13 @@ export default class GymClass extends React.Component {
     this.setState({type: field});
   }
 
+  saveChanges(e, field) {
+    e.preventDefault();
+
+    this.setState({type: field});
+    this.props.saveChanges(this.state);
+  }
+
   render() {
     if (this.state.type === "write") {
       return(
@@ -71,7 +78,7 @@ export default class GymClass extends React.Component {
               <button onClick={e => this.readWriteClass(e, 'read')}>Cancel Changes</button>
             </div>
             <div>
-              <button onClick={e => this.props.saveChanges(e, this.state)}>Save</button>
+              <button onClick={e => this.saveChanges(e, 'read')}>Save</button>
             </div>
           </section>
 
