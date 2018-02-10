@@ -12,7 +12,15 @@ export default class GymClass extends React.Component {
   }
 
   handleChange(e, field) {
-    this.setState({[field]: e.target.value});
+    if (field === 'time') {
+      this.setState({
+        [field]: e.target.value,
+        updateRes: true
+      })
+    } else {
+      this.setState({[field]: e.target.value});
+    }
+
   }
 
   readWriteClass(e, field) {
@@ -21,8 +29,29 @@ export default class GymClass extends React.Component {
     this.setState({type: field});
   }
 
+  updateRes(resId) {
+    firebase.database()
+    .ref('reservations/' + resId + '/time')
+    .set(this.state.time);
+  }
+
+  getReservations() {
+    firebase.database().ref('reservations').orderByChild('class_id')
+      .equalTo(this.state.class_id).on('value', snap => {
+        if (snap.val() != null) {
+          Object.keys(snap.val()).forEach(resId => {
+            this.updateRes(resId);
+          });
+        }
+      });
+  }
+
   saveChanges(e, field) {
     e.preventDefault();
+
+    if (this.state.updateRes === true) {
+      this.getReservations();
+    }
 
     this.setState({type: field});
     this.props.saveChanges(this.state);
