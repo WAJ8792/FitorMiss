@@ -15,107 +15,31 @@
  */
  @import 'application.css.scss';
 
-body, html, #root, .App, .app {
+body, #root, html, .App, .app {
   margin: 0;
-  /* height: 100%; */
-}
-
-a {
-  color: #f0efef;
-  text-decoration: none;
+  height: 100vh;
 }
 
 ul {
   list-style: none;
 }
 
-.app-body {
+/* .app-body {
   display: flex;
   height: 100%;
 }
 
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  background-color: lightgray;
-}
 
-.app-header * {
-  margin-bottom: 0;
-  margin-top: 10px;
-  margin-left: 12px;
-  margin-right: 52px;
-  font-size: 27px;
-}
 
-.admin-header {
-  display: flex;
-  color: #f0efef;
-  background-color: #13192f;
-  height: 50px;
-}
-
-.admin-header * {
-  margin-right: 30px;
-  margin-left: 14px;
-  margin-top: 7px;
-  font-size: 30px;
-}
-
-.sidebar {
-  height: 100%;
-  width: 285px;
-  min-width: 285px;
-  color: #f0efef;
-  background-color: #262b40;
-  position: absolute;
-}
-
+/*
 .radio-input {
   width: 12px;
 }
 
-.outer-list {
-  padding-left: 0px;
-  margin: 30px 0 0 30px;
-  list-style: none;
-}
 
-.outer-list > li {
-  width: 152px;
-  border-bottom: solid gray 1px;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  font-size: 21px;
-}
+  my-gym
 
-.selectors-up {
-  display: none;
-}
-
-.selectors-down {
-  margin-bottom: 20px;
-  margin-top: 20px;
-  padding: 0;
-}
-
-.selectors-down li {
-  margin-top: 12px;
-
-}
-
-.selectors-down a {
-  color: lightgray;
-  font-size: 15px;
-}
-
-.my-gym {
-
-}
-
-.my-gym p {
-}
-
+/*
 .my-gym div {
   width: 86%;
   margin: 6px 0 30px 47px;
@@ -150,14 +74,12 @@ ul {
 
 .my-gym section {
   display: flex;
-}
+} */
 
-.classes {
-  /* display: flex;
-  width: 100%; */
-}
 
-.classes section {
+  /* classes */
+
+/* .classes section {
   display: flex;
 }
 
@@ -184,9 +106,12 @@ ul {
 .classes .class-info:first-child {
   border-top: solid gray 1px;
   padding-top: 20px;
-}
+} */
 
-.add-class {
+
+  /* add class */
+
+/* .add-class {
   margin-top: 24px;
 }
 
@@ -220,8 +145,11 @@ ul {
   background-color: #1ed0b1;
   color: white;
   font-size: 13px;
-}
+} */
 
+
+
+/*
 .account button {
   height: 34px;
   width: 78px;
@@ -260,12 +188,10 @@ ul {
 .signup-forms {
   display: flex;
   justify-content: space-around;
-}
+} */
 
-.page-container {
-  margin-left: 350px;
-}
 
+/*
 .display-class-info {
   padding: 0;
 }
@@ -339,9 +265,13 @@ ul {
   width: 12px;
   height: 12px;
   margin-right: 18px;
-}
+} */
 
-.confirmation div {
+
+  /* conf modal */
+
+
+/* .confirmation div {
   background-color: #272b40;
   color: aliceblue;
   width: 500px;
@@ -362,4 +292,4 @@ ul {
   left: 0;
   display: flex;
   justify-content: center;
-}
+} */

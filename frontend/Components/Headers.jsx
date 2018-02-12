@@ -65,7 +65,7 @@ class Header extends React.Component {
         return (<Redirect to="/signin" />)
       } else {
         return (
-          <div className="top-header">
+          <div className="header">
             <TopHeader />
           </div>
         )
@@ -77,7 +77,7 @@ class Header extends React.Component {
         return (<Redirect to="/customer" />)
       } else {
         return (
-          <div className="top-header">
+          <div className="header">
             <TopHeader logout={this.logout}/>
             <CustomerHeader />
             <Sidebar />
@@ -91,7 +91,7 @@ class Header extends React.Component {
         return (<Redirect to="/admin" />)
       } else {
         return (
-          <div className="top-header">
+          <div className="header">
             <TopHeader logout={this.logout}/>
             <AdminHeader />
             <Sidebar />
@@ -102,9 +102,9 @@ class Header extends React.Component {
     else
     {
         return (
-          <div className="top-header">
+          <div className="header">
             <TopHeader logout={this.logout}/>
-            <h3>Something went wrong! Keep trying!</h3>
+            <h4>Something went wrong! Keep trying!</h4>
           </div>
         )
     }
@@ -114,9 +114,9 @@ class Header extends React.Component {
 class AdminHeader extends React.Component {
   render() {
     return(
-      <section className="admin-header">
-        <Link to="/admin">MyGym</Link>
-        <Link to="/admin/classes">Classes</Link>
+      <section className="user-header">
+        <div><Link to="/admin">MyGym</Link></div>
+        <div><Link to="/admin/classes">Classes</Link></div>
       </section>
     )
   }
@@ -125,9 +125,9 @@ class AdminHeader extends React.Component {
 class CustomerHeader extends React.Component {
   render() {
     return(
-      <section className="admin-header">
-        <Link to="/customer">My Fitness</Link>
-        <Link to="/customer/classes">Classes</Link>
+      <section className="user-header">
+        <div><Link to="/customer">My Fitness</Link></div>
+        <div><Link to="/customer/classes">Classes</Link></div>
       </section>
     );
   }
@@ -142,8 +142,8 @@ class TopHeader extends React.Component {
     } else { logout = null; }
 
     return(
-      <section className="app-header">
-        <h2>FitOrMiss</h2>
+      <section>
+        <div><h2>FitOrMiss</h2></div>
         {logout}
       </section>
     )

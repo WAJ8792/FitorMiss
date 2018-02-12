@@ -38,6 +38,7 @@ export default class Sidebar extends Component {
       )
     } else {
       list1 = (
+        <div>
         <li onClick={e => this.dropDown(e, 'accounts')} >Account
 
           <ul className={this.state.accounts}>
@@ -45,8 +46,10 @@ export default class Sidebar extends Component {
             <li><Link to="/admin/account">Edit Acount</Link></li>
           </ul>
         </li>
+        </div>
       );
       list2 = (
+        <div>
         <li onClick={e => this.dropDown(e, 'billing')} >Billing
 
           <ul className={this.state.billing}>
@@ -54,6 +57,7 @@ export default class Sidebar extends Component {
             <li><Link to="/admin/billing-history">Billing History</Link></li>
           </ul>
         </li>
+        </div>
       );
     }
 
