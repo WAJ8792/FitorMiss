@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getTime } from '../../../util/classes_util';
+
 export default class GymClass extends React.Component {
   constructor(props) {
     super(props);
@@ -30,6 +32,7 @@ export default class GymClass extends React.Component {
   }
 
   updateRes(resId) {
+    console.log(this.state.time);
     firebase.database()
     .ref('reservations/' + resId + '/time')
     .set(this.state.time);
@@ -37,12 +40,14 @@ export default class GymClass extends React.Component {
 
   getReservations() {
     firebase.database().ref('reservations').orderByChild('class_id')
-      .equalTo(this.state.class_id).on('value', snap => {
+      .equalTo(this.state.class_id).once('value', snap => {
         if (snap.val() != null) {
+          console.log(snap.val());
           Object.keys(snap.val()).forEach(resId => {
             this.updateRes(resId);
           });
         }
+        this.setState({updateRes: false});
       });
   }
 
@@ -57,8 +62,38 @@ export default class GymClass extends React.Component {
     this.props.saveChanges(this.state);
   }
 
+  getTimes() {
+    let times = [];
+    for (let i = 0; i < 24; i++) {
+      let time;
+      if (i === 0) {
+        time = "12:";
+      } else if (i < 10) {
+        time = '0' + i.toString() + ':';
+      } else {
+        time = i.toString() + ':';
+      }
+      for (let j = 0; j < 4; j++) {
+        if (j === 0) {
+          times.push(<option
+            key={time+j+i}
+            value={time + '00'}
+            >{ getTime(time + '00')}</option>);
+        } else {
+          let min = j * 15;
+          times.push(<option
+            key={time+j+i}
+            value={time + min.toString()}
+            >{ getTime(time + min.toString())}</option>);
+        }
+      }
+    }
+    return times;
+  }
+
   render() {
     if (this.state.type === "write") {
+      let times = this.getTimes()
       return(
         <div className="class-info">
 
@@ -73,18 +108,28 @@ export default class GymClass extends React.Component {
 
             <div>
               <p>Day</p>
-              <input
-                type="day"
-                onChange={e => this.handleChange(e, 'day')}
-                value={this.state.day}/>
+                <select
+                  onChange={e => this.handleChange(e, 'day')}
+                  value={this.state.day}>
+                  <option>-</option>
+                  <option>Monday</option>
+                  <option>Tuesday</option>
+                  <option>Wednesday</option>
+                  <option>Thursday</option>
+                  <option>Friday</option>
+                  <option>Saturday</option>
+                  <option>Sunday</option>
+                </select>
             </div>
 
             <div>
               <p>Time</p>
-              <input
-                type="time"
-                onChange={e => this.handleChange(e, 'time')}
-                value={this.state.time}/>
+                <select
+                  type="time"
+                  onChange={e => this.handleChange(e, 'time')}
+                  value={this.state.time} >
+                  {times}
+                </select>
             </div>
 
             <div>
@@ -123,11 +168,7 @@ export default class GymClass extends React.Component {
           </div>
 
           <div>
-            {this.state.date}
-          </div>
-
-          <div>
-            {this.state.time}
+            {getTime(this.state.time)}
           </div>
 
           <div>

@@ -43,7 +43,12 @@ export default class Classes extends React.Component {
   }
 
   populateClasses(user) {
+    this.setState({classes: []});
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_added", snap => {
+      this.addClassToList(snap.val(), snap.getRef().key);
+    });
+    this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_changed", snap => {
+      this.setState({classes: []});
       this.addClassToList(snap.val(), snap.getRef().key);
     });
 
@@ -86,6 +91,7 @@ export default class Classes extends React.Component {
     newClass.neighborhood_id = 1;
     newClass.vendor = userInfo.gym_name;
     newClass.vendor_id = this.state.user;
+    newClass.seats_available = newClass.seats;
     newClass.created_at = new Date().getTime();
     this.props.addClass(newClass, app);
   }

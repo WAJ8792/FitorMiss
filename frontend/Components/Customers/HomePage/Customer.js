@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
 import { orderClassesByDate, getClassesByDay } from  '../../../util/classes_util';
+import { holdSeat } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
 
@@ -27,6 +28,7 @@ class CustomerPage extends React.Component {
     this.handleReserve = this.handleReserve.bind(this);
     this.isValidReservation = this.isValidReservation.bind(this);
     this.confirmReserve = this.confirmReserve.bind(this);
+    this.cancelReserve = this.cancelReserve.bind(this);
   }
 
   getCurrentUser() {
@@ -75,6 +77,9 @@ class CustomerPage extends React.Component {
       errors.push("This class is unavailable.")
       console.log("The time for this class is not valid");
     }
+    if (thisClass.seats_available < 1) {
+      errors.push("There no longer seats available for this class.");
+    }
 
     if (errors.length < 1) { return true; }
     else {
@@ -87,7 +92,6 @@ class CustomerPage extends React.Component {
     e.preventDefault();
 
     let thisClass = this.state.thisClass;
-    console.log("We got there");
     firebase.database().ref("reservations").push().set({
       class_id: thisClass.id,
       customer_id: this.state.user,
@@ -98,12 +102,24 @@ class CustomerPage extends React.Component {
     this.setState({modal: null});
   }
 
+  cancelReserve(e) {
+    e.preventDefault();
+
+    let thisClass = this.state.thisClass;
+    holdSeat(thisClass.id, thisClass.seats_available, "removeHold", app);
+    this.setState({modal: null});
+  }
+
   handleReserve(thisClass) {
     if (this.isValidReservation(thisClass)) {
+      holdSeat(thisClass.id, thisClass.seats_available, "hold", app);
+
       this.setState({
         thisClass,
         errors: [],
-        modal: <ConfirmReservation confirmReserve={this.confirmReserve}/>
+        modal: <ConfirmReservation
+          cancelReserve={this.cancelReserve}
+          confirmReserve={this.confirmReserve}/>
       });
     }
   }
@@ -177,6 +193,7 @@ class ConfirmReservation extends React.Component {
           <button onClick={e => this.props.confirmReserve(e)}>
           RESERVE
           </button>
+          <button onClick={e => this.props.cancelReserve(e)}>X</button>
         </div>
       </div>
     )
