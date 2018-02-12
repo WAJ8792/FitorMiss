@@ -38,7 +38,7 @@ export default class Sidebar extends Component {
       )
     } else {
       list1 = (
-        <div>
+        <div id="side-link">
         <li onClick={e => this.dropDown(e, 'accounts')} >Account
 
           <ul className={this.state.accounts}>
@@ -49,7 +49,7 @@ export default class Sidebar extends Component {
         </div>
       );
       list2 = (
-        <div>
+        <div id="side-link">
         <li onClick={e => this.dropDown(e, 'billing')} >Billing
 
           <ul className={this.state.billing}>

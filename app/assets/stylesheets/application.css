@@ -20,6 +20,10 @@ body, #root, html, .App, .app {
   height: 100vh;
 }
 
+h3 {
+  margin: 0;
+}
+
 ul {
   list-style: none;
 }
