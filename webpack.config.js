@@ -16,7 +16,14 @@ module.exports = {
         query: {
           presets: ['react']
         }
-      }
+      },
+      {
+        test: /\.scss$/,
+        use: extractPlugin.extract({
+            fallback: 'style-loader',
+            use: ['css-loader', 'sass-loader'],
+        }),
+      },
     ]
   },
   devtool: 'source-map',
