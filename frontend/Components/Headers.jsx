@@ -78,9 +78,9 @@ class Header extends React.Component {
       } else {
         return (
           <div className="header">
+            <Sidebar />
             <TopHeader logout={this.logout}/>
             <CustomerHeader />
-            <Sidebar />
           </div>
         )
       }
@@ -92,9 +92,9 @@ class Header extends React.Component {
       } else {
         return (
           <div className="header">
+            <Sidebar />
             <TopHeader logout={this.logout}/>
             <AdminHeader />
-            <Sidebar />
           </div>
         )
       }
@@ -142,7 +142,7 @@ class TopHeader extends React.Component {
     } else { logout = null; }
 
     return(
-      <section>
+      <section className="top-header">
         <div><h2>FitOrMiss</h2></div>
         {logout}
       </section>

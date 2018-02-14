@@ -22,12 +22,16 @@ export default class Sidebar extends Component {
     let list1, list2;
     if (this.props.location.pathname.includes('customer')) {
       list1 = (
+        <div id="side-link">
         <li onClick={e => this.dropDown(e, 'accounts')} >Account
           <ul className={this.state.accounts}>
             <li><Link to="/customer/account">Edit Acount</Link></li>
           </ul>
-        </li>)
+        </li>
+      </div>
+      );
       list2 = (
+        <div id="side-link">
         <li onClick={e => this.dropDown(e, 'billing')} >Billing
 
           <ul className={this.state.billing}>
@@ -35,6 +39,7 @@ export default class Sidebar extends Component {
             <li><Link to="/customer/billing-history">Billing History</Link></li>
           </ul>
         </li>
+        </div>
       )
     } else {
       list1 = (
@@ -62,14 +67,20 @@ export default class Sidebar extends Component {
     }
 
     return (
-      <section className="sidebar">
-        <ul className="outer-list">
+      <section className="sidebar-container">
 
-        {list1}
-        {list2}
+        <section className="sidebar">
+          <ul className="outer-list">
 
-        </ul>
+          {list1}
+          {list2}
+
+          </ul>
+        </section>
+
       </section>
     )
   }
 }
+// <section id="sidebar-cover" />
+// <section className="body-background" />
