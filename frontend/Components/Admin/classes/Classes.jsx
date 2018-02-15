@@ -12,6 +12,7 @@ export default class Classes extends React.Component {
       user: "",
       userInfo: {},
       day: "Monday",
+      modal: null,
     }
     this.classesRef = firebase.database().ref("classes");
     this.saveChanges = this.saveChanges.bind(this);
@@ -138,18 +139,26 @@ export default class Classes extends React.Component {
              />)
         }
       });
-    } else { classes = <h3>Loading your classes!</h3> }
+    } else { classes = <h5>You have no classes yet.</h5> }
+    if (classes.length < 1) {
+      classes = <h5>You have no classes for this day.</h5>
+    }
 
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day => {
       if (this.state.day === day) {
         return (
-          <div className="day-selectors" style={{backgroundColor: "lightgray"}} key={day}>
+          <div className="day-selectors" style={{backgroundColor: "#1fc8aa"}} key={day}>
             {day}
           </div>
         )
       } else {
         return(
-          <div className="day-selectors" onClick={() => this.updateDay(day)} key={day}>
+          <div className="day-selectors"
+            style={{
+              backgroundColor: '#eaf8f7',
+              color: 'black'
+            }}
+            onClick={() => this.updateDay(day)} key={day}>
             {day}
           </div>
         )
@@ -160,23 +169,26 @@ export default class Classes extends React.Component {
       <div id="page-background">
       <div className="page-container">
         <section className="classes">
+          <h2>Add a class</h2>
           <h1>Your Class Schedule</h1>
 
-            <section style={{display: 'flex', width: '100%'}} >
-              {days}
-            </section>
+              <section className="days-list" >
+                {days}
+              </section>
+              <div className="classes-bar"> </div>
 
-            <span>
-              {classes}
-            </span>
+              <span>
+                {classes}
+              </span>
 
-          <AddClass
-            handleAdd={ this.handleAdd.bind(this)}
-            user={this.props.user.uid}
-            error={this.props.classes.error} />
       </section>
     </div>
     </div>
     )
   }
 }
+
+// <AddClass
+//   handleAdd={ this.handleAdd.bind(this)}
+//   user={this.props.user.uid}
+//   error={this.props.classes.error} />
