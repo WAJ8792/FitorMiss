@@ -73,8 +73,8 @@ export default class SignIn extends React.Component {
                 <input
                   type="password"
                   value={this.state.password}
-                  placeholder="password"
-                  onChange={this.handleChange("Password")}/>
+                  placeholder="Password"
+                  onChange={this.handleChange("password")}/>
               </section>
 
               <button onClick={e => this.handleLogin(e)}>Login</button>

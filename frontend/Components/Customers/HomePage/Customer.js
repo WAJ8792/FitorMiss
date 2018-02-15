@@ -138,6 +138,7 @@ class CustomerPage extends React.Component {
   }
 
   render() {
+    if (this.state.user === "") { return null; }
     let errors;
     let todaysClasses = this.state.todaysClasses;
     let tomorrowsClasses = this.state.tomorrowsClasses;
@@ -153,7 +154,7 @@ class CustomerPage extends React.Component {
     }
 
     return(
-      <div id="page-container">
+      <div id="page-background">
       <div className="page-container">
         <WelcomeHeader user={this.state.userInfo}/>
         {errors}

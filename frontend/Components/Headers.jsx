@@ -22,7 +22,7 @@ class Header extends React.Component {
   }
 
   logout(e) {
-    e.preventDefault();
+    // e.preventDefault();
 
     let user = {
       uid: this.state.user.uid,
@@ -101,9 +101,20 @@ class Header extends React.Component {
     else
     {
         return (
-          <div className="header">
-            <TopHeader logout={this.logout}/>
-            <h4>Something went wrong! Keep trying!</h4>
+          <div className="header" style={{
+            width: "100%",
+            height: "100%",
+            zIndex: "10",
+            backgroundColor: '#002e5d',
+          }}>
+            <h4 style={{
+              margin: "25%",
+              color: '#19c8aa',
+              fontSize: "45px"
+            }}>
+              <img src={window.images.logo} /><br />
+              Loading Your Info!
+            </h4>
           </div>
         )
     }
