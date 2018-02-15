@@ -123,9 +123,19 @@ export default class Classes extends React.Component {
       .set(this.getClass(thisClass));
   }
 
+  openModal() {
+    this.setState({
+      modal: <AddClass
+        handleAdd={ this.handleAdd.bind(this)}
+        user={this.props.user.uid}
+        error={this.props.classes.error} />
+    })
+  }
+
   render() {
     let day = this.state.day;
     let classes;
+    let modal = this.state.modal;
 
     if (this.state.classes.length > 0) {
       classes = [];
@@ -169,7 +179,7 @@ export default class Classes extends React.Component {
       <div id="page-background">
       <div className="page-container">
         <section className="classes">
-          <h2>Add a class</h2>
+          <h2 onClick={this.openModal.bind(this)}>Add a class</h2>
           <h1>Your Class Schedule</h1>
 
               <section className="days-list" >
@@ -180,6 +190,7 @@ export default class Classes extends React.Component {
               <span>
                 {classes}
               </span>
+              {modal}
 
       </section>
     </div>
@@ -187,8 +198,3 @@ export default class Classes extends React.Component {
     )
   }
 }
-
-// <AddClass
-//   handleAdd={ this.handleAdd.bind(this)}
-//   user={this.props.user.uid}
-//   error={this.props.classes.error} />

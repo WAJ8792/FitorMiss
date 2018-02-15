@@ -66,7 +66,6 @@ class Header extends React.Component {
       } else {
         return (
           <div className="header">
-            <TopHeader />
           </div>
         )
       }

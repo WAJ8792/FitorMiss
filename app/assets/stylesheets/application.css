@@ -47,7 +47,7 @@ ul {
 
   /* add class */
 
-/* .add-class {
+.add-class {
   margin-top: 24px;
 }
 
@@ -73,7 +73,7 @@ ul {
   margin-top: 10px;
 }
 
-
+/*
 .account button {
   height: 34px;
   width: 78px;
@@ -104,11 +104,6 @@ ul {
   padding-bottom: 12px;
   cursor: pointer;
 } */
-
-.signup-forms {
-  display: flex;
-  justify-content: space-around;
-}
 
 
 

@@ -61,7 +61,7 @@ class MyGym extends React.Component {
             <Note
               title="Summary"
               stat="6"
-              note="Classes weekly classes" />
+              note="Weekly classes" />
 
             <Note
               title="Users"
