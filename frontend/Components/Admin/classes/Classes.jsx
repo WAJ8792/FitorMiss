@@ -157,6 +157,7 @@ export default class Classes extends React.Component {
     })
 
     return(
+      <div id="page-background">
       <div className="page-container">
         <section className="classes">
           <h1>Your Class Schedule</h1>
@@ -174,6 +175,7 @@ export default class Classes extends React.Component {
             user={this.props.user.uid}
             error={this.props.classes.error} />
       </section>
+    </div>
     </div>
     )
   }

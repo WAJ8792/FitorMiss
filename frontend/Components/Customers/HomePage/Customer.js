@@ -153,6 +153,7 @@ class CustomerPage extends React.Component {
     }
 
     return(
+      <div id="page-container">
       <div className="page-container">
         <WelcomeHeader user={this.state.userInfo}/>
         {errors}
@@ -163,6 +164,7 @@ class CustomerPage extends React.Component {
           <h4 className="day-label">Tomorrow</h4>
           {tomorrowsClasses}
         </ul>
+      </div>
       </div>
     )
   }

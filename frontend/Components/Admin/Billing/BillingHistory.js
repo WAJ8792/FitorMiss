@@ -34,10 +34,12 @@ export default class Billing extends React.Component {
     } else { loading = null }
 
     return(
+      <div id="page-background">
       <div className="page-container">
         <h2>Billing</h2>
         {loading}
         <p>Billing history will be listed here</p>
+      </div>
       </div>
     )
   }

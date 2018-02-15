@@ -90,6 +90,7 @@ export default class EditMyGym extends React.Component {
     } else { loading = null }
 
     return(
+      <div id="page-background">
       <div className="page-container">
         <div className="edit-gym">
           <h1> Edit Gym Info </h1>
@@ -138,6 +139,7 @@ export default class EditMyGym extends React.Component {
           </div>
           <button onClick={e => this.handleSaveChanges()}>Save Changes</button>
         </div>
+      </div>
       </div>
     )
   }

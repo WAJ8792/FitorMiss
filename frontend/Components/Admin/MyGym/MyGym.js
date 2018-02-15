@@ -5,9 +5,6 @@ import { withRouter, Redirect } from 'react-router-dom';
 class MyGym extends React.Component {
   constructor(props) {
     super(props);
-    // Ideally this can be a presentional component that pulls from props
-    // for all info. For this to happen, all info needed for the page will
-    // have to be pulled from db with an action and returned as props.
     this.state = {
       user: "",
       amenities: [],
@@ -52,17 +49,50 @@ class MyGym extends React.Component {
     } else {
 
       return (
+        <div id="page-background">
         <div className="page-container">
           <section className="my-gym">
             <h1> Hello {this.state.gymName}! </h1>
-            <h3>Here is some useful info...</h3>
-            <ul>
-              <li>Your gym is located at: {this.state.neighborhood}</li>
-            </ul>
+            <div style={{textAlign: 'center'}}>
+              <img src={window.images.profile} />
+            </div>
+
+           <section>
+            <Note
+              title="Summary"
+              stat="6"
+              note="Classes weekly classes" />
+
+            <Note
+              title="Users"
+              stat="14"
+              note="Users  are registered for a class this week" />
+            </section>
           </section>
+        </div>
         </div>
       )
     }
+  }
+}
+
+class Note extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return(
+      <div className="note">
+        <div>
+          <h4>{this.props.title}</h4>
+        </div>
+        <div>
+          <h2>{this.props.stat}</h2>
+          <p>{this.props.note}</p>
+        </div>
+      </div>
+    )
   }
 }
 

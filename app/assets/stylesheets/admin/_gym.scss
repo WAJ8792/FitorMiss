@@ -1,15 +1,75 @@
+.my-gym {
+  font-family: arial;
+
+  h1 {
+    color: #1fc7aa;
+    text-align: center;
+    font-size: 35px;
+    margin: 2px;
+    margin-top: 12px;
+    font-family: serif;
+  }
+
+  section {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+  }
+
+  img {
+    width: 200px;
+    width: 150px;
+    border-radius: 80px;
+    padding: 5px;
+    height: 151px;
+    border: solid #1fc8aa 2px;
+  }
+}
+
+.note {
+  height: 200px;
+  width: 195px;
+  letter-spacing: 1px;
+
+  h2 {
+    margin: 0;
+    position: relative;
+    top: 10px;
+    font-size: 65px;
+  }
+
+  h4 {
+    position: relative;
+    top: 10px;
+  }
+
+  div:first-child {
+    height: 20%;
+    background-color: #19c8aa;
+    color: white;
+    text-align: center;
+  }
+
+  div:last-child {
+    height: 80%;
+    background-color: #f8f7f5;
+    color: #909090;
+    text-align: center;
+  }
+
+  p {
+    position: relative;
+    top: 29px;
+    width: 185px;
+    margin: 5px;
+  }
+}
+
 // .my-gym div {
 //   width: 86%;
 //   margin: 6px 0 30px 47px;
 // }
 //
-// .my-gym h1 {
-//   margin: 18px 0 0 47px;
-//   font-size: 17px;
-//   font-weight: 500;
-//   color: #1fd1b1;
-// }
-// 
 // .edit-gym button {
 //   float: right;
 //   height: 38px;

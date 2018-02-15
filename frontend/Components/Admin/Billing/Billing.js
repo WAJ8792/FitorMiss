@@ -47,6 +47,7 @@ export default class Billing extends React.Component {
 
 
     return(
+      <div id="page-background">
       <div className="page-container">
         <h2>Billing</h2>
         {loading}
@@ -56,6 +57,7 @@ export default class Billing extends React.Component {
           <li>Tier 2 (2 hours): {schema.tier2} off</li>
           <li>Tier 3 (3 hours): {schema.tier3} off</li>
         </ul>
+      </div>
       </div>
     )
   }

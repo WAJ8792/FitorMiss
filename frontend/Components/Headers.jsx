@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { Link, Redirect, withRouter, NavLink } from 'react-router-dom';
 
 import Sidebar from './containers/Sidebar_container';
 import { receiveUser, logout } from '../actions/session_actions';
@@ -115,8 +115,22 @@ class AdminHeader extends React.Component {
   render() {
     return(
       <section className="user-header">
-        <div><Link to="/admin">MyGym</Link></div>
-        <div><Link to="/admin/classes">Classes</Link></div>
+        <div>
+          <NavLink
+            to="/admin"
+            exact
+            activeStyle={{color: '#1fc7aa'}}>
+            MyGym
+          </NavLink>
+
+        </div>
+        <div>
+          <NavLink
+            to="/admin/classes"
+            activeStyle={{color: '#1fc7aa'}}>
+            Classes
+          </NavLink>
+        </div>
       </section>
     )
   }

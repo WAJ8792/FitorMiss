@@ -45,11 +45,13 @@ export default class ClassList extends React.Component {
   render() {
     let classes = this.listClasses();
     return(
+      <div id="page-container">
       <div className="page-container">
         <h1>Your upcoming class reservations:</h1>
         <ul className="display-class-info">
           {classes}
         </ul>
+      </div>
       </div>
     )
   }

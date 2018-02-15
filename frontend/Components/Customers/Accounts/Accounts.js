@@ -6,8 +6,10 @@ import React from 'react';
 export default class Accounts extends React.Component {
   render() {
     return(
+      <div id="page-background">
       <div className="page-container">
         <h1>Your Account</h1>
+      </div>
       </div>
     )
   }
