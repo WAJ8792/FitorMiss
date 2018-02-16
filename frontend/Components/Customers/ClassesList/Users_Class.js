@@ -31,14 +31,14 @@ export default class UsersClassInfo extends React.Component {
     }
 
     return (
-      <section>
+      <section className="class-info">
       <div>
-        <h5>{time}</h5>
+        <h5 style={{color: '#1ed0b1'}}>{time}</h5>
         <p>{this.props.thisClass.date.slice(0, 6)}</p>
       </div>
 
       <div>
-        <h5>{thisClass.vendor}</h5>
+        <h5 style={{color: '#1ed0b1'}}>{thisClass.vendor}</h5>
         <p>Class description</p>
       </div>
 

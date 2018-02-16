@@ -45,12 +45,16 @@ export default class ClassList extends React.Component {
   render() {
     let classes = this.listClasses();
     return(
-      <div id="page-container">
+      <div id="page-background">
       <div className="page-container">
-        <h1>Your upcoming class reservations:</h1>
-        <ul className="display-class-info">
-          {classes}
-        </ul>
+        <section className="my-gym">
+
+          <h1>Your upcoming class reservations</h1>
+          <ul className="display-class-info">
+            {classes}
+          </ul>
+
+        </section>
       </div>
       </div>
     )

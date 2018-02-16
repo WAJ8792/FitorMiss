@@ -28,6 +28,7 @@
   }
 
   h5 {
+    // @extend %empty-list-message;
     text-align: center;
     margin-top: 15px;
     color: #f374f3;
@@ -54,6 +55,7 @@
   position: relative;
   left: 20px;
   right: 5px;
+  margin-top: 22px;
 
   div {
     width: 80px;

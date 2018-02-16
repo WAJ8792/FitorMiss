@@ -65,7 +65,7 @@ class Header extends React.Component {
         return (<Redirect to="/signin" />)
       } else {
         return (
-          <div className="header">
+          <div className="header" style={{zIndex: '-1'}}>
           </div>
         )
       }
@@ -109,12 +109,16 @@ class Header extends React.Component {
           }}>
             <h4 style={{
               margin: "25%",
+              marginBottom: "10px",
               color: '#19c8aa',
               fontSize: "45px"
             }}>
               <img src={window.images.logo} /><br />
               Loading Your Info!
             </h4>
+            <div className="line">
+              <div id="c3"> </div>
+            </div>
           </div>
         )
     }
@@ -150,8 +154,22 @@ class CustomerHeader extends React.Component {
   render() {
     return(
       <section className="user-header">
-        <div><Link to="/customer">My Fitness</Link></div>
-        <div><Link to="/customer/classes">Classes</Link></div>
+        <div>
+          <NavLink
+            to="/customer"
+            exact
+            activeStyle={{color: '#1fc7aa'}}>
+            My Fitness
+          </NavLink>
+        </div>
+
+        <div>
+          <NavLink
+            to="/customer/classes"
+            activeStyle={{color: '#1fc7aa'}}>
+            Classes
+          </NavLink>
+        </div>
       </section>
     );
   }

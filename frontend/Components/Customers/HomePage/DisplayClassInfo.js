@@ -7,14 +7,14 @@ export default class DisplayClassInfo extends React.Component {
     let thisClass = this.props.thisClass;
     let time = getTime(thisClass.time);
     return (
-      <section>
+      <section className="class-info">
         <div>
-          <h5>{time}</h5>
+          <h5 style={{color: '#1ed0b1'}}>{time}</h5>
           <p></p>
         </div>
 
         <div>
-          <h5>{thisClass.vendor}</h5>
+          <h5 style={{color: '#1ed0b1'}}>{thisClass.vendor}</h5>
           <p>Class description</p>
         </div>
 

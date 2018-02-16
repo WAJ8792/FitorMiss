@@ -17,6 +17,7 @@
 @import '_sidebar.scss';
 @import 'admin/_gym.scss';
 @import 'admin/_classes.scss';
+@import 'constants.scss';
 
 body, #root, html, .App, .app {
   margin: 0;
@@ -107,63 +108,7 @@ ul {
 
 
 
-.display-class-info {
-  padding: 0;
-}
 
-.display-class-info section:first-child {
-  border-top: solid gray 1px;
-}
-
-.display-class-info section {
-  display: flex;
-  border-bottom: solid gray 1px;
-}
-
-.display-class-info section div:first-child {
-  margin: 0;
-}
-
-.display-class-info section div:last-child {
-  margin-bottom: 12px;
-}
-
-.display-class-info section div {
-  margin-left: 37px;
-  min-width: 100px;
-}
-
-.display-class-info button {
-  height: 40px;
-  width: 132px;
-  border-radius: 5px;
-  border: none;
-  background-color: #1ed0b1;
-  color: white;
-  font-size: 13px;
-  margin-top: 21px;
-  text-align: center;
-}
-
-.display-class-info h5 {
-  margin-top: 10px;
-  margin-bottom: 0;
-  font-size: 18px;
-  text-align: center;
-}
-
-.display-class-info p {
-  margin: 0;
-  font-size: 13px;
-  text-align: center;
-}
-
-.day-label {
-  text-align: left;
-  font-size: 25px;
-  margin-top: 21px;
-  text-decoration: underline;
-}
 
 .unchecked {
   border: solid black 1px;

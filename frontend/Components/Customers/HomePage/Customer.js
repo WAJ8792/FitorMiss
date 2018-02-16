@@ -13,6 +13,7 @@ class CustomerPage extends React.Component {
     super();
     this.state = {
       user: "",
+      day: "Today",
       userInfo: {
         first_name: "",
         last_name: "",
@@ -137,17 +138,49 @@ class CustomerPage extends React.Component {
     return classes;
   }
 
+  updateDay(day) {
+    this.setState({day});
+  }
+
   render() {
     if (this.state.user === "") { return null; }
     let errors;
+    let classes;
     let todaysClasses = this.state.todaysClasses;
     let tomorrowsClasses = this.state.tomorrowsClasses;
 
-    if (todaysClasses.length > 0) {
-      todaysClasses = this.displayClasses(todaysClasses);
-    } if (tomorrowsClasses.length > 0) {
-      tomorrowsClasses = this.displayClasses(tomorrowsClasses);
+    if (this.state.day === "Tomorrow") {
+      classes = this.displayClasses(tomorrowsClasses);
+      if (classes.length < 1) {
+        classes = <h4 id="no-classes">No upcoming classes today.</h4>
+      }
+    } else {
+      classes = this.displayClasses(todaysClasses);
+      if (classes.length < 1) {
+        classes = <h4 id="no-classes">No upcoming classes today.</h4>
+      }
     }
+
+    let days = ["Today", "Tomorrow"].map( day =>{
+      if (this.state.day === day) {
+        return (
+          <div className="day-selectors" style={{backgroundColor: "#1fc8aa"}} key={day}>
+            {day}
+          </div>
+        )
+      } else {
+        return(
+          <div className="day-selectors"
+            style={{
+              backgroundColor: '#eaf8f7',
+              color: 'black'
+            }}
+            onClick={() => this.updateDay(day)} key={day}>
+            {day}
+          </div>
+        )
+      }
+    })
 
     if (this.state.errors.length > 0) {
       let errors = this.state.errors;
@@ -156,27 +189,26 @@ class CustomerPage extends React.Component {
     return(
       <div id="page-background">
       <div className="page-container">
-        <WelcomeHeader user={this.state.userInfo}/>
-        {errors}
-        {this.state.modal}
-        <ul className="display-class-info">
-          <h4 className="day-label">Today</h4>
-          {todaysClasses}
-          <h4 className="day-label">Tomorrow</h4>
-          {tomorrowsClasses}
-        </ul>
-      </div>
-      </div>
-    )
-  }
-}
+        <section className="my-gym">
+          <section style={{justifyContent: 'center'}}>
+            <img src={window.images.profile} style={{width: '100px', height: '100px'}} />
+            <h1>Welcome {this.state.userInfo.first_name}</h1>
+          </section>
 
-class WelcomeHeader extends React.Component {
-  render() {
-    return(
-      <div>
-        <h1>Welcome {this.props.user.first_name}</h1>
-        <h2>Check out these classes in your area!</h2>
+          {errors}
+          {this.state.modal}
+
+          <div className="days-list">
+            {days}
+          </div>
+          <div className="classes-bar"> </div>
+
+          <ul className="display-class-info">
+            {classes}
+          </ul>
+
+        </section>
+      </div>
       </div>
     )
   }
