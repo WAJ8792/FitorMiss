@@ -11,6 +11,7 @@ export default class SignupCustomer extends React.Component {
       password: "",
       neighborhood: 1,
       neighborhoods: [],
+      error: [null],
     }
     this.getNeighborhoods();
   }
@@ -33,8 +34,14 @@ export default class SignupCustomer extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.props.signupCustomer(this.state, app);
-    <Redirect to="/customerclasses" />
+    if (this.state.firstName.length < 1 || this.state.lastName.length  < 1) {
+      let error = ["Please fill in at least first or last name"];
+      this.setState({error});
+    } else {
+      this.props.signupCustomer(this.state, app);
+      <Redirect to="/customerclasses" />
+    }
+
   }
 
   render() {
@@ -56,6 +63,7 @@ export default class SignupCustomer extends React.Component {
           <div>
           <div>
             <h4>Sign up as a customer!</h4>
+              {this.state.error}
 
               <input
                 type="text"

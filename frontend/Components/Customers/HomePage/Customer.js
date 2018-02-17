@@ -13,13 +13,14 @@ class CustomerPage extends React.Component {
     super();
     this.state = {
       user: "",
-      day: "Today",
       userInfo: {
         first_name: "",
         last_name: "",
         email: "",
         neighborhood: "",
       },
+      pricing_schema: {},
+      day: "Today",
       todaysClasses: [],
       tomorrowsClasses: [],
       errors: [],
@@ -37,7 +38,19 @@ class CustomerPage extends React.Component {
       if (user) {
         this.setState({ user: user.uid, loggedOut: false });
         this.fetchUserInfo(this.state.user);
+        this.fetchPriceInfo(this.state.user);
       }
+    });
+  }
+
+  fetchPriceInfo(user) {
+    let pricing_schema;
+    firebase.database().ref('pricing_schemas')
+    .orderByChild('vendor_id').equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        pricing_schema = snap.val();
+      }
+      this.setState({pricing_schema});
     });
   }
 
@@ -132,6 +145,7 @@ class CustomerPage extends React.Component {
         <ClassInfo
           key={thisClass.id}
           thisClass={thisClass}
+          day={this.state.day}
           handleReserve={this.handleReserve} />
       )
     });
@@ -190,10 +204,6 @@ class CustomerPage extends React.Component {
       <div id="page-background">
       <div className="page-container">
         <section className="my-gym">
-          <section style={{justifyContent: 'center'}}>
-            <img src={window.images.profile} style={{width: '100px', height: '100px'}} />
-            <h1>Welcome {this.state.userInfo.first_name}</h1>
-          </section>
 
           {errors}
           {this.state.modal}

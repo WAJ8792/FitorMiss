@@ -10,6 +10,13 @@
     </main>
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+
+    <script>
+      // Get Sendgrid apiKey
+      echo "export SENDGRID_API_KEY='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'" > sendgrid.env
+      echo "sendgrid.env" >> .gitignore
+      source ./sendgrid.env
+    </script>
     <script>
       // Initialize Firebase
       var config = {

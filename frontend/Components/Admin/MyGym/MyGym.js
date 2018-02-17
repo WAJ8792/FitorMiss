@@ -52,21 +52,12 @@ class MyGym extends React.Component {
         <div id="page-background">
         <div className="page-container">
           <section className="my-gym">
-            <h1> Hello {this.state.gymName}! </h1>
-            <div style={{textAlign: 'center'}}>
-              <img src={window.images.profile} />
-            </div>
 
-           <section>
-            <Note
-              title="Summary"
-              stat="6"
-              note="Weekly classes" />
-
+          <section>
             <Note
               title="Users"
-              stat="14"
-              note="Users  are registered for a class this week" />
+              stat="140"
+              note="Users  are registered for a class this month" />
             </section>
           </section>
         </div>

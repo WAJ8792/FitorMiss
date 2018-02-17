@@ -1,11 +1,19 @@
 import React from 'react';
 
-import { getTime } from '../../../util/classes_util';
+import { getTime, getHoursOut } from '../../../util/classes_util';
 
 export default class DisplayClassInfo extends React.Component {
   render() {
     let thisClass = this.props.thisClass;
     let time = getTime(thisClass.time);
+    let hoursOut;
+
+    if (this.props.day === 'Tomorrow') {
+      hoursOut = 4;
+    } else {
+      hoursOut = getHoursOut(thisClass.time);
+    }
+
     return (
       <section className="class-info">
         <div>
@@ -28,7 +36,7 @@ export default class DisplayClassInfo extends React.Component {
 
         <div>
           <button onClick={() => this.props.handleReserve(thisClass)}>
-            RESERVE CLASS
+            ${thisClass.price} + {hoursOut}
           </button>
         </div>
       </section>

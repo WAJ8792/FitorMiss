@@ -12,6 +12,7 @@ export default class AddClass extends React.Component {
       duration: "",
       day: "-",
       seats: "",
+      price: "",
       errors: [],
     }
     this.handleChange = this.handleChange.bind(this);
@@ -45,6 +46,7 @@ export default class AddClass extends React.Component {
         time: "1:00 PM",
         duration: "",
         seats: "",
+        price: "",
         errors: [],
       });
     }
@@ -142,6 +144,14 @@ export default class AddClass extends React.Component {
               type="number"
               onChange={e => this.handleChange(e, 'seats')}
               value={this.state.seats}/>
+          </div>
+
+          <div>
+            <p>Original Class Price</p>
+            <input
+              type="number"
+              onChange={e => this.handleChange(e, 'price')}
+              value={this.state.price}/>
           </div>
         </section>
 

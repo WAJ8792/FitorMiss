@@ -136,6 +136,20 @@ export const getTime = (time) => {
   return time;
 }
 
+export const getHoursOut = (time) => {
+  let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
+  switch (hoursOut) {
+    case 0:
+      return 1;
+    case 1:
+      return 2;
+    case 2:
+      return 3;
+    default:
+      return 4;
+  }
+}
+
 export const getReservationDate = (daysAway) => {
   let classDate = new Date();
   classDate.setDate(classDate.getDate() + daysAway);

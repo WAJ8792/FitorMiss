@@ -8,7 +8,8 @@ export default class ClassList extends React.Component {
     super();
     this.state = {
       user: "",
-      classes: []
+      classes: [],
+      pricing_schema: [],
     }
     this.getCurrentUser();
   }
@@ -18,7 +19,19 @@ export default class ClassList extends React.Component {
       if (user) {
         this.setState({ user: user.uid, loggedOut: false });
         this.fetchClasses(this.state.user);
+        this.fetchPriceInfo(this.state.user);
       }
+    });
+  }
+
+  fetchPriceInfo(user) {
+    let pricing_schema;
+    firebase.database().ref('pricing_schemas')
+    .orderByChild('vendor_id').equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        pricing_schema = snap.val();
+      }
+      this.setState({pricing_schema});
     });
   }
 
@@ -27,9 +40,6 @@ export default class ClassList extends React.Component {
     firebase.database().ref('reservations')
     .orderByChild('customer_id').equalTo(user).on('value', snap => {
       if (snap.val() != null) {
-        // Object.keys(snap.val()).forEach(reservation => {
-        //   classes.push(snap.val()[reservation].class_id);
-        // });
         classes = orderClassesByDate(snap.val());
       }
       this.setState({classes});

@@ -53,17 +53,6 @@ export default class Sidebar extends Component {
         </li>
         </div>
       );
-      list2 = (
-        <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'billing')} >Billing
-
-          <ul className={this.state.billing}>
-            <li><Link to="/admin/billing">Billing & Payment</Link></li>
-            <li><Link to="/admin/billing-history">Billing History</Link></li>
-          </ul>
-        </li>
-        </div>
-      );
     }
 
     return (
@@ -82,5 +71,3 @@ export default class Sidebar extends Component {
     )
   }
 }
-// <section id="sidebar-cover" />
-// <section className="body-background" />

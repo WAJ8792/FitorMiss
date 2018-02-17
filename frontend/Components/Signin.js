@@ -45,6 +45,17 @@ export default class SignIn extends React.Component {
     this.props.login(this.state, app);
   }
 
+  sendEmail() {
+    let msg = {
+      to: 'thomasMaher1210@gmail.com',
+      from: 'thomasMaher1210@gmail.com',
+      subject: 'Sending with SendGrid is Fun',
+      text: 'and easy to do anywhere, even with Node.js',
+      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+    };
+    console.log(msg);
+  }
+
   render() {
     let error;
     if (this.props.user.error.length > 0) {
@@ -84,13 +95,13 @@ export default class SignIn extends React.Component {
         </section>
         </div>
 
-        <h3>Create a new account below</h3>
+        <h3>Create a new account</h3>
 
         <section className="signup-forms">
-            <SignupVendor signupVendor={this.props.signupVendor}/>
-
             <SignupCustomer signupCustomer={this.props.signupCustomer}/>
         </section>
+
+        <div onClick={this.sendEmail.bind(this)}>Send Email</div>
       </div>
     )
   }

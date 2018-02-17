@@ -10,14 +10,9 @@ export default class Account extends React.Component {
         city: "",
         state: "",
       },
-      cc: {
-        name: "",
-        number: "",
-        exp: "",
-        cvv: "",
-      },
       addressKey: false,
       email: "",
+      phone: "",
     }
     this.createAddress = this.createAddress.bind(this);
     this.editAddress = this.editAddress.bind(this);
@@ -77,36 +72,11 @@ export default class Account extends React.Component {
     this.setState({address});
   }
 
-  handleCardChange(e, field) {
-    e.preventDefault();
-
-    let cc = this.state.cc;
-    cc[field] = e.target.value;
-    this.setState({cc});
-  }
-
   handleSubmit() {
     if (this.state.addressKey) {
       this.editAddress();
     } else { this.createAddress(); }
     this.editUserInfo();
-  }
-
-  submitCC() {
-    if (this.state.ccKey) {
-      this.editCC();
-    } else { this.addCC(); }
-  }
-
-  editCC() {
-    firebase.database().ref('card/' + this.state.ccKey)
-      .set(this.state.cc);
-  }
-
-  addCC() {
-    let cc = this.state.cc;
-    cc.vendor_id = this.state.user;
-    firebase.database().ref('card/').push().set(cc);
   }
 
   editAddress() {
@@ -168,43 +138,14 @@ export default class Account extends React.Component {
               onChange={this.handleChange("email")}
               value={this.state.email}/>
 
+            <h3>Phone</h3>
+            <input type="text"
+              onChange={this.handleChange("phone")}
+              value={this.state.phone}/>
           </div>
 
         </section>
         <button onClick={() => submitAddress()} style={{float: 'right'}}>Submit</button>
-
-        <div className="cc-info">
-          <h3>Credit Card information</h3>
-            <div>
-              <p>Name on Card</p>
-              <input
-                onChange={(e) => this.handleCardChange(e, "name")}
-                type="text"
-                value={cc.name} />
-
-              <p>Card Number</p>
-              <input
-                onChange={(e) => this.handleCardChange(e, "number")}
-                type="password"
-                value={cc.number} />
-
-              <section>
-                <p>Exp. date</p>
-                <input
-                  onChange={(e) => this.handleCardChange(e, "exp")}
-                  type="month"
-                  value={cc.exp} />
-
-                <p>cvv</p>
-                <input
-                  onChange={(e) => this.handleCardChange(e, "cvv")}
-                  type="password"
-                  value={cc.cvv} />
-              </section>
-              <button onClick={() => this.submitCC()} style={{float: 'right'}}>Update Card Info</button>
-
-            </div>
-        </div>
 
       </div>
       </div>
