@@ -30,9 +30,9 @@ function in24Hours(classTime) {
   else { return true; }
 }
 
-function beforeCurrentHours(classTime) {
+function afterCurrentHours(classTime) {
   let now = new Date().getHours();
-  if (parseInt(classTime.slice(0, 2)) < now) { return false; }
+  if (parseInt(classTime.slice(0, 2) - 1) < now) { return false; }
   else { return true; }
 }
 
@@ -45,7 +45,7 @@ export const getClassesByDay = classes => {
     let thisClass = classes[id];
     switch (indexOfDay(thisClass.day)) {
       case todaysIndex:
-        if (beforeCurrentHours(thisClass.time)) {
+        if (afterCurrentHours(thisClass.time)) {
           thisClass.date = getReservationDate(0);
           thisClass.id = id;
           today = orderByTime(today, thisClass);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTime, getHoursOut } from '../../../util/classes_util';
+import { getTime, getHoursOut,  } from '../../../util/classes_util';
 
 export default class DisplayClassInfo extends React.Component {
   constructor(props) {
@@ -8,8 +8,10 @@ export default class DisplayClassInfo extends React.Component {
     this.state = {
       pricing: null,
     }
-    this.getPricingSchema(this.props.thisClass.vendor_id);
+  }
 
+  componentDidMount() {
+    this.getPricingSchema(this.props.thisClass.vendor_id);
   }
 
   getPricingSchema(vendor) {
@@ -25,7 +27,6 @@ export default class DisplayClassInfo extends React.Component {
           pricing.push('40');
         })
       }
-      console.log(vendor, pricing);
       this.setState({pricing});
     });
   }
@@ -50,7 +51,7 @@ export default class DisplayClassInfo extends React.Component {
       <section className="class-info">
         <div>
           <h5 style={{color: '#1ed0b1'}}>{time}</h5>
-          <p></p>
+          <p>{thisClass.date.slice(0, 6)}</p>
         </div>
 
         <div>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
-import { orderClassesByDate, getClassesByDay } from  '../../../util/classes_util';
+import { getClassesByDay } from  '../../../util/classes_util';
 import { holdSeat } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
@@ -24,11 +24,18 @@ class CustomerPage extends React.Component {
       errors: [],
       modal: null,
     }
-    this.getCurrentUser();
     this.handleReserve = this.handleReserve.bind(this);
     this.isValidReservation = this.isValidReservation.bind(this);
     this.confirmReserve = this.confirmReserve.bind(this);
     this.cancelReserve = this.cancelReserve.bind(this);
+  }
+
+  componentDidMount() {
+    let neighborhood = this.state.userInfo.neighborhood;
+    this.getCurrentUser();
+    if (neighborhood.length > 0) {
+      this.fetchClassInfo(neighborhood);
+    }
   }
 
   getCurrentUser() {
