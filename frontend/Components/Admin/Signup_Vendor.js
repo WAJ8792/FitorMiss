@@ -28,7 +28,6 @@ export default class SignupVendor extends React.Component {
     return e => this.setState({[field]: e.target.value})
   }
 
-
   handleSignup(e) {
     e.preventDefault();
     this.props.signupVendor(this.state, app);

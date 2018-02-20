@@ -3,16 +3,48 @@ import React from 'react';
 import { getTime, getHoursOut } from '../../../util/classes_util';
 
 export default class DisplayClassInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pricing: null,
+    }
+    this.getPricingSchema(this.props.thisClass.vendor_id);
+
+  }
+
+  getPricingSchema(vendor) {
+    let pricing = [];
+
+    app.database().ref('pricing_schemas')
+    .orderByChild('vendor_id').equalTo(vendor).on('value', snap => {
+      if (snap.val() != null) {
+        snap.forEach(child => {
+          pricing.push(child.val()['tier1']);
+          pricing.push(child.val()['tier2']);
+          pricing.push(child.val()['tier3']);
+          pricing.push('40');
+        })
+      }
+      console.log(vendor, pricing);
+      this.setState({pricing});
+    });
+  }
+
   render() {
     let thisClass = this.props.thisClass;
     let time = getTime(thisClass.time);
     let hoursOut;
+    let price;
 
     if (this.props.day === 'Tomorrow') {
-      hoursOut = 4;
+      hoursOut = 3;
     } else {
       hoursOut = getHoursOut(thisClass.time);
     }
+
+    if (this.state.pricing != null && this.state.pricing.length > 1) {
+      price = this.state.pricing[hoursOut];
+    } else { price = ""}
 
     return (
       <section className="class-info">
@@ -36,7 +68,7 @@ export default class DisplayClassInfo extends React.Component {
 
         <div>
           <button onClick={() => this.props.handleReserve(thisClass)}>
-            ${thisClass.price} + {hoursOut}
+            ${price}
           </button>
         </div>
       </section>

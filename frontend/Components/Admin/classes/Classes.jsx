@@ -43,6 +43,10 @@ export default class Classes extends React.Component {
     })
   }
 
+  removeModal() {
+    this.setState({modal: null});
+  }
+
   populateClasses(user) {
     this.setState({classes: []});
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_added", snap => {
@@ -128,6 +132,7 @@ export default class Classes extends React.Component {
       modal: <AddClass
         handleAdd={ this.handleAdd.bind(this)}
         user={this.props.user.uid}
+        removeModal={this.removeModal.bind(this)}
         error={this.props.classes.error} />
     })
   }

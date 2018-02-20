@@ -48,32 +48,6 @@ ul {
 
   /* add class */
 
-.add-class {
-  margin-top: 24px;
-}
-
-.add-class input {
-  width: 105px;
-  height: 22px;
-  border: none;
-  border-bottom: solid #c1c1c1 .5px;
-  outline: none;
-  padding-bottom: 8px;
-  font-size: 12px;
-  background-color: #f2f2f2;
-}
-
-.add-class button {
-  height: 33px;
-  width: 83px;
-  border-radius: 5px;
-  border: none;
-  background-color: #1ed0b1;
-  color: white;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
 /*
 .account button {
   height: 34px;

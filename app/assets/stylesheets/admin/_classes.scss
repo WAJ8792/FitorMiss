@@ -84,6 +84,70 @@
 //   height: 10px;
 // }
 
+.add-class {
+  margin-top: 0;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: #8080808a;
+
+  section {
+    padding-top: 35px;
+    margin-left: 10px;
+    margin-right: 30px;
+  }
+
+  button {
+    height: 60px;
+    width: 285px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1ed0b1;
+    color: white;
+    font-size: 27px;
+    margin-top: 52px;
+  }
+
+  input {
+    width: 105px;
+    height: 22px;
+    border: none;
+    border-bottom: solid #c1c1c1 .5px;
+    outline: none;
+    padding-bottom: 8px;
+    font-size: 12px;
+    background-color: #f2f2f266;
+  }
+}
+
+.add-class > div {
+  position: fixed;
+  left: 11%;
+  top: 25%;
+  height: 240px;
+  width: 897px;
+  background-color: #272b40;
+
+  h1 {
+    position: absolute;
+    right: -32px;
+    top: -77px;
+    color: black;
+    font-size: 40px;
+    font-family: arial;
+    cursor: pointer;
+  }
+}
+
+.add-class > div > div {
+  background-color: white;
+  height: 93%;
+  margin: 10px;
+  text-align: center;
+}
+
 .classes-bar {
   background-color: #1fc8aa;
   height: 5px;

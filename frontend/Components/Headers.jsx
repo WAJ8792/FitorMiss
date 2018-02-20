@@ -108,7 +108,8 @@ class Header extends React.Component {
             backgroundColor: '#002e5d',
           }}>
             <h4 style={{
-              margin: "25%",
+              margin: "15%",
+              marginLeft: '30%',
               marginBottom: "10px",
               color: '#19c8aa',
               fontSize: "45px"
@@ -116,7 +117,7 @@ class Header extends React.Component {
               <img src={window.images.logo} /><br />
               Loading Your Info!
             </h4>
-            <div className="line">
+            <div className="line" style={{marginLeft: '8%'}}>
               <div id="c3"> </div>
             </div>
           </div>

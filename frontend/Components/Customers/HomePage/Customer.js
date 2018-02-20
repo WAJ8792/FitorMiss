@@ -19,10 +19,8 @@ class CustomerPage extends React.Component {
         email: "",
         neighborhood: "",
       },
-      pricing_schema: {},
       day: "Today",
-      todaysClasses: [],
-      tomorrowsClasses: [],
+      classes: [],
       errors: [],
       modal: null,
     }
@@ -38,19 +36,7 @@ class CustomerPage extends React.Component {
       if (user) {
         this.setState({ user: user.uid, loggedOut: false });
         this.fetchUserInfo(this.state.user);
-        this.fetchPriceInfo(this.state.user);
       }
-    });
-  }
-
-  fetchPriceInfo(user) {
-    let pricing_schema;
-    firebase.database().ref('pricing_schemas')
-    .orderByChild('vendor_id').equalTo(user).on('value', snap => {
-      if (snap.val() != null) {
-        pricing_schema = snap.val();
-      }
-      this.setState({pricing_schema});
     });
   }
 
@@ -72,10 +58,7 @@ class CustomerPage extends React.Component {
       if (snap.val() != null) {
         classes = getClassesByDay(snap.val());
       }
-      this.setState({
-        todaysClasses: classes.today,
-        tomorrowsClasses: classes.tomorrow,
-      });
+      this.setState({classes});
     })
   }
 
@@ -140,7 +123,7 @@ class CustomerPage extends React.Component {
 
   displayClasses(classList) {
     let classes = [];
-    classList.forEach(thisClass => {
+    this.state.classes.forEach(thisClass => {
       classes.push(
         <ClassInfo
           key={thisClass.id}
@@ -159,42 +142,14 @@ class CustomerPage extends React.Component {
   render() {
     if (this.state.user === "") { return null; }
     let errors;
-    let classes;
-    let todaysClasses = this.state.todaysClasses;
-    let tomorrowsClasses = this.state.tomorrowsClasses;
+    let classes = this.displayClasses();
 
-    if (this.state.day === "Tomorrow") {
-      classes = this.displayClasses(tomorrowsClasses);
-      if (classes.length < 1) {
-        classes = <h4 id="no-classes">No upcoming classes today.</h4>
-      }
+    if (classes.length < 1) {
+      classes = <h4 id="no-classes">No upcoming classes today.</h4>
     } else {
-      classes = this.displayClasses(todaysClasses);
-      if (classes.length < 1) {
-        classes = <h4 id="no-classes">No upcoming classes today.</h4>
-      }
+      classes = this.displayClasses(classes);
     }
 
-    let days = ["Today", "Tomorrow"].map( day =>{
-      if (this.state.day === day) {
-        return (
-          <div className="day-selectors" style={{backgroundColor: "#1fc8aa"}} key={day}>
-            {day}
-          </div>
-        )
-      } else {
-        return(
-          <div className="day-selectors"
-            style={{
-              backgroundColor: '#eaf8f7',
-              color: 'black'
-            }}
-            onClick={() => this.updateDay(day)} key={day}>
-            {day}
-          </div>
-        )
-      }
-    })
 
     if (this.state.errors.length > 0) {
       let errors = this.state.errors;
@@ -207,11 +162,6 @@ class CustomerPage extends React.Component {
 
           {errors}
           {this.state.modal}
-
-          <div className="days-list">
-            {days}
-          </div>
-          <div className="classes-bar"> </div>
 
           <ul className="display-class-info">
             {classes}

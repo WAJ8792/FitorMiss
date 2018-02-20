@@ -62,7 +62,7 @@ export const getClassesByDay = classes => {
         break;
     }
   })
-  return {today, tomorrow};
+  return today.concat(tomorrow);
 }
 
 function orderByTime(list, thisClass) {
@@ -140,13 +140,13 @@ export const getHoursOut = (time) => {
   let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
   switch (hoursOut) {
     case 0:
-      return 1;
+      return 0;
     case 1:
-      return 2;
+      return 1;
     case 2:
-      return 3;
+      return 2;
     default:
-      return 4;
+      return 3;
   }
 }
 

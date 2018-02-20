@@ -3,8 +3,8 @@ import React from 'react';
 import { getTime } from '../../../util/classes_util';
 
 export default class AddClass extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       vendor_id: "",
       name: "",
@@ -95,7 +95,10 @@ export default class AddClass extends React.Component {
 
     return(
       <div className="add-class">
-        <section style={{backgroundColor: "#f2f2f2"}}>
+        <div>
+          <h1 onClick={e => this.props.removeModal(e)}>X</h1>
+        <div>
+        <section>
           <div>
             <p>Class Title</p>
             <input
@@ -160,6 +163,8 @@ export default class AddClass extends React.Component {
           {errors}
           <button onClick={e => this.handleAdd(e)}>Add Class</button>
         </span>
+      </div>
+      </div>
       </div>
     )
   }
