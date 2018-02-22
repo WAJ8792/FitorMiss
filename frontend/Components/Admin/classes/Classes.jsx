@@ -43,7 +43,9 @@ export default class Classes extends React.Component {
     })
   }
 
-  removeModal() {
+  removeModal(e) {
+    e.preventDefault();
+
     this.setState({modal: null});
   }
 
@@ -192,7 +194,7 @@ export default class Classes extends React.Component {
               </section>
               <div className="classes-bar"> </div>
 
-              <span>
+              <span style={{overflow: 'scroll'}}>
                 {classes}
               </span>
               {modal}

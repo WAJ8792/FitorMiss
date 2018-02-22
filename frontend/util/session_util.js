@@ -28,6 +28,7 @@ export const createVendor = function(user, db, userInfo) {
 }
 
 export const createCustomer = function(user, db, userInfo) {
+  console.log(user);
   db.database().ref('customers/' + user.user.uid).set({
     first_name: userInfo.firstName,
     last_name: userInfo.lastName,
@@ -35,9 +36,17 @@ export const createCustomer = function(user, db, userInfo) {
     neighborhood_id: userInfo.neighborhood,
   });
   db.database().ref('user_type/' + user.user.uid).set("customer");
+
+  hitCreate(userInfo);
 }
 
-
+const hitCreate = (user) => {
+  return $.ajax({
+    method: 'POST',
+    url: '/users',
+    data: user
+  });
+};
 
 // getCurrentUser is not being used but might be a nice way to dry up code
 // at a later point when there is time to configure this code to work alongside redux fow.

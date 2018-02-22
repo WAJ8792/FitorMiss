@@ -34,7 +34,7 @@ export default class SignupCustomer extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    if (this.state.firstName.length < 1 || this.state.lastName.length  < 1) {
+    if (this.state.firstName.length < 1 && this.state.lastName.length  < 1) {
       let error = ["Please fill in at least first or last name"];
       this.setState({error});
     } else {

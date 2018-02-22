@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 import { getTime } from '../../../util/classes_util';
 
 export default class AddClass extends React.Component {
@@ -149,13 +150,6 @@ export default class AddClass extends React.Component {
               value={this.state.seats}/>
           </div>
 
-          <div>
-            <p>Original Class Price</p>
-            <input
-              type="number"
-              onChange={e => this.handleChange(e, 'price')}
-              value={this.state.price}/>
-          </div>
         </section>
 
         <span>
