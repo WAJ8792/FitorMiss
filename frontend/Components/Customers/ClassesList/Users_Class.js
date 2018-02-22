@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTime } from '../../../util/classes_util';
+import { getTimeRange } from '../../../util/classes_util';
 
 export default class UsersClassInfo extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class UsersClassInfo extends React.Component {
     let thisClass = this.state.info;
 
     if (this.state.id.length > 0) {
-      time = getTime(thisClass.time);
+      time = getTimeRange(thisClass.time, thisClass.duration);
     }
 
     return (
@@ -48,11 +48,6 @@ export default class UsersClassInfo extends React.Component {
 
       <div>
         <h5>{thisClass.name}</h5>
-      </div>
-
-      <div>
-        <button onClick={() => this.props.handleReserve(thisClass.class_id)}>
-        </button>
       </div>
 
       </section>

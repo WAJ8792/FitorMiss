@@ -98,26 +98,66 @@ export const orderClassesByDate = (classes) => {
     let front = [];
     const length = list.length;
     classes[id].id = id;
-    for (let i = 0; i <= length; i++) {
-      if (i === length)
-      {
-        list.push(classes[id]);
-        list = front.concat(list.slice(i, length+1));
-        break;
-      }
-      else if (list[i].time < thisClass.time)
-      {
-        front.push(list[i]);
-      }
-      else
-      {
-        front.push(classes[id]);
-        list = front.concat(list.slice(i, length+1));
-        break;
+    if (isUpcoming(thisClass.date)) {
+      for (let i = 0; i <= length; i++) {
+        if (i === length)
+        {
+          list.push(classes[id]);
+          list = front.concat(list.slice(i, length+1));
+          break;
+        }
+        else if (list[i].time < thisClass.time)
+        {
+          front.push(list[i]);
+        }
+        else
+        {
+          front.push(classes[id]);
+          list = front.concat(list.slice(i, length+1));
+          break;
+        }
       }
     }
   });
   return list;
+}
+
+function isUpcoming(resDate) {
+  let resDateIndex = monthIndex(resDate.slice(0, 3)) + resDate.slice(4, 6);
+  let today = new Date();
+  let todaysIndex = today.getMonth().toString() + today.getDate().toString();
+  if (parseInt(resDateIndex) >= parseInt(todaysIndex)) {
+    return true;
+  } else { return false; }
+}
+
+function monthIndex(month) {
+  switch (month) {
+    case "Jan":
+      return 0;
+    case "Feb":
+      return 1;
+    case "Mar":
+      return 2;
+    case "Apr":
+      return 3;
+    case "May":
+      return 4;
+    case "Jun":
+      return 5;
+    case "Jul":
+      return 6;
+    case "Aug":
+      return 7;
+    case "Sep":
+      return 8;
+    case "Oct":
+      return 9;
+    case "Nov":
+      return 10;
+    case "Dec":
+      return 11;
+  }
 }
 
 export const getTime = (time) => {

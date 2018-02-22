@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTime } from '../../../util/classes_util';
+import { getTimeRange } from '../../../util/classes_util';
 
 export default class GymClass extends React.Component {
   constructor(props) {
@@ -32,7 +32,6 @@ export default class GymClass extends React.Component {
   }
 
   updateRes(resId) {
-    console.log(this.state.time);
     firebase.database()
     .ref('reservations/' + resId + '/time')
     .set(this.state.time);
@@ -42,7 +41,6 @@ export default class GymClass extends React.Component {
     firebase.database().ref('reservations').orderByChild('class_id')
       .equalTo(this.state.class_id).once('value', snap => {
         if (snap.val() != null) {
-          console.log(snap.val());
           Object.keys(snap.val()).forEach(resId => {
             this.updateRes(resId);
           });
@@ -168,11 +166,7 @@ export default class GymClass extends React.Component {
           </div>
 
           <div>
-            {getTime(this.state.time)}
-          </div>
-
-          <div>
-            {this.state.duration}
+            {getTimeRange(this.state.time, this.state.duration)}
           </div>
 
           <div>
