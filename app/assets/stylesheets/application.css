@@ -13,11 +13,6 @@
  *= require_tree .
  *= require_self
  */
-@import 'application.css.scss';
-@import '_sidebar.scss';
-@import 'admin/_gym.scss';
-@import 'admin/_classes.scss';
-@import 'constants.scss';
 
 body, #root, html, .App, .app {
   margin: 0;
