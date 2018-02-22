@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import firebaseui from 'firebaseui';
 import SignupCustomer from './Customers/Signup_Customer';
 import SignupVendor from './Admin/Signup_Vendor';
 
