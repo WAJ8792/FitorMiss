@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 import { Switch, HashRouter, Route, Redirect, withRouter,
   IndexRoute, BrowserRouter, hashHistory } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
+
 import {StripeProvider} from 'react-stripe-elements';
 
 import { configureStore } from '../store';
