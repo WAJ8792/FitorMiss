@@ -136,6 +136,35 @@ export const getTime = (time) => {
   return time;
 }
 
+export const getTimeRange = (time, duration) => {
+  let startHour = parseInt(time.slice(0, 2));
+  let startMin = parseInt(time.slice(3, 5));
+  let finish = [startHour + duration.hours, startMin + duration.min];
+  let ampm = (finish[0] > 12) ? ' PM' : ' AM'
+
+  let start = formatTime([startHour, startMin]);
+  finish = formatTime(finish);
+
+  return start + " - " + finish + ampm;
+}
+
+function formatTime(time) {
+  let hours = time[0];
+  let min = time[1];
+
+  if (hours > 12) {
+    hours -= 12;
+  }
+
+  if (min < 1) {
+    min = "00"
+  } else if (min < 10) {
+    min = "0" + min.toString();
+  }
+
+  return hours.toString() + ":" + min.toString();
+}
+
 export const getHoursOut = (time) => {
   let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
   switch (hoursOut) {

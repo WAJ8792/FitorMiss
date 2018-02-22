@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTime, getHoursOut,  } from '../../../util/classes_util';
+import { getTimeRange, getHoursOut,  } from '../../../util/classes_util';
 
 export default class DisplayClassInfo extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ export default class DisplayClassInfo extends React.Component {
 
   render() {
     let thisClass = this.props.thisClass;
-    let time = getTime(thisClass.time);
+    let time = getTimeRange(thisClass.time, thisClass.duration);
     let hoursOut;
     let price;
 

@@ -10,10 +10,12 @@ export default class AddClass extends React.Component {
       vendor_id: "",
       name: "",
       time: "1:00 PM",
-      duration: "",
+      duration: {
+        hours: 0,
+        min: 0
+      },
       day: "-",
       seats: "",
-      price: "",
       errors: [],
     }
     this.handleChange = this.handleChange.bind(this);
@@ -21,6 +23,12 @@ export default class AddClass extends React.Component {
 
   handleChange(e, field) {
     this.setState({[field]: e.target.value});
+  }
+
+  handleDurationChange(e, field) {
+    let duration = this.state.duration;
+    duration[field] = parseInt(e.target.value);
+    this.setState({duration});
   }
 
   checkValidInput() {
@@ -31,6 +39,8 @@ export default class AddClass extends React.Component {
     if (0 >= parseInt(state.duration)) { errors.push("Please enter a duration above 0.")}
     if (!state.day.includes("day")) { errors.push("Please choose a valid day."); }
     if (0 >= parseInt(state.seats)) { errors.push("Please enter an availability number greate than 0 under 'seats'"); }
+    let length = state.duration.hours + state.duration.min;
+    if (length < 1) { errors.push("Please add a class duration.")}
 
     if (errors.length < 1) { return true; }
     else {
@@ -45,9 +55,11 @@ export default class AddClass extends React.Component {
       this.setState({
         name: "",
         time: "1:00 PM",
-        duration: "",
+        duration: {
+          hours: 0,
+          min: 0
+        },
         seats: "",
-        price: "",
         errors: [],
       });
     }
@@ -136,19 +148,26 @@ export default class AddClass extends React.Component {
 
           <div>
             <p>Duration</p>
+            <p style={{fontSize: "8px"}}>Hours</p>
             <input
               type="number"
-              onChange={e => this.handleChange(e, 'duration')}
-              value={this.state.duration}/>
+              onChange={e => this.handleDurationChange(e, 'hours')}
+              value={this.state.duration.hours}/>
+
+            <p style={{fontSize: "8px"}}>Minutes</p>
+            <input
+              type="number"
+              onChange={e => this.handleDurationChange(e, 'min')}
+              value={this.state.duration.min}/>
           </div>
 
           <div>
             <p>Total Seats</p>
-            <input
-              type="number"
-              onChange={e => this.handleChange(e, 'seats')}
-              value={this.state.seats}/>
-          </div>
+              <input
+                type="number"
+                onChange={e => this.handleChange(e, 'seats')}
+                value={this.state.seats}/>
+              </div>
 
         </section>
 
