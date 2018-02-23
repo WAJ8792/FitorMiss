@@ -16,6 +16,7 @@ export default class AddClass extends React.Component {
       },
       day: "-",
       seats: "",
+      type: "cardio",
       errors: [],
     }
     this.handleChange = this.handleChange.bind(this);
@@ -146,19 +147,24 @@ export default class AddClass extends React.Component {
             </select>
           </div>
 
-          <div>
+          <div className="duration-inputs">
             <p>Duration</p>
-            <p style={{fontSize: "8px"}}>Hours</p>
-            <input
-              type="number"
-              onChange={e => this.handleDurationChange(e, 'hours')}
-              value={this.state.duration.hours}/>
+            <section style={{padding: "0px"}}>
+              <p style={{fontSize: "8px", width: "52px"}}>Hours</p>
+              <p style={{fontSize: "8px"}}>Minutes</p>
+            </section>
 
-            <p style={{fontSize: "8px"}}>Minutes</p>
-            <input
-              type="number"
-              onChange={e => this.handleDurationChange(e, 'min')}
-              value={this.state.duration.min}/>
+            <section style={{padding: "0px"}}>
+              <input
+                type="number"
+                onChange={e => this.handleDurationChange(e, 'hours')}
+                value={this.state.duration.hours}/>
+
+              <input
+                type="number"
+                onChange={e => this.handleDurationChange(e, 'min')}
+                value={this.state.duration.min}/>
+            </section>
           </div>
 
           <div>
@@ -167,7 +173,20 @@ export default class AddClass extends React.Component {
                 type="number"
                 onChange={e => this.handleChange(e, 'seats')}
                 value={this.state.seats}/>
-              </div>
+          </div>
+
+          <div>
+            <p>Workout Type</p>
+              <select
+                onChange={e => this.handleChange(e, 'type')}
+                value={this.state.type}>
+                <option>Cardio</option>
+                <option>Boxing</option>
+                <option>Rowing</option>
+                <option>Yoga</option>
+                <option>Pilates</option>
+              </select>
+          </div>
 
         </section>
 
