@@ -65,6 +65,7 @@ export default class DisplayClassInfo extends React.Component {
 
         <div>
           <h5>{thisClass.name}</h5>
+          <p>{thisClass.type}</p>
         </div>
 
         <div>

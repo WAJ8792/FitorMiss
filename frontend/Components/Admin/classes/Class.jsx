@@ -28,7 +28,7 @@ export default class GymClass extends React.Component {
   readWriteClass(e, field) {
     e.preventDefault();
 
-    this.setState({type: field});
+    this.setState({functionality: field});
   }
 
   updateRes(resId) {
@@ -56,7 +56,7 @@ export default class GymClass extends React.Component {
       this.getReservations();
     }
 
-    this.setState({type: field});
+    this.setState({functionality: field});
     this.props.saveChanges(this.state);
   }
 
@@ -90,7 +90,9 @@ export default class GymClass extends React.Component {
   }
 
   render() {
-    if (this.state.type === "write") {
+    let type = (this.state.type) ? this.state.type : null
+
+    if (this.state.functionality === "write") {
       let times = this.getTimes()
       return(
         <div className="class-info">
@@ -163,6 +165,7 @@ export default class GymClass extends React.Component {
         <section>
           <div>
             {this.state.name}
+            <p>{type}</p>
           </div>
 
           <div>

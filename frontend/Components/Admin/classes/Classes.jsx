@@ -74,7 +74,7 @@ export default class Classes extends React.Component {
       time: thisClass.time,
       duration: thisClass.duration,
       seats: thisClass.seats,
-      type: 'read',
+      functionality: 'read',
     });
 
     this.setState({classes: newState.classes});
