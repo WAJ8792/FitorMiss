@@ -34,11 +34,23 @@ export default class Classes extends React.Component {
     });
   }
 
+  getAmenities(user) {
+    let userInfo = this.state.userInfo;
+    firebase.database().ref("amenities")
+    .orderByChild("vendor_id").equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        userInfo.amenities = Object.values(snap.val())[0];
+        this.setState({userInfo});
+      }
+    })
+  }
+
   getUserInfo(user) {
     firebase.database().ref('vendor')
     .orderByKey().equalTo(user).on('value', snap => {
       if (snap.val() != null)  {
         this.setState({userInfo: snap.val()[user]});
+        this.getAmenities(user);
       }
     })
   }
@@ -96,6 +108,7 @@ export default class Classes extends React.Component {
     let userInfo = this.state.userInfo;
     newClass.neighborhood = userInfo.neighborhood;
     newClass.neighborhood_id = 1;
+    newClass.amenities = userInfo.amenities;
     newClass.vendor = userInfo.gym_name;
     newClass.vendor_id = this.state.user;
     newClass.seats_available = newClass.seats;

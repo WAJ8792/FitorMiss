@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
-import { getClassesByDay } from  '../../../util/classes_util';
+import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
 import { holdSeat } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
+import ClassFilters from './Filters';
+import ClassesSidebar from './ClassesSidebar';
 
 class CustomerPage extends React.Component {
   constructor() {
@@ -19,7 +21,8 @@ class CustomerPage extends React.Component {
         email: "",
         neighborhood: "",
       },
-      day: "Today",
+      typeFilter: false,
+      amenityFilter: false,
       classes: [],
       errors: [],
       modal: null,
@@ -130,14 +133,16 @@ class CustomerPage extends React.Component {
 
   displayClasses(classList) {
     let classes = [];
+    let filter = this.state.typeFilter;
     this.state.classes.forEach(thisClass => {
-      classes.push(
-        <ClassInfo
+      if (filter === false || thisClass.type === filter) {
+        classes.push(
+          <ClassInfo
           key={thisClass.id}
           thisClass={thisClass}
-          day={this.state.day}
           handleReserve={this.handleReserve} />
-      )
+        )
+      }
     });
     return classes;
   }
@@ -146,17 +151,21 @@ class CustomerPage extends React.Component {
     this.setState({day});
   }
 
+  changeType(e) {
+    e.preventDefault();
+    let typeFilter = (e.target.value === "No Filter") ? false : e.target.value
+    this.setState({typeFilter});
+  }
+
   render() {
     if (this.state.user === "") { return null; }
     let errors;
     let classes = this.displayClasses();
+    classes = filterClasses(classes, this.props.filters);
 
     if (classes.length < 1) {
       classes = <h4 id="no-classes">No upcoming classes today.</h4>
-    } else {
-      classes = this.displayClasses(classes);
     }
-
 
     if (this.state.errors.length > 0) {
       let errors = this.state.errors;
@@ -164,7 +173,9 @@ class CustomerPage extends React.Component {
 
     return(
       <div id="page-background">
+
       <div className="page-container">
+
         <section className="my-gym">
 
           {errors}
@@ -180,6 +191,9 @@ class CustomerPage extends React.Component {
     )
   }
 }
+// <ClassFilters
+// typeFilter={this.state.typeFilter}
+// changeType={this.changeType.bind(this)} />
 
 class ConfirmReservation extends React.Component {
   constructor(props) {
@@ -205,6 +219,7 @@ class ConfirmReservation extends React.Component {
 const mapStateToProps = ( state ) => {
   return {
     user: state.sessions.user,
+    filters: state.filters
   }
 }
 

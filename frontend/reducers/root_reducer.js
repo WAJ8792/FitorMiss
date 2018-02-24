@@ -5,6 +5,7 @@ import { session_reducer } from './session_reducer';
 import { toggle_sidebar } from './sidebar_reducer';
 import { address_reducer } from './address_reducer';
 import { classes_reducer } from './classes_reducer';
+import { filter_reducer } from './filter_reducer';
 
 
 const RootReducer = combineReducers({
@@ -13,6 +14,7 @@ const RootReducer = combineReducers({
   sidebar: toggle_sidebar,
   adress: address_reducer,
   classes: classes_reducer,
+  filters: filter_reducer
 });
 
 export default RootReducer;

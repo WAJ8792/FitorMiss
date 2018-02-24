@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { TypeFilter } from './Customers/Filters';
+
 export default class Sidebar extends Component {
   constructor() {
     super()
     this.dropDown = this.dropDown.bind(this);
     this.state = {
-      accounts: "selectors-up",
-      billing: "selectors-up",
+      list1: "selectors-up",
+      list2: "selectors-up",
     }
   }
 
@@ -19,12 +21,42 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    let list1, list2;
-    if (this.props.location.pathname.includes('customer')) {
+    let list1, list2, list3;
+    if (this.props.location.pathname.includes('customer/classes')) {
+      list1 = ( <div id="side-link">
+        <li onClick={e => this.dropDown(e, 'list2')} >Workout Type
+
+          <ul className={this.state.list2}>
+            <li><Link to="/customer/billing">Billing & Payment</Link></li>
+            <li><Link to="/customer/billing-history">Billing History</Link></li>
+          </ul>
+        </li>
+        </div>
+      )
+      list3 = <TypeFilter
+        dropDown={this.dropDown}
+        state={this.state}
+        filters={this.props.filters}
+        toggleType={this.props.toggleType} />
+
+      list2 = (
+          <div id="side-link">
+          <li onClick={e => this.dropDown(e, 'list2')} >Amenities
+
+          <ul className={this.state.list2}>
+          <li><Link to="/customer/billing">Billing & Payment</Link></li>
+          <li><Link to="/customer/billing-history">Billing History</Link></li>
+          </ul>
+          </li>
+          </div>
+        )
+
+    }
+    else if (this.props.location.pathname.includes('customer')) {
       list1 = (
         <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'accounts')} >Account
-          <ul className={this.state.accounts}>
+        <li onClick={e => this.dropDown(e, 'list1')} >Account
+          <ul className={this.state.list1}>
             <li><Link to="/customer/account">Edit Acount</Link></li>
           </ul>
         </li>
@@ -32,9 +64,9 @@ export default class Sidebar extends Component {
       );
       list2 = (
         <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'billing')} >Billing
+        <li onClick={e => this.dropDown(e, 'list2')} >Billing
 
-          <ul className={this.state.billing}>
+          <ul className={this.state.list2}>
             <li><Link to="/customer/billing">Billing & Payment</Link></li>
             <li><Link to="/customer/billing-history">Billing History</Link></li>
           </ul>
@@ -44,9 +76,9 @@ export default class Sidebar extends Component {
     } else {
       list1 = (
         <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'accounts')} >Account
+        <li onClick={e => this.dropDown(e, 'list1')} >Account
 
-          <ul className={this.state.accounts}>
+          <ul className={this.state.list1}>
             <li><Link to="/admin/edit">Edit MyGym</Link></li>
             <li><Link to="/admin/account">Edit Acount</Link></li>
           </ul>
@@ -63,6 +95,7 @@ export default class Sidebar extends Component {
 
           {list1}
           {list2}
+          {list3}
 
           </ul>
         </section>

@@ -1,0 +1,26 @@
+.filters {
+  height: 64px;
+  background-color: #a7e2d8;
+
+  p {
+    margin: 5px;
+  }
+
+  div {
+    text-align: center;
+  }
+
+  section {
+    float: right;
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    padding: 20px;
+    padding-top: 0px;
+  }
+
+  select {
+    height: 28px;
+    width: 100px;
+  }
+}

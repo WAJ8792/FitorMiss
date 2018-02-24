@@ -37,11 +37,7 @@ export default class DisplayClassInfo extends React.Component {
     let hoursOut;
     let price;
 
-    if (this.props.day === 'Tomorrow') {
-      hoursOut = 3;
-    } else {
-      hoursOut = getHoursOut(thisClass.time);
-    }
+    hoursOut = getHoursOut(thisClass.time);
 
     if (this.state.pricing != null && this.state.pricing.length > 1) {
       price = this.state.pricing[hoursOut];

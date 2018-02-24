@@ -219,6 +219,30 @@ export const getHoursOut = (time) => {
   }
 }
 
+export const filterClasses = (classes, filters) => {
+  classes = filterByType(classes, filters.workoutType);
+  return classes;
+}
+
+function filterByType(classes, types) {
+  let filterList = [];
+  let filteredClasses = [];
+  Object.keys(types).forEach( type => {
+    if (types[type] === true) { filterList.push(type)}
+  });
+  if (filterList.length < 1) { return classes }
+  else {
+    classes.forEach( thisClass => {
+      let workoutType = thisClass.props.thisClass.type;
+      if (workoutType != undefined && filterList.includes(workoutType)) {
+        filteredClasses.push(thisClass);
+      }
+    })
+  }
+  console.log(filteredClasses);
+  return filteredClasses;
+}
+
 export const getReservationDate = (daysAway) => {
   let classDate = new Date();
   classDate.setDate(classDate.getDate() + daysAway);
