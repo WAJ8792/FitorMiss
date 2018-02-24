@@ -56,3 +56,61 @@ export class TypeFilter extends React.Component {
     )
   }
 }
+
+export class AmenityFilter extends React.Component {
+
+  getTypeFilters() {
+    let listItems = [];
+    let amenities = this.props.filters.amenities;
+    Object.keys(amenities).forEach( amenity => {
+      let item = this.printedItem(amenity);
+      if (amenities[amenity] === true) {
+        listItems.push(
+          <li
+            style={{color: '#f374f3'}}
+            onClick={() => this.changeFilter(amenity)}>
+            {item}
+          </li>
+          )
+      } else {
+        listItems.push(<li
+          onClick={() => this.changeFilter(amenity)}
+          >{item}</li>)
+      }
+    })
+    return listItems
+  }
+
+  changeFilter(type) {
+    this.props.toggleAmenities(type);
+  }
+
+  printedItem(type) {
+    switch (type) {
+      case "parking":
+        return "Parking";
+      case "showers":
+        return "Showers";
+      case "lockers":
+        return "Lockers";
+      case "towels":
+        return "Towels";
+      case "mat_rentals":
+        return "Mat Rentals";
+    }
+  }
+
+  render() {
+    let listItems = this.getTypeFilters();
+    return(
+      <div id="side-link">
+      <li>
+        <h3 onClick={e => this.props.dropDown(e, 'list2')}>Amenities</h3>
+        <ul className={this.props.state.list2}>
+          {listItems}
+        </ul>
+      </li>
+    </div>
+    )
+  }
+}

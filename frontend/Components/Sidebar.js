@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { TypeFilter } from './Customers/Filters';
+import { TypeFilter, AmenityFilter } from './Customers/Filters';
 
 export default class Sidebar extends Component {
   constructor() {
@@ -33,23 +33,18 @@ export default class Sidebar extends Component {
         </li>
         </div>
       )
+      list2 = <AmenityFilter
+        dropDown={this.dropDown}
+        state={this.state}
+        filters={this.props.filters}
+        toggleAmenities={this.props.toggleAmenities} />
+
       list3 = <TypeFilter
         dropDown={this.dropDown}
         state={this.state}
         filters={this.props.filters}
         toggleType={this.props.toggleType} />
 
-      list2 = (
-          <div id="side-link">
-          <li onClick={e => this.dropDown(e, 'list2')} >Amenities
-
-          <ul className={this.state.list2}>
-          <li><Link to="/customer/billing">Billing & Payment</Link></li>
-          <li><Link to="/customer/billing-history">Billing History</Link></li>
-          </ul>
-          </li>
-          </div>
-        )
 
     }
     else if (this.props.location.pathname.includes('customer')) {

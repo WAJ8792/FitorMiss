@@ -221,7 +221,31 @@ export const getHoursOut = (time) => {
 
 export const filterClasses = (classes, filters) => {
   classes = filterByType(classes, filters.workoutType);
+  classes = filterByAmenities(classes, filters.amenities);
   return classes;
+}
+
+function filterByAmenities(classes, amenities) {
+  let filterList = [];
+  let filteredClasses = [];
+  Object.keys(amenities).forEach( amenity => {
+    if (amenities[amenity] === true) { filterList.push(amenity)}
+  });
+  if (filterList.length < 1) { return classes }
+  else {
+    classes.forEach( thisClass => {
+      console.log(thisClass);
+      let amenities = thisClass.props.thisClass.amenities;
+      for (let i = 0; i < filterList.length; i++) {
+        let amenity = filterList[i];
+        if (amenities[amenity]) {
+          filteredClasses.push(thisClass);
+          break;
+        }
+      }
+    });
+  }
+  return filteredClasses;
 }
 
 function filterByType(classes, types) {
@@ -239,7 +263,6 @@ function filterByType(classes, types) {
       }
     })
   }
-  console.log(filteredClasses);
   return filteredClasses;
 }
 
