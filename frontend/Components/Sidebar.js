@@ -11,6 +11,7 @@ export default class Sidebar extends Component {
     this.state = {
       list1: "selectors-up",
       list2: "selectors-up",
+      list3: "selectors-up"
     }
   }
 
@@ -24,12 +25,7 @@ export default class Sidebar extends Component {
     let list1, list2, list3;
     if (this.props.location.pathname.includes('customer/classes')) {
       list1 = ( <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list2')} >Workout Type
-
-          <ul className={this.state.list2}>
-            <li><Link to="/customer/billing">Billing & Payment</Link></li>
-            <li><Link to="/customer/billing-history">Billing History</Link></li>
-          </ul>
+        <li onClick={e => this.dropDown(e, 'list1')} >My Location
         </li>
         </div>
       )

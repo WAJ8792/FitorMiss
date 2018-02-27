@@ -47,8 +47,8 @@ export class TypeFilter extends React.Component {
     return(
       <div id="side-link">
       <li>
-        <h3 onClick={e => this.props.dropDown(e, 'list1')}>Workout Type</h3>
-        <ul className={this.props.state.list1}>
+        <h3 onClick={e => this.props.dropDown(e, 'list3')}>Workout Type</h3>
+        <ul className={this.props.state.list3}>
           {listItems}
         </ul>
       </li>
