@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
-import { holdSeat } from  '../../../util/reservation_util';
+import { holdSeat, confirmReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassFilters from './Filters';
@@ -99,13 +99,8 @@ class CustomerPage extends React.Component {
     e.preventDefault();
 
     let thisClass = this.state.thisClass;
-    firebase.database().ref("reservations").push().set({
-      class_id: thisClass.id,
-      customer_id: this.state.user,
-      date: thisClass.date,
-      time: thisClass.time,
-      created_at: new Date().getTime(),
-    });
+    thisClass.user = this.state.user;
+    confirmReserve(firebase.database(), thisClass);
     this.setState({modal: null});
   }
 
@@ -119,7 +114,7 @@ class CustomerPage extends React.Component {
 
   handleReserve(thisClass) {
     if (this.isValidReservation(thisClass)) {
-      holdSeat(thisClass.id, thisClass.seats_available, "hold", app);
+      holdSeat(thisClass, "hold", app);
 
       this.setState({
         thisClass,

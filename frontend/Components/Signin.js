@@ -100,7 +100,6 @@ export default class SignIn extends React.Component {
             <SignupCustomer signupCustomer={this.props.signupCustomer}/>
         </section>
 
-        <div onClick={this.sendEmail.bind(this)}>Send Email</div>
       </div>
     )
   }

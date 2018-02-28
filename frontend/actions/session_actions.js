@@ -18,10 +18,6 @@ export const receiveErrors = (error) => ({
   error
 })
 
-// export const getUser = (db) => dispatch => () => (
-//
-// )
-
 export const logout = (user, db) => dispatch => (
   db.auth().signOut()
     .then(user => dispatch(logoutUser()))

@@ -9,6 +9,7 @@ export class TypeFilter extends React.Component {
       if (types[type] === true) {
         listItems.push(
           <li
+            key={type}
             style={{color: '#f374f3'}}
             onClick={() => this.changeFilter(type)}>
             {type}
@@ -16,6 +17,7 @@ export class TypeFilter extends React.Component {
           )
       } else {
         listItems.push(<li
+          key={type}
           onClick={() => this.changeFilter(type)}
           >{type}</li>)
       }
@@ -67,6 +69,7 @@ export class AmenityFilter extends React.Component {
       if (amenities[amenity] === true) {
         listItems.push(
           <li
+            key={amenity}
             style={{color: '#f374f3'}}
             onClick={() => this.changeFilter(amenity)}>
             {item}
@@ -74,6 +77,7 @@ export class AmenityFilter extends React.Component {
           )
       } else {
         listItems.push(<li
+          key={amenity}
           onClick={() => this.changeFilter(amenity)}
           >{item}</li>)
       }

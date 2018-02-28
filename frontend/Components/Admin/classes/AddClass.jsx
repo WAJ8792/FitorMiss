@@ -15,7 +15,7 @@ export default class AddClass extends React.Component {
         min: 0
       },
       day: "-",
-      seats: "",
+      seats: null,
       type: "cardio",
       errors: [],
     }
@@ -23,7 +23,12 @@ export default class AddClass extends React.Component {
   }
 
   handleChange(e, field) {
-    this.setState({[field]: e.target.value});
+    if (field === "seats") {
+      value = parseInt(e.target.value)
+    } else {
+      value = e.target.value;
+     }
+    this.setState({[field]: value});
   }
 
   handleDurationChange(e, field) {
@@ -60,7 +65,7 @@ export default class AddClass extends React.Component {
           hours: 0,
           min: 0
         },
-        seats: "",
+        seats: null,
         errors: [],
       });
     }

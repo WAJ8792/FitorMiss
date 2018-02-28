@@ -28,7 +28,6 @@ export const createVendor = function(user, db, userInfo) {
 }
 
 export const createCustomer = function(user, db, userInfo) {
-  console.log(user);
   db.database().ref('customers/' + user.user.uid).set({
     first_name: userInfo.firstName,
     last_name: userInfo.lastName,

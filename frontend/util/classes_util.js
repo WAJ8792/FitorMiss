@@ -234,7 +234,6 @@ function filterByAmenities(classes, amenities) {
   if (filterList.length < 1) { return classes }
   else {
     classes.forEach( thisClass => {
-      console.log(thisClass);
       let amenities = thisClass.props.thisClass.amenities;
       for (let i = 0; i < filterList.length; i++) {
         let amenity = filterList[i];
