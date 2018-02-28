@@ -7,11 +7,24 @@ export default class DisplayClassInfo extends React.Component {
     super(props);
     this.state = {
       pricing: null,
+      vendorEmail: null,
     }
   }
 
   componentDidMount() {
     this.getPricingSchema(this.props.thisClass.vendor_id);
+    this.getVendorEmail(this.props.thisClass.vendor_id);
+  }
+
+  getVendorEmail(vendor) {
+    let vendorEmail = null;
+    app.database().ref("vendor")
+    .orderByKey().equalTo(vendor).on('value', snap => {
+      if (snap.val() != null) {
+        vendorEmail = snap.val()[vendor].email
+      }
+      this.setState({vendorEmail});
+    })
   }
 
   getPricingSchema(vendor) {
@@ -33,6 +46,7 @@ export default class DisplayClassInfo extends React.Component {
 
   render() {
     let thisClass = this.props.thisClass;
+    thisClass.vendorEmail = this.state.vendorEmail;
     let time = getTimeRange(thisClass.time, thisClass.duration);
     let hoursOut;
     let price;

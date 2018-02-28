@@ -23,6 +23,7 @@ export default class AddClass extends React.Component {
   }
 
   handleChange(e, field) {
+    let value;
     if (field === "seats") {
       value = parseInt(e.target.value)
     } else {

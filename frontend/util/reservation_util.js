@@ -1,9 +1,9 @@
-export const holdSeat = (classId, action, db) => {
+export const holdSeat = (classId, seats, action, db) => {
+  seats = parseInt(seats);
   if (action === "hold") {
     seats = seats -= 1;
   }
-  db.database().ref('classes/' + classId + '/reservations/')
-  .set(seats.toString());
+  db.database().ref('classes/' + classId + '/seats_available').set(seats.toString());
 }
 
 export const confirmReserve = (db, thisClass, seats) => {
@@ -17,4 +17,13 @@ export const confirmReserve = (db, thisClass, seats) => {
   })
   db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${resId}`)
     .set(true)
+
 }
+
+export const hitReserve = reservation => {
+  return $.ajax({
+    method: 'POST',
+    url: '/reservations',
+    data: reservation
+  });
+};

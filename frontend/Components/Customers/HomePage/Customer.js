@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
-import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
-import { holdSeat, confirmReserve } from  '../../../util/reservation_util';
+import { getClassesByDay, filterClasses, getTime } from  '../../../util/classes_util';
+import { holdSeat, confirmReserve, hitReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassFilters from './Filters';
@@ -101,6 +101,15 @@ class CustomerPage extends React.Component {
     let thisClass = this.state.thisClass;
     thisClass.user = this.state.user;
     confirmReserve(firebase.database(), thisClass);
+    hitReserve({
+      userInfo: this.state.userInfo,
+      resInfo: {
+        time: getTime(thisClass.time),
+        gymName: thisClass.vendor,
+        email: thisClass.vendorEmail,
+        name: thisClass.name
+      }
+    })
     this.setState({modal: null});
   }
 
@@ -114,7 +123,7 @@ class CustomerPage extends React.Component {
 
   handleReserve(thisClass) {
     if (this.isValidReservation(thisClass)) {
-      holdSeat(thisClass, "hold", app);
+      holdSeat(thisClass.id, thisClass.seats_available, "hold", app);
 
       this.setState({
         thisClass,
