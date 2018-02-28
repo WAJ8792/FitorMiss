@@ -7,10 +7,21 @@ export default class GymClass extends React.Component {
     super(props);
     this.state = this.props.props;
     this.handleChange = this.handleChange.bind(this);
+    this.app = firebase.database();
   }
 
   handleDelete(e) {
-    firebase.database().ref("classes/" + this.state.class_id).remove();
+    const db = this.app;
+    db.ref("classes/" + this.state.class_id).remove();
+
+    db.ref("reservations")
+    .orderByChild("class_id").equalTo(this.state.class_id).on("value", snap => {
+      if (snap.val() != null) {
+        Object.keys(snap.val()).forEach(resId => {
+          db.ref("reservations/" + resId + "/canceled").set(true);
+        })
+      }
+    })
   }
 
   handleChange(e, field) {
@@ -38,13 +49,11 @@ export default class GymClass extends React.Component {
   }
 
   updateRes(resId) {
-    firebase.database()
-    .ref('reservations/' + resId + '/time')
-    .set(this.state.time);
+    this.app.ref('reservations/' + resId + '/time').set(this.state.time);
   }
 
   getReservations() {
-    firebase.database().ref('reservations').orderByChild('class_id')
+    this.app.ref('reservations').orderByChild('class_id')
       .equalTo(this.state.class_id).once('value', snap => {
         if (snap.val() != null) {
           Object.keys(snap.val()).forEach(resId => {

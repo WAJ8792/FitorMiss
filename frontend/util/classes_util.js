@@ -99,7 +99,7 @@ export const orderClassesByDate = (classes) => {
     let front = [];
     const length = list.length;
     classes[id].id = id;
-    if (isUpcoming(thisClass.date)) {
+    if (isUpcoming(thisClass)) {
       for (let i = 0; i <= length; i++) {
         if (i === length)
         {
@@ -123,10 +123,14 @@ export const orderClassesByDate = (classes) => {
   return list;
 }
 
-function isUpcoming(resDate) {
-  let resDateIndex = monthIndex(resDate.slice(0, 3)) + resDate.slice(4, 6);
-  let today = new Date();
-  let todaysIndex = today.getMonth().toString() + today.getDate().toString();
+function isUpcoming(reservation) {
+  if (reservation.canceled) { return false; }
+  let resDateIndex = monthIndex(
+    reservation.date.slice(0, 3)
+  ) + reservation.date.slice(4, 6);
+
+  const today = new Date();
+  const todaysIndex = today.getMonth().toString() + today.getDate().toString();
   if (parseInt(resDateIndex) >= parseInt(todaysIndex)) {
     return true;
   } else { return false; }

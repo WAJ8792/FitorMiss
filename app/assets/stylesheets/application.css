@@ -29,56 +29,6 @@ ul {
   list-style: none;
 }
 
-/* .app-body {
-  display: flex;
-  height: 100%;
-}
-
-
-
-/*
-.radio-input {
-  width: 12px;
-}
-
-  /* add class */
-
-/*
-.account button {
-  height: 34px;
-  width: 78px;
-  border-radius: 5px;
-  border: none;
-  background-color: #1ed0b1;
-  color: white;
-  font-size: 13px;
-}
-
-.account h2 {
-  text-align: center;
-}
-
-.account section {
-  display: flex;
-  justify-content: space-around;
-}
-
-.cc-info section {
-  display: flex;
-  justify-content:
-}
-
-/* .day-selectors {
-  width: 75px;
-  margin-right: 28px;
-  padding-bottom: 12px;
-  cursor: pointer;
-} */
-
-
-
-
-
 .unchecked {
   border: solid black 1px;
   border-radius: 12px;
@@ -98,7 +48,6 @@ ul {
 
 
   /* conf modal */
-
 
 .confirmation div {
   background-color: #272b40;

@@ -67,7 +67,6 @@ export default class AddClass extends React.Component {
           hours: 0,
           min: 0
         },
-        seats: null,
         errors: [],
       });
     }
