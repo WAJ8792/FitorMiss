@@ -1,9 +1,12 @@
-export const holdSeat = (classId, seats, action, db) => {
-  seats = parseInt(seats);
-  if (action === "hold") {
-    seats = seats -= 1;
+export const maxOutClass = (db, thisClass, action) => {
+  const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length
+  if (thisClass.reservations && action === "hold") {
+    if (numReservations + 1 >= thisClass.seats) {
+      db.ref('classes/' + thisClass.id + '/max').set(true)
+    }
+  } else if (thisClass.reservations) {
+    db.ref('classes/' + thisClass.id + '/max').set(false)
   }
-  db.database().ref('classes/' + classId + '/seats_available').set(seats.toString());
 }
 
 export const confirmReserve = (db, thisClass, seats) => {
@@ -15,9 +18,8 @@ export const confirmReserve = (db, thisClass, seats) => {
     time: thisClass.time,
     created_at: new Date().getTime(),
   })
-  db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${resId}`)
+  const ref = db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${resId}`)
     .set(true)
-
 }
 
 export const hitReserve = reservation => {

@@ -17,6 +17,7 @@ export default class AddClass extends React.Component {
       day: "-",
       seats: null,
       type: "cardio",
+      max: false,
       errors: [],
     }
     this.handleChange = this.handleChange.bind(this);

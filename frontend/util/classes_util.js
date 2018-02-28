@@ -43,6 +43,7 @@ export const getClassesByDay = classes => {
   let tomorrowsIndex = indexOfTomorrow(todaysIndex);
   Object.keys(classes).forEach(id => {
     let thisClass = classes[id];
+    if (thisClass.max) { return; }
     switch (indexOfDay(thisClass.day)) {
       case todaysIndex:
         if (afterCurrentHours(thisClass.time)) {

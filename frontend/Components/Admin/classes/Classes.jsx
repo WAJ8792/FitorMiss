@@ -111,7 +111,6 @@ export default class Classes extends React.Component {
     newClass.amenities = userInfo.amenities;
     newClass.vendor = userInfo.gym_name;
     newClass.vendor_id = this.state.user;
-    newClass.seats_available = newClass.seats;
     newClass.created_at = new Date().getTime();
     this.props.addClass(newClass, app);
   }

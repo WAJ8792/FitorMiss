@@ -20,7 +20,13 @@ export default class GymClass extends React.Component {
         updateRes: true
       })
     } else {
-      this.setState({[field]: e.target.value});
+      let value;
+      if (field === "seats") {
+        value = parseInt(e.target.value)
+      } else {
+        value = e.target.value;
+       }
+      this.setState({[field]: value});
     }
 
   }

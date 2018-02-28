@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses, getTime } from  '../../../util/classes_util';
-import { holdSeat, confirmReserve, hitReserve } from  '../../../util/reservation_util';
+import { maxOutClass, confirmReserve, hitReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassFilters from './Filters';
@@ -84,7 +84,7 @@ class CustomerPage extends React.Component {
       errors.push("This class is unavailable.")
       console.log("The time for this class is not valid");
     }
-    if (thisClass.seats_available < 1) {
+    if (thisClass.max) {
       errors.push("There no longer seats available for this class.");
     }
 
@@ -117,13 +117,13 @@ class CustomerPage extends React.Component {
     e.preventDefault();
 
     let thisClass = this.state.thisClass;
-    holdSeat(thisClass.id, thisClass.seats_available, "removeHold", app);
+    maxOutClass(firebase.database(), thisClass, "removeHold");
     this.setState({modal: null});
   }
 
   handleReserve(thisClass) {
     if (this.isValidReservation(thisClass)) {
-      holdSeat(thisClass.id, thisClass.seats_available, "hold", app);
+      maxOutClass(firebase.database(), thisClass, "hold");
 
       this.setState({
         thisClass,
