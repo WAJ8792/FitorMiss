@@ -1,16 +1,16 @@
 export const maxOutClass = (db, thisClass, action) => {
-  const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length
+  const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
   if (thisClass.reservations && action === "hold") {
     if (numReservations + 1 >= thisClass.seats) {
-      db.ref('classes/' + thisClass.id + '/max').set(true)
+      db.ref('classes/' + thisClass.id + '/max').set(true);
     }
   } else if (thisClass.reservations) {
-    db.ref('classes/' + thisClass.id + '/max').set(false)
+    db.ref('classes/' + thisClass.id + '/max').set(false);
   }
 }
 
 export const confirmReserve = (db, thisClass, seats) => {
-  const resId = db.ref("reservations").push().getKey()
+  const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,
     customer_id: thisClass.user,
