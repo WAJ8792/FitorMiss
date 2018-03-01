@@ -98,7 +98,7 @@ export const orderClassesByDate = (classes) => {
     let thisClass = classes[id];
     let front = [];
     const length = list.length;
-    classes[id].id = id;
+    // classes[id].id = id;
     if (isUpcoming(thisClass)) {
       for (let i = 0; i <= length; i++) {
         if (i === length)
@@ -125,44 +125,15 @@ export const orderClassesByDate = (classes) => {
 
 function isUpcoming(reservation) {
   if (reservation.canceled) { return false; }
-  let resDateIndex = monthIndex(
-    reservation.date.slice(0, 3)
-  ) + reservation.date.slice(4, 6);
+  const now = Math.round(new Date().getTime() / 1000);
+  const next24Hours = Math.round(new Date().getTime() / 1000) + (24 * 3600);
+  const classTimestamp = Date.parse(
+    reservation.date + " " + reservation.time + " EST"
+  ) / 1000;
 
-  const today = new Date();
-  const todaysIndex = today.getMonth().toString() + today.getDate().toString();
-  if (parseInt(resDateIndex) >= parseInt(todaysIndex)) {
+  if (classTimestamp > now && classTimestamp < next24Hours) {
     return true;
   } else { return false; }
-}
-
-function monthIndex(month) {
-  switch (month) {
-    case "Jan":
-      return 0;
-    case "Feb":
-      return 1;
-    case "Mar":
-      return 2;
-    case "Apr":
-      return 3;
-    case "May":
-      return 4;
-    case "Jun":
-      return 5;
-    case "Jul":
-      return 6;
-    case "Aug":
-      return 7;
-    case "Sep":
-      return 8;
-    case "Oct":
-      return 9;
-    case "Nov":
-      return 10;
-    case "Dec":
-      return 11;
-  }
 }
 
 export const getTime = (time) => {
