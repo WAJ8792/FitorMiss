@@ -1,58 +1,66 @@
-body {
-    font-family: Helvetica;
-    font-weight: 100;
-    margin-left: 30px;
-    font-size: 14px;
+.page-detail {
+  font-family: Helvetica;
+  font-weight: 100;
+  margin-left: 30px !important;
+  font-size: 14px;
 }
 
 input, select{
-    outline: none;
+  outline: none;
 }
 
-#header {
-    font-size: 14px;
-    color: #1fd1ad;
-    text-transform: uppercase;
-    font-size: 14px;
-    margin-bottom: 20px;
+#billing-header {
+  font-size: 14px;
+  color: #1fd1ad;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin: 0;
 }
 
 /* Credit Card Module */
 
+#cc-info p, #expiration p {
+  margin: 20px 0 15px 0;
+}
+
+#zipcode p {
+  margin: 0 0 10px 0;
+}
+
 #cc-info {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #cc-info input, #expiration input {
-    padding: 10px 15px;
-    text-align: center;
+  padding: 10px 15px;
+  text-align: center;
 }
 
 .cc-number {
-    width: 225px;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 10px 0 !important;
-    margin-right: 50px;
+  width: 225px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 10px 0 !important;
+  margin-right: 50px;
 }
 
 #csc span {
-    display: flex;
+  display: flex;
 }
 
 .cc-csc-number {
-    width: 40px;
-    position: relative;
+  width: 40px;
+  position: relative;
 }
 
 img {
-    height: 35px;
-    margin-left: 20px;
+  height: 35px;
+  margin-left: 20px;
 }
 
 .expiration-input {
-    width: 100px;
+  width: 100px;
 }
 
 
@@ -60,83 +68,90 @@ img {
 /* Billing Address Module */
 
 .billing-text {
-    margin: 30px 0 20px 0;
+  margin: 30px 0 20px 0;
 }
 
 #street, #state-city {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 #address-input {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #street {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 select {
-    height: 30px;
-    background: white;
-    border-radius: 0;
-    -webkit-appearance: none;
-    padding-left: 10px;
-    cursor: pointer;
+  height: 30px;
+  background: white;
+  border-radius: 0;
+  -webkit-appearance: none;
+  padding-left: 10px;
+  cursor: pointer;
 }
 
 #address input, #contact-info input {
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #address input, #contact-info input {
-    padding-bottom: 10px;
-    font-size: 12px;
-    width: 200px;
-    margin-bottom: 20px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  width: 200px;
+  margin-bottom: 20px;
 }
 
 #zipcode-input {
-    border: 1px solid rgba(0, 0, 0, 0.3) !important;
-    width: 50px !important;
-    padding: 5px 10px;
-    text-align: center;
-    letter-spacing: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  width: 50px !important;
+  padding: 5px 10px;
+  text-align: center;
+  letter-spacing: 3px;
 }
 
 
 /* Name Module */
 
 #contact-info {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .contact-name {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .contact-name input:first-of-type {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 
 /* Submit Button */
 
 input[type="submit"] {
-    background-color: #1fd1ad;
-    border: none;
-    color: #FFF;
-    border-radius: 5px;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: 200;
-    padding: 10px 15px;
-    outline: none;
+  margin-top: 15px;
+  background-color: #1fd1ad;
+  border: none;
+  color: #FFF;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 200;
+  padding: 10px 15px;
+  outline: none;
+}
+
+input[type="submit"]:hover {
+  background-color: #1cb594;
+  transition: .3s;
 }
 
 input[type="submit"]:active {

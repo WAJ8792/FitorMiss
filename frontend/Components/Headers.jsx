@@ -108,9 +108,7 @@ class Header extends React.Component {
             backgroundColor: '#002e5d',
           }}>
             <h4 style={{
-              margin: "15%",
-              marginLeft: '30%',
-              marginBottom: "10px",
+              margin: "25% auto",
               color: '#19c8aa',
               fontSize: "45px"
             }}>
