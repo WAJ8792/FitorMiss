@@ -66,10 +66,10 @@ export default class Classes extends React.Component {
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_added", snap => {
       this.addClassToList(snap.val(), snap.getRef().key);
     });
-    this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_changed", snap => {
-      this.setState({classes: []});
-      this.addClassToList(snap.val(), snap.getRef().key);
-    });
+    // this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_changed", snap => {
+    //   this.setState({classes: []});
+    //   this.addClassToList(snap.val(), snap.getRef().key);
+    // });
 
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_removed", snap => {
       this.removeFromClassList(snap.getRef().key)
