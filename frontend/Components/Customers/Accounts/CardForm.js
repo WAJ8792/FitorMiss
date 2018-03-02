@@ -6,20 +6,20 @@ import React from 'react';
 class CardForm extends React.Component {
   render() {
     return (
-      <form action="" id="payment">
+      <form action="" id="billing">
         <p id="billing-header">Billing  and  Payment</p>
         <div id="cc-info">
           <div id="cc-number">
-              <p>Credit Card Number</p>
-              <input className="cc-number" type="text" placeholder="XXXX-XXXX-XXXX-4242" />
+            <p>Credit Card Number</p>
+            <input className="cc-number" type="text" placeholder="XXXX-XXXX-XXXX-4242" />
           </div>
 
           <div id="csc">
-              <p>Security Code (CSC)</p>
-              <span>
-                  <input className="cc-csc-number" type="password" placeholder="XXX" />
-                  <img src={window.images.cvc} alt="CVC Image" />
-              </span>
+            <p>Security Code (CSC)</p>
+            <span>
+              <input className="cc-csc-number" type="password" placeholder="XXX" />
+              <img src={window.images.cvc} alt="CVC Image" />
+            </span>
           </div>
         </div>
 
@@ -32,10 +32,10 @@ class CardForm extends React.Component {
           <p className="billing-text">Billing Address</p>
           <div id="address-input">
             <div id="street">
-              <input className="address-input" type="text" placeholder="Street Address" />
-              <input type="text" placeholder="APT #" />
+            <input className="address-input" type="text" placeholder="Street Address" />
+            <input type="text" placeholder="APT #" />
             </div>
-      
+
             <div id="state-city">
               <input type="text" placeholder="City" />
               <select>
@@ -94,7 +94,7 @@ class CardForm extends React.Component {
               </select>
             </div>
           </div>
-            
+
           <div id="zipcode">
               <p>Zip Code</p>
               <input id="zipcode-input" type="text" placeholder="10010" />
@@ -109,7 +109,7 @@ class CardForm extends React.Component {
         </div>
         <input type="submit" value="Save Billing Information" />
     </form>
-    )
+    );
   }
 }
 

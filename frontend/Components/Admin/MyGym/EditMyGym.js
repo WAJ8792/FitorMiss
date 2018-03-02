@@ -74,17 +74,32 @@ export default class EditMyGym extends React.Component {
       neighborhood: this.state.neighborhood,
       email: this.state.email,
     });
+    const amenities = this.state.amenities;
     if (this.state.amenityKey) {
-      firebase.database().ref('amenities/' + this.state.amenityKey).set(this.state.amenities);
+      amenities.vendor_id = this.state.user;
+      console.log(amenities);
+      firebase.database().ref('amenities/' + this.state.amenityKey).set(amenities);
     } else {
-      let amenities = this.state.amenities;
       amenities.vendor_id = this.state.user;
       firebase.database().ref('amenities').push().set(amenities);
     }
+    firebase.database().ref("classes")
+    .orderByChild("vendor_id").equalTo(this.state.user).on("value", snap => {
+      if (snap.val() != null) {
+        console.log(Object.keys(snap.val()));
+        Object.keys(snap.val()).forEach(classId => {
+          let newClass = snap.val()[classId];
+          newClass.vendor = this.state.gymName;
+          newClass.neighborhood = this.state.neighborhood;
+          firebase.database().ref("classes/" + classId).set(newClass);
+        })
+      }
+    })
   }
 
   render() {
     let loading;
+    console.log(this.state.amenities);
     if (!this.state.gymName) {
       loading = <p style={{color: 'red'}}>Retrieving your information...</p>
     } else { loading = null }
