@@ -102,21 +102,15 @@ class Header extends React.Component {
     {
         return (
           <div className="header" style={{
-            width: "100%",
-            height: "100%",
             zIndex: "10",
             backgroundColor: '#002e5d',
           }}>
-            <h4 style={{
-              margin: "25% auto",
-              color: '#19c8aa',
-              fontSize: "45px"
-            }}>
-              <img src={window.images.logo} /><br />
-              Loading Your Info!
-            </h4>
-            <div className="line" style={{marginLeft: '8%'}}>
-              <div id="c3"> </div>
+            <div className="loading-message">
+              <img src={window.images.logo} />
+              <p>Loading Your Info!</p>
+              <div className="line">
+                <div id="c3" />
+              </div>
             </div>
           </div>
         );

@@ -92,7 +92,7 @@
   background-color: green;
   margin-top: 20px;
   position: relative;
-  left: 18%;
+  left: 34%;
   border-radius: 18px;
 
   #c3 {
@@ -120,4 +120,19 @@
 
 .wordmark span:last-of-type {
   color: #1fd1ad;
+}
+
+.loading-message {
+  margin-top: 15%;
+  text-align: center;
+}
+
+.loading-message img {
+  height: 150px;
+}
+
+.loading-message p {
+  color: rgba(255, 255, 255, .8);
+  margin-top: 0;
+  font-size: 46px;
 }
