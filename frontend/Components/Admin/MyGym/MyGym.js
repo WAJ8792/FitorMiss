@@ -57,7 +57,7 @@ class MyGym extends React.Component {
             <Note
               title="Users"
               stat="140"
-              note="Users  are registered for a class this month" />
+              note="Users  are registered for a class this month!" />
             </section>
           </section>
         </div>
@@ -75,15 +75,15 @@ class Note extends React.Component {
   render() {
     return(
       <div className="note">
-        <div>
-          <h4>{this.props.title}</h4>
+        <div className="note-header">
+          {this.props.title}
         </div>
-        <div>
-          <h2>{this.props.stat}</h2>
-          <p>{this.props.note}</p>
+        <div className="note-text">
+          <p>{this.props.stat} </p>
+          {this.props.note}
         </div>
       </div>
-    )
+    );
   }
 }
 
