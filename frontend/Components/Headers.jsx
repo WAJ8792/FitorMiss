@@ -11,7 +11,7 @@ class Header extends React.Component {
     this.state = {
       user: {uid: "", email: ""},
       loggedOut: "loading",
-    }
+    };
     this.logout = this.logout.bind(this);
     this.checkLoggedIn = this.checkLoggedIn.bind(this);
     window.logout = this.logout.bind(this);
@@ -27,7 +27,7 @@ class Header extends React.Component {
     let user = {
       uid: this.state.user.uid,
       email: this.state.user.email,
-    }
+    };
     this.props.logout(user, app);
     this.setState({loggedOut: true});
   }
@@ -41,7 +41,7 @@ class Header extends React.Component {
           this.getUserType(user.uid);
           return true;
         } else {
-          this.setState({loggedOut: true})
+          this.setState({loggedOut: true});
           return false;
         }
       });
@@ -62,18 +62,18 @@ class Header extends React.Component {
     if (this.state.loggedOut === true)
     {
       if (!this.props.location.pathname.includes('signin')) {
-        return (<Redirect to="/signin" />)
+        return (<Redirect to="/signin" />);
       } else {
         return (
           <div className="header" style={{zIndex: '-1'}}>
           </div>
-        )
+        );
       }
     }
     else if (this.state.type === "customer")
     {
       if (!this.props.location.pathname.includes('customer')) {
-        return (<Redirect to="/customer" />)
+        return (<Redirect to="/customer" />);
       } else {
         return (
           <div className="header">
@@ -81,13 +81,13 @@ class Header extends React.Component {
             <TopHeader logout={this.logout}/>
             <CustomerHeader />
           </div>
-        )
+        );
       }
     }
     else if (this.state.type === "vendor")
     {
       if (!this.props.location.pathname.includes('admin')) {
-        return (<Redirect to="/admin" />)
+        return (<Redirect to="/admin" />);
       } else {
         return (
           <div className="header">
@@ -95,33 +95,25 @@ class Header extends React.Component {
             <TopHeader logout={this.logout}/>
             <AdminHeader />
           </div>
-        )
+        );
       }
     }
     else
     {
         return (
           <div className="header" style={{
-            width: "100%",
-            height: "100%",
             zIndex: "10",
             backgroundColor: '#002e5d',
           }}>
-            <h4 style={{
-              margin: "15%",
-              marginLeft: '30%',
-              marginBottom: "10px",
-              color: '#19c8aa',
-              fontSize: "45px"
-            }}>
-              <img src={window.images.logo} /><br />
-              Loading Your Info!
-            </h4>
-            <div className="line" style={{marginLeft: '8%'}}>
-              <div id="c3"> </div>
+            <div className="loading-message">
+              <img src={window.images.logo} />
+              <p>Loading Your Info!</p>
+              <div className="line">
+                <div id="c3" />
+              </div>
             </div>
           </div>
-        )
+        );
     }
   }
 }
@@ -147,7 +139,7 @@ class AdminHeader extends React.Component {
           </NavLink>
         </div>
       </section>
-    )
+    );
   }
 }
 
@@ -181,23 +173,23 @@ class TopHeader extends React.Component {
     let logout;
 
     if (this.props.logout) {
-      logout = <h3 onClick={e => this.props.logout(e)}>Sign Out</h3>
+      logout = <div className="logout" onClick={e => this.props.logout(e)}>Sign Out</div>
     } else { logout = null; }
 
     return(
       <section className="top-header">
-        <div><h2>FitOrMiss</h2></div>
+        <div className="wordmark"><span>Fit</span>or<span>Miss</span></div>
         {logout}
       </section>
-    )
+    );
   }
 }
 
 const mapStateToProps = ( state ) => {
   return {
     user: state.sessions.user,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = ( dispatch ) => ({
   dispatchUser: (user) => dispatch(receiveUser(user)),

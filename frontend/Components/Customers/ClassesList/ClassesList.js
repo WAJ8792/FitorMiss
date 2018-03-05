@@ -59,7 +59,7 @@ export default class ClassList extends React.Component {
       <div className="page-container">
         <section className="my-gym">
 
-          <h1>Your upcoming class reservations</h1>
+          <p>Your upcoming class reservations</p>
           <ul className="display-class-info">
             {classes}
           </ul>
