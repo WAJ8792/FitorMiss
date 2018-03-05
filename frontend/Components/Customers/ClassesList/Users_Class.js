@@ -32,9 +32,11 @@ export default class UsersClassInfo extends React.Component {
 
     return (
       <div className="class-module-class">
-        <img src={window.images.logo} alt="Flywheel Sports" />
+        <div>
+          <img src={window.images.logoNoBackground} alt="Flywheel Sports" />
+        </div>
 
-        <p class="class-info">
+        <p className="class-info">
           {thisClass.vendor}, {thisClass.neighborhood} <br />
           {thisClass.name} <br />
           {this.props.thisClass.date.slice(0, 6)} <br />

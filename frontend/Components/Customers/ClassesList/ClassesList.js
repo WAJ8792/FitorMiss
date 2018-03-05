@@ -8,8 +8,11 @@ export default class ClassList extends React.Component {
     super();
     this.state = {
       user: "",
-      classes: [],
+      upcomingClasses: [],
+      pastClasses: [],
       pricing_schema: [],
+      upcoming: "selected",
+      past: "unselected"
     }
     this.getCurrentUser();
   }
@@ -36,24 +39,43 @@ export default class ClassList extends React.Component {
   }
 
   fetchClasses(user) {
-    let classes = [];
+    let classes;
     firebase.database().ref('reservations')
     .orderByChild('customer_id').equalTo(user).on('value', snap => {
       if (snap.val() != null) {
         classes = orderClassesByDate(snap.val());
       }
-      this.setState({classes});
+      this.setState({
+        upcomingClasses: classes.upcomingList,
+        pastClasses: classes.pastList
+      });
     })
   }
 
-  listClasses() {
-    return this.state.classes.map(thisClass =>
+  toggleSelectors(selector) {
+    if (this.state[selector] === "unselected") {
+      this.toggle("upcoming");
+      this.toggle("past");
+    }
+  }
+
+  toggle(selector) {
+    if (this.state[selector] === "unselected") {
+      this.setState({[selector]: "selected"});
+    } else { this.setState({[selector]: "unselected"})}
+  }
+
+  listClasses(classes) {
+    return this.state[classes].map(thisClass =>
       <ClassInfo key={thisClass.id} thisClass={thisClass} />
     )
   }
 
   render() {
-    let classes = this.listClasses();
+    let classes = (this.state.upcoming === "selected")
+      ? this.listClasses("upcomingClasses")
+      : this.listClasses("pastClasses")
+    let state = this.state;
     return(
       <div id="page-background">
         <div className="page-container">
@@ -61,14 +83,22 @@ export default class ClassList extends React.Component {
             <div id="classes-page">
 
               <div id="class-module">
-                <div class="class-module-buttons">
-                  <button class="upcoming">Upcoming Classes</button>
-                  <button class="past">Past Classes</button>
+                <div className="class-module-buttons">
+                  <button
+                    className={`customer-classes-${state.upcoming}`}
+                    onClick={() => this.toggleSelectors("upcoming")}>
+                    Upcoming Classes
+                  </button>
+                  <button
+                    className={`customer-classes-${state.past}`}
+                    onClick={() => this.toggleSelectors("past")}>
+                    Past Classes
+                  </button>
                 </div>
 
-                <hr class="classes-hr" />
+                <hr className="classes-hr" />
 
-                <div class="class-module-classes">
+                <div className="class-module-classes">
                   {classes}
                 </div>
               </div>
@@ -82,23 +112,23 @@ export default class ClassList extends React.Component {
 }
 
 <div id="summary-and-benefits">
-  <div class="summary">
-    <div class="box-header">
+  <div className="summary">
+    <div className="box-header">
       Summary
     </div>
 
-    <div class="box-content">
+    <div className="box-content">
       <p>21</p> classes completed
     </div>
 
   </div>
 
-  <div class="benefits">
-    <div class="box-header">
+  <div className="benefits">
+    <div className="box-header">
       Benefit Box
     </div>
 
-    <div class="box-content">
+    <div className="box-content">
       <p>$140</p> saved
     </div>
   </div>

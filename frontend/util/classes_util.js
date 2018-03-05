@@ -93,34 +93,41 @@ function orderByTime(list, thisClass) {
 }
 
 export const orderClassesByDate = (classes) => {
-  let list = []
+  let upcomingList = [];
+  let pastList = [];
   Object.keys(classes).forEach(id => {
-    let thisClass = classes[id];
-    let front = [];
-    const length = list.length;
-    // classes[id].id = id;
+    const thisClass = classes[id];
+    let upcomingListFront = [];
+    let pastListFront = [];
     if (isUpcoming(thisClass)) {
-      for (let i = 0; i <= length; i++) {
-        if (i === length)
-        {
-          list.push(classes[id]);
-          list = front.concat(list.slice(i, length+1));
-          break;
-        }
-        else if (list[i].time < thisClass.time)
-        {
-          front.push(list[i]);
-        }
-        else
-        {
-          front.push(classes[id]);
-          list = front.concat(list.slice(i, length+1));
-          break;
-        }
-      }
+      setClassByTime(upcomingList, upcomingListFront, thisClass);
+    } else {
+      setClassByTime(pastList, pastListFront, thisClass);
     }
   });
-  return list;
+  return {upcomingList, pastList};
+}
+
+function setClassByTime(list, front, thisClass) {
+  const length = list.length;
+  for (let i = 0; i <= length; i++) {
+    if (i === length)
+    {
+      list.push(thisClass);
+      list = front.concat(list.slice(i, length+1));
+      break;
+    }
+    else if (list[i].time < thisClass.time)
+    {
+      front.push(list[i]);
+    }
+    else
+    {
+      front.push(thisClass);
+      list = front.concat(list.slice(i, length+1));
+      break;
+    }
+  }
 }
 
 function isUpcoming(reservation) {
