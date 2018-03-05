@@ -23,6 +23,14 @@ export default class Account extends React.Component {
     this.getCurrentUser();
   }
 
+  resetPassword() {
+    firebase.auth().sendPasswordResetEmail(this.state.userInfo.email).then( () => {
+      console.log("Email sent");
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+
   getCurrentUser() {
     app.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -143,6 +151,10 @@ export default class Account extends React.Component {
               onChange={this.handleChange("phone")}
               value={this.state.phone}/>
           </div>
+
+          <button onClick={this.resetPassword.bind(this)}>
+            Reset Password
+          </button>
 
         </section>
         <button onClick={() => submitAddress()} style={{float: 'right'}}>Submit</button>

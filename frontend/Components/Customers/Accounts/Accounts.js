@@ -4,6 +4,15 @@ import React from 'react';
 import CardForm from './CardForm';
 
 export default class Accounts extends React.Component {
+
+  resetPassword() {
+    firebase.auth().sendPasswordResetEmail(this.state.userInfo.email).then( () => {
+      console.log("Email sent");
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+
   render() {
     return(
       <div id="page-background">

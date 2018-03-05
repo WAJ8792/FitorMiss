@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTimeRange } from '../../../util/classes_util';
+import { getTime, getTimeRange } from '../../../util/classes_util';
 
 export default class GymClass extends React.Component {
   constructor(props) {
@@ -22,6 +22,15 @@ export default class GymClass extends React.Component {
         })
       }
     })
+  }
+
+  handleDurationChange(e, field) {
+    let duration = this.state.duration;
+    duration[field] = parseInt(e.target.value);
+    this.setState({
+      duration,
+      updateRes: true
+    });
   }
 
   handleChange(e, field) {
@@ -50,6 +59,7 @@ export default class GymClass extends React.Component {
 
   updateRes(resId) {
     this.app.ref('reservations/' + resId + '/time').set(this.state.time);
+    this.app.ref('reservations/' + resId + '/time').set(this.state.day);
   }
 
   getReservations() {
@@ -149,10 +159,22 @@ export default class GymClass extends React.Component {
 
             <div>
               <p>Duration</p>
-              <input
-                type="number"
-                onChange={e => this.handleChange(e, 'duration')}
-                value={this.state.duration}/>
+                <section style={{padding: "0px"}}>
+                  <p style={{fontSize: "8px", width: "52px"}}>Hours</p>
+                  <p style={{fontSize: "8px"}}>Minutes</p>
+                </section>
+
+                <section style={{padding: "0px"}}>
+                  <input
+                    type="number"
+                    onChange={e => this.handleDurationChange(e, 'hours')}
+                    value={this.state.duration.hours}/>
+
+                  <input
+                    type="number"
+                    onChange={e => this.handleDurationChange(e, 'min')}
+                    value={this.state.duration.min}/>
+                </section>
             </div>
 
             <div>
@@ -161,6 +183,19 @@ export default class GymClass extends React.Component {
                 type="number"
                 onChange={e => this.handleChange(e, 'seats')}
                 value={this.state.seats}/>
+            </div>
+
+            <div>
+              <p>Workout Type</p>
+                <select
+                  onChange={e => this.handleChange(e, 'type')}
+                  value={this.state.type}>
+                  <option>Cardio</option>
+                  <option>Boxing</option>
+                  <option>Rowing</option>
+                  <option>Yoga</option>
+                  <option>Pilates</option>
+                </select>
             </div>
 
             <div>
@@ -195,10 +230,11 @@ export default class GymClass extends React.Component {
           <div>
             <button onClick={e => this.handleDelete(e)}>Delete Class</button>
           </div>
-          <div>
-            <button onClick={e => this.readWriteClass(e, 'write')}>Edit Class</button>
-          </div>
         </section>
+
+        <div>
+          <button onClick={e => this.readWriteClass(e, 'write')}>Edit Class</button>
+        </div>
       </div>
     )
   }
