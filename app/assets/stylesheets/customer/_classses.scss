@@ -24,3 +24,145 @@
     width: 100px;
   }
 }
+
+#classes-page {
+  display: flex;
+  margin-top: 18.75px;
+
+  .summary-and-benefits {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .box-header {
+    background: #1fd1ad;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: white;
+    font-weight: 200;
+    padding: 10px;
+  }
+
+  .box-content {
+    background-color: rgba(196,190,185, .2);
+    height: 50%;
+    text-align: center;
+    color: grey;
+    padding-bottom: 30px;
+    font-weight: 100;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+
+  .box-content p {
+    margin: 0 0 8px 0;
+    padding-top: 20px;
+    font-size: 48px;
+    letter-spacing: -2px;
+  }
+
+  #summary-and-benefits .summary, #summary-and-benefits .benefits {
+    height: 225px;
+    width: 225px;
+  }
+
+  button {
+    font-weight: 200;
+    padding: 15px 20px;
+    outline: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    border: none;
+    height: 45px;
+    cursor: pointer;
+    background-color: #1fd1ad;
+  }
+
+  #class-module {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .class-module-buttons {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .class-module-buttons button:last-of-type {
+      margin-left: 8px;
+    }
+
+    .upcoming {
+      background-color: #1fd1ad;
+      color: #FFF;
+    }
+
+    .past {
+      background-color: rgba(206,235,234, .6);
+      color: #778583;
+    }
+
+    .past:hover {
+      background-color: rgba(206,235,234, .8);
+    }
+
+    .classes-hr {
+      margin-top: 0;
+      border: 4px solid #1fd1ad;
+    }
+
+    .class-module-classes {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .class-module-class {
+      width: 100%;
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .class-info {
+      margin: auto;
+    }
+
+    img {
+      height: 150px;
+    }
+
+    .class-cancel {
+      margin: auto;
+      color: #FFF;
+      border-radius: 5px;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 200;
+      padding: 10px 25px;
+      outline: none;
+    }
+
+    .class-cancel:hover {
+      background-color: #1cb594;
+      transition: .3s;
+    }
+
+    .class-cancel:active {
+      background-color: #1cb594;
+    }
+
+    p {
+      color: #778583;
+      font-size: 14;
+      line-height: 1.3em;
+    }
+
+    hr {
+      width: 84%;
+      margin: 0;
+    }
+  }
+
+}

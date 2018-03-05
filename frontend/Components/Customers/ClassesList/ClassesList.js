@@ -56,17 +56,50 @@ export default class ClassList extends React.Component {
     let classes = this.listClasses();
     return(
       <div id="page-background">
-      <div className="page-container">
-        <section className="my-gym">
+        <div className="page-container">
+          <div className="page-detail">
+            <div id="classes-page">
 
-          <p>Your upcoming class reservations</p>
-          <ul className="display-class-info">
-            {classes}
-          </ul>
+              <div id="class-module">
+                <div class="class-module-buttons">
+                  <button class="upcoming">Upcoming Classes</button>
+                  <button class="past">Past Classes</button>
+                </div>
 
-        </section>
-      </div>
+                <hr class="classes-hr" />
+
+                <div class="class-module-classes">
+                  {classes}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
 }
+
+<div id="summary-and-benefits">
+  <div class="summary">
+    <div class="box-header">
+      Summary
+    </div>
+
+    <div class="box-content">
+      <p>21</p> classes completed
+    </div>
+
+  </div>
+
+  <div class="benefits">
+    <div class="box-header">
+      Benefit Box
+    </div>
+
+    <div class="box-content">
+      <p>$140</p> saved
+    </div>
+  </div>
+</div>

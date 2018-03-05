@@ -56,7 +56,15 @@ class CustomerPage extends React.Component {
       if (snap.val() != null) {
         this.setState({userInfo: snap.val()[user]});
         this.fetchClassInfo(snap.val()[user].neighborhood_id);
+        this.fetchNeighborhood(snap.val()[user].neighborhood_id);
       }
+    })
+  }
+
+  fetchNeighborhood(neighborhoodId) {
+    firebase.database().ref('neighborhoods')
+    .orderByKey().equalTo(neighborhoodId).on("value", snap => {
+      this.setState({neighborhood: snap.val()[neighborhoodId]})
     })
   }
 
@@ -162,6 +170,7 @@ class CustomerPage extends React.Component {
   }
 
   render() {
+    console.log(this.state);
     if (this.state.user === "") { return null; }
     let errors;
     let classes = this.displayClasses();
@@ -177,20 +186,22 @@ class CustomerPage extends React.Component {
 
     return(
       <div id="page-background">
+        <div className="page-container">
+          <div className="page-detail">
+            <div id="upcoming-classes-page">
+              <h1>{this.state.neighborhood}</h1>
+              <br />
 
-      <div className="page-container">
+              {errors}
+              {this.state.modal}
 
-        <section className="my-gym">
+              <ul className="display-class-info">
+                {classes}
+              </ul>
 
-          {errors}
-          {this.state.modal}
-
-          <ul className="display-class-info">
-            {classes}
-          </ul>
-
-        </section>
-      </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

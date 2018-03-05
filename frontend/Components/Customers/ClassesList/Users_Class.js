@@ -31,26 +31,17 @@ export default class UsersClassInfo extends React.Component {
     }
 
     return (
-      <section className="class-info">
-      <div>
-        <h5 style={{color: '#1ed0b1'}}>{time}</h5>
-        <p>{this.props.thisClass.date.slice(0, 6)}</p>
-      </div>
+      <div className="class-module-class">
+        <img src={window.images.logo} alt="Flywheel Sports" />
 
-      <div>
-        <h5 style={{color: '#1ed0b1'}}>{thisClass.vendor}</h5>
-        <p>Class description</p>
-      </div>
+        <p class="class-info">
+          {thisClass.vendor}, {thisClass.neighborhood} <br />
+          {thisClass.name} <br />
+          {this.props.thisClass.date.slice(0, 6)} <br />
+          {time}
+        </p>
 
-      <div>
-        <h5>{thisClass.neighborhood}</h5>
       </div>
-
-      <div>
-        <h5>{thisClass.name}</h5>
-      </div>
-
-      </section>
     )
   }
 }

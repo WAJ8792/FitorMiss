@@ -21,6 +21,7 @@ import Classes from './containers/classes_container';
 import CustomerPage from './Customers/HomePage/Customer';
 import ClassList from './Customers/ClassesList/ClassesList';
 import CustomerAccounts from './Customers/Accounts/Accounts';
+import CustomerBilling from './Customers/Accounts/Billing';
 
 let store = configureStore();
 
@@ -49,8 +50,9 @@ const Root = ({ store }) => {
 
             <Route exact path="/customer" component={ClassList} />
             <Route path="/customer/classes" component={CustomerPage} />
+            <Route path="/customer/account" component={CustomerAccounts} />
             <StripeProvider apiKey="pk_test_MAnzzDoroKej8r9QoAEGEjjl">
-              <Route path="/customer/account" component={CustomerAccounts} />
+              <Route path="/customer/billing" component={CustomerBilling} />
             </StripeProvider>
 
           </App>

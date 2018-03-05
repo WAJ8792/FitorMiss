@@ -1,7 +1,7 @@
 export const maxOutClass = (db, thisClass, action) => {
-  const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
 
   if (thisClass.reservations && action === "hold") {
+      const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
       if (numReservations + 1 >= thisClass.seats) {
       db.ref('classes/' + thisClass.id + '/max').set(true);
     }
