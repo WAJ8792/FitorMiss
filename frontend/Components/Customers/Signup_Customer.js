@@ -62,7 +62,7 @@ export default class SignupCustomer extends React.Component {
         <section className="session-block">
           <div>
           <div>
-            <h4>Sign up as a customer!</h4>
+            <p>Sign up as a customer!</p>
               {this.state.error}
 
               <input
@@ -77,6 +77,18 @@ export default class SignupCustomer extends React.Component {
                 placeholder="Last Name"
                 onChange={this.handleChange("lastName")}
                 />
+                
+                <input
+                type="text"
+                value={this.state.email}
+                placeholder="Email Address"
+                onChange={this.handleChange("email")}/>
+
+                <input
+                type="password"
+                value={this.state.password}
+                placeholder="Password"
+                onChange={this.handleChange("password")}/>
 
               <p>Neighborhood</p>
                 <select
@@ -84,18 +96,6 @@ export default class SignupCustomer extends React.Component {
                 value={this.state.neighborhood} >
                   {neighborhoods}
                 </select>
-
-                <input
-                type="text"
-                value={this.state.email}
-                placeholder="Email Address"
-                onChange={this.handleChange("email")}/>
-
-              <input
-                type="password"
-                value={this.state.password}
-                placeholder="Password"
-                onChange={this.handleChange("password")}/>
 
               <button onClick={e => this.handleSubmit(e)}>Sign up</button>
           </div>
