@@ -141,11 +141,13 @@ export default class Classes extends React.Component {
       .set(this.getClass(thisClass));
   }
 
-  openModal() {
+  openModal(thisClass) {
     this.setState({
       modal: <AddClass
-        handleAdd={ this.handleAdd.bind(this)}
+        handleAdd={this.handleAdd.bind(this)}
+        saveChanges={this.saveChanges.bind(this)}
         user={this.props.user.uid}
+        thisClass={thisClass}
         removeModal={this.removeModal.bind(this)}
         error={this.props.classes.error} />
     })
@@ -163,6 +165,7 @@ export default class Classes extends React.Component {
           classes.push(<GymClass
             key={thisClass.class_id}
             props={thisClass}
+            openModal={this.openModal.bind(this)}
             addClass={this.addClass}
             saveChanges={this.saveChanges}
              />)
@@ -198,7 +201,7 @@ export default class Classes extends React.Component {
       <div id="page-background">
       <div className="page-container">
         <section className="classes">
-          <h2 onClick={this.openModal.bind(this)}>Add a class</h2>
+          <h2 onClick={() => this.openModal(false)}>Add a class</h2>
           <h1>Your Class Schedule</h1>
 
               <section className="days-list" >

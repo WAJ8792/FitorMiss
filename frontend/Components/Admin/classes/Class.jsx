@@ -60,6 +60,7 @@ export default class GymClass extends React.Component {
   updateRes(resId) {
     this.app.ref('reservations/' + resId + '/time').set(this.state.time);
     this.app.ref('reservations/' + resId + '/time').set(this.state.day);
+    this.app.ref('reservations/' + resId + '/time').set(this.state.duration);
   }
 
   getReservations() {
@@ -116,6 +117,8 @@ export default class GymClass extends React.Component {
 
   render() {
     let type = (this.state.type) ? this.state.type : null
+    let props = this.props;
+    let state = this.state;
 
     if (this.state.functionality === "write") {
       let times = this.getTimes()
@@ -233,7 +236,7 @@ export default class GymClass extends React.Component {
         </section>
 
         <div>
-          <button onClick={e => this.readWriteClass(e, 'write')}>Edit Class</button>
+          <button onClick={() => props.openModal(state)}>Edit Class</button>
         </div>
       </div>
     )

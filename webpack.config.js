@@ -10,13 +10,17 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: [/\.jsx?$/, /\.js?$/],
-        exclude: /node_modules/,
+        test: [/\.jsx?$/],
+        exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react']
+          presets: ['react', 'env'],
+          plugins: [
+            ["transform-class-properties", {"spec": true}],
+            ["transform-object-rest-spread"]
+          ]
         }
-      },
+      }
     ]
   },
   devtool: 'source-map',

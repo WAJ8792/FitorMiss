@@ -7,41 +7,77 @@ export default class AddClass extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      vendor_id: "",
-      name: "",
-      time: "1:00 PM",
-      duration: {
-        hours: 0,
-        min: 0
+      thisClass: {
+        vendor_id: "",
+        name: "",
+        time: "1:00 PM",
+        duration: {
+          hours: 0,
+          min: 0
+        },
+        day: "-",
+        seats: null,
+        type: "cardio",
+        max: false,
       },
-      day: "-",
-      seats: null,
-      type: "cardio",
-      max: false,
       errors: [],
+      edit: false
     }
     this.handleChange = this.handleChange.bind(this);
+    this.app = firebase.database();
+  }
+
+  componentWillMount() {
+    if (this.props.thisClass) {
+      const thisClass = this.props.thisClass;
+      this.setState({
+        thisClass,
+        edit: true
+      })
+    }
   }
 
   handleChange(e, field) {
-    let value;
-    if (field === "seats") {
-      value = parseInt(e.target.value)
+    if (field === 'time' || field === 'day') {
+      this.setState({
+        thisClass: {
+          ...this.state.thisClass,
+          [field]: e.target.value,
+        },
+        updateRes: true
+      })
     } else {
-      value = e.target.value;
-     }
-    this.setState({[field]: value});
+      let value;
+      if (field === "seats") {
+        value = parseInt(e.target.value)
+      } else {
+        value = e.target.value;
+       }
+    this.setState({
+      thisClass: {
+        ...this.state.thisClass,
+        [field]: value
+      }
+      })
+    }
   }
 
   handleDurationChange(e, field) {
-    let duration = this.state.duration;
+    let duration = this.state.thisClass.duration;
+    console.log(duration[field], e.target.value);
     duration[field] = parseInt(e.target.value);
-    this.setState({duration});
+    this.setState({
+      thisClass: {
+        ...this.state.thisClass,
+        duration,
+      },
+      updateRes: true
+    });
   }
 
   checkValidInput() {
     let errors = [];
-    let state = this.state;
+    let state = this.state.thisClass;
     if (state.name.length < 1) { errors.push("Please enter a valid class name."); }
     if (state.time.length < 1) { errors.push("Please choose a valid time."); }
     if (0 >= parseInt(state.duration)) { errors.push("Please enter a duration above 0.")}
@@ -59,17 +95,53 @@ export default class AddClass extends React.Component {
 
   handleAdd() {
     if (this.checkValidInput()) {
-      this.props.handleAdd(this.state)
+      this.props.handleAdd(this.state.thisClass)
       this.setState({
-        name: "",
-        time: "1:00 PM",
-        duration: {
-          hours: 0,
-          min: 0
-        },
-        errors: [],
+        thisClass: {
+          vendor_id: "",
+          name: "",
+          time: "1:00 PM",
+          duration: {
+            hours: 0,
+            min: 0
+          },
+          day: "-",
+          seats: null,
+          type: "cardio",
+          max: false,
+        }
       });
     }
+  }
+
+  updateRes(resId) {
+    const time = this.state.thisClass.time
+    console.log(resId);
+    this.app.ref('reservations/' + resId + '/time').set(time);
+    // this.app.ref('reservations/' + resId + '/day').set(this.state.day);
+    // this.app.ref('reservations/' + resId + '/time').set(this.state.duration);
+  }
+
+  getReservations() {
+    this.app.ref('reservations').orderByChild('class_id')
+      .equalTo(this.state.thisClass.class_id).once('value', snap => {
+        if (snap.val() != null) {
+          Object.keys(snap.val()).forEach(resId => {
+            this.updateRes(resId);
+          });
+        }
+        this.setState({updateRes: false});
+      });
+  }
+
+  saveChanges(e) {
+    e.preventDefault();
+
+    if (this.state.updateRes === true) {
+      this.getReservations();
+    }
+
+    this.props.saveChanges(this.state.thisClass);
   }
 
   getTimes() {
@@ -102,9 +174,13 @@ export default class AddClass extends React.Component {
   }
 
   render() {
-    let error;
-    let errors;
+    let error, errors, state
     let times = this.getTimes();
+    let thisClass = this.state.thisClass;
+
+    const button = (this.state.edit)
+      ? <button onClick={e => this.saveChanges(e)}>Save Changes</button>
+      : <button onClick={e => this.handleAdd(e)}>Add Class</button>
 
     if (this.props.error.length > 0) {
       error = this.reportError();
@@ -124,14 +200,14 @@ export default class AddClass extends React.Component {
             <input
               type="text"
               onChange={e => this.handleChange(e, 'name')}
-              value={this.state.name}/>
+              value={thisClass.name}/>
           </div>
 
           <div>
             <p>Day</p>
             <select
               onChange={e => this.handleChange(e, 'day')}
-              value={this.state.day}>
+              value={thisClass.day}>
               <option>-</option>
               <option>Monday</option>
               <option>Tuesday</option>
@@ -148,7 +224,7 @@ export default class AddClass extends React.Component {
             <select
               type="time"
               onChange={e => this.handleChange(e, 'time')}
-              value={this.state.time} >
+              value={thisClass.time} >
               {times}
             </select>
           </div>
@@ -164,12 +240,12 @@ export default class AddClass extends React.Component {
               <input
                 type="number"
                 onChange={e => this.handleDurationChange(e, 'hours')}
-                value={this.state.duration.hours}/>
+                value={thisClass.duration.hours}/>
 
               <input
                 type="number"
                 onChange={e => this.handleDurationChange(e, 'min')}
-                value={this.state.duration.min}/>
+                value={thisClass.duration.min}/>
             </section>
           </div>
 
@@ -178,14 +254,14 @@ export default class AddClass extends React.Component {
               <input
                 type="number"
                 onChange={e => this.handleChange(e, 'seats')}
-                value={this.state.seats}/>
+                value={thisClass.seats}/>
           </div>
 
           <div>
             <p>Workout Type</p>
               <select
                 onChange={e => this.handleChange(e, 'type')}
-                value={this.state.type}>
+                value={thisClass.type}>
                 <option>Cardio</option>
                 <option>Boxing</option>
                 <option>Rowing</option>
@@ -199,7 +275,7 @@ export default class AddClass extends React.Component {
         <span>
           {error}
           {errors}
-          <button onClick={e => this.handleAdd(e)}>Add Class</button>
+          {button}
         </span>
       </div>
       </div>
