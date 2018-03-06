@@ -29,37 +29,25 @@
   width: 195px;
   letter-spacing: 1px;
 
-  h2 {
-    margin: 0;
-    position: relative;
-    top: 10px;
-    font-size: 65px;
-  }
-
-  h4 {
-    position: relative;
-    top: 10px;
-  }
-
-  div:first-child {
-    height: 20%;
+  .note-header {
+    font-size: 20px;
+    padding: 10px 0;
     background-color: #19c8aa;
     color: white;
     text-align: center;
   }
 
-  div:last-child {
-    height: 80%;
+  .note-text {
     background-color: #f8f7f5;
-    color: #909090;
     text-align: center;
-  }
+    color: #19c8aa;
+    font-size: 22px;
+    padding: 5px;
 
-  p {
-    position: relative;
-    top: 29px;
-    width: 185px;
-    margin: 5px;
+    p {
+      font-size: 60px;
+      margin: 5px 0;
+    }
   }
 }
 
