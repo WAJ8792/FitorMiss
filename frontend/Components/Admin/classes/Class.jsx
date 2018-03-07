@@ -125,7 +125,7 @@ export default class GymClass extends React.Component {
       return(
         <div className="class-info">
 
-          <section>
+          <section className="class-info-class">
             <div>
               <p>Class Title</p>
               <input
@@ -215,29 +215,36 @@ export default class GymClass extends React.Component {
     return(
       <div className="class-info">
 
-        <section>
+        <section className="class-info-class-item">
           <div>
             {this.state.name}
             <p>{type}</p>
           </div>
 
-          <div>
+          <div className="class-item-time">
             {getTimeRange(this.state.time, this.state.duration)}
           </div>
 
-          <div>
+          <div className="class-item-seats">
             {this.state.seats}
-            <p style={{margin: 0}}>seats</p>
+            <span> seats</span>
           </div>
 
-          <div>
-            <button onClick={e => this.handleDelete(e)}>Delete Class</button>
+          <div className="class-edit-delete-buttons">
+            <button
+              className="class-edit-button"
+              onClick={() => props.openModal(state)}>
+              Edit Class
+            </button>
+
+            <button
+              className="class-delete-button"
+              onClick={e => this.handleDelete(e)}>
+              Delete Class
+            </button>
           </div>
         </section>
 
-        <div>
-          <button onClick={() => props.openModal(state)}>Edit Class</button>
-        </div>
       </div>
     )
   }
