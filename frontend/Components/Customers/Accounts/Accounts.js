@@ -18,7 +18,7 @@ export default class Accounts extends React.Component {
       <div id="page-background">
         <div className="page-container">
           <div className="page-detail">
-            <h1>Your Account</h1>
+            <div className="account-details-header">Your Account</div>
             <p>This page is under construction.
               Any changes here will not affect your Profile.
             </p>
@@ -35,7 +35,7 @@ export default class Accounts extends React.Component {
               <hr />
 
               <div id="password">
-                
+                Password
               </div>
 
               <hr />

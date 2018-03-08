@@ -199,6 +199,7 @@ export default class Classes extends React.Component {
 
     return(
       <div id="page-background">
+        {modal}
         <div className="page-container">
           <section className="class-list">
             <div
@@ -217,7 +218,6 @@ export default class Classes extends React.Component {
                   {classes}
                 </span>
 
-                {modal}
 
         </section>
       </div>

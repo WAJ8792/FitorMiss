@@ -122,7 +122,7 @@ export default class Account extends React.Component {
         {loading}
         <section>
 
-          <div>
+          <div className="vendor-account">
             <h3>Billing Adress</h3>
             <p>Street Address</p>
             <input type="text"
