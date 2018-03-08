@@ -150,7 +150,7 @@ export default class Classes extends React.Component {
         thisClass={thisClass}
         removeModal={this.removeModal.bind(this)}
         error={this.props.classes.error} />
-    })
+    });
   }
 
   render() {
@@ -168,12 +168,12 @@ export default class Classes extends React.Component {
             openModal={this.openModal.bind(this)}
             addClass={this.addClass}
             saveChanges={this.saveChanges}
-             />)
+             />);
         }
       });
-    } else { classes = <h5>You have no classes yet.</h5> }
+    } else { classes = <div className="class-list-message">You do not have any classes yet.</div>; }
     if (classes.length < 1) {
-      classes = <h5>You have no classes for this day.</h5>
+      classes = <div className="class-list-message">You do not have any classes for this day.</div>;
     }
 
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map( day => {
@@ -182,7 +182,7 @@ export default class Classes extends React.Component {
           <div className="day-selectors" style={{backgroundColor: "#1fc8aa"}} key={day}>
             {day}
           </div>
-        )
+        );
       } else {
         return(
           <div className="day-selectors"
@@ -193,30 +193,35 @@ export default class Classes extends React.Component {
             onClick={() => this.updateDay(day)} key={day}>
             {day}
           </div>
-        )
+        );
       }
-    })
+    });
 
     return(
       <div id="page-background">
-      <div className="page-container">
-        <section className="classes">
-          <h2 onClick={() => this.openModal(false)}>Add a class</h2>
-          <h1>Your Class Schedule</h1>
+        {modal}
+        <div className="page-container">
+          <section className="class-list">
+            <div
+              className="class-list-add-class"
+              onClick={() => this.openModal(false)}>
+              Add a class
+            </div>
+            <div className="class-list-header">Your Class Schedule</div>
 
-              <section className="days-list" >
-                {days}
-              </section>
-              <div className="classes-bar"> </div>
+                <section className="class-list-days" >
+                  {days}
+                </section>
+                <div className="class-list-bar" />
 
-              <span style={{overflow: 'scroll'}}>
-                {classes}
-              </span>
-              {modal}
+                <span>
+                  {classes}
+                </span>
 
-      </section>
+
+        </section>
+      </div>
     </div>
-    </div>
-    )
+  );
   }
 }

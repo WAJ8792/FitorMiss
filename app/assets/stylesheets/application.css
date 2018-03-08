@@ -21,10 +21,6 @@ body, #root, html, .App, .app {
   /* min-height: 340px; */
 }
 
-h3 {
-  margin: 0;
-}
-
 ul {
   list-style: none;
 }

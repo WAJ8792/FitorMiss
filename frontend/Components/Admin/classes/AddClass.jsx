@@ -12,8 +12,8 @@ export default class AddClass extends React.Component {
         name: "",
         time: "1:00 PM",
         duration: {
-          hours: 0,
-          min: 0
+          hours: "",
+          min: ""
         },
         day: "-",
         seats: null,
@@ -49,7 +49,7 @@ export default class AddClass extends React.Component {
     } else {
       let value;
       if (field === "seats") {
-        value = parseInt(e.target.value)
+        value = e.target.value
       } else {
         value = e.target.value;
        }
@@ -65,7 +65,7 @@ export default class AddClass extends React.Component {
   handleDurationChange(e, field) {
     let duration = this.state.thisClass.duration;
     console.log(duration[field], e.target.value);
-    duration[field] = parseInt(e.target.value);
+    duration[field] = e.target.value;
     this.setState({
       thisClass: {
         ...this.state.thisClass,
@@ -102,8 +102,8 @@ export default class AddClass extends React.Component {
           name: "",
           time: "1:00 PM",
           duration: {
-            hours: 0,
-            min: 0
+            hours: "",
+            min: ""
           },
           day: "-",
           seats: null,
@@ -188,97 +188,100 @@ export default class AddClass extends React.Component {
     if (this.state.errors.length > 0) {
       errors = this.state.errors;
     }
+    // <div>
+    //   <h1 onClick={e => this.props.removeModal(e)}>X</h1>
+    //   </div>
 
     return(
       <div className="add-class">
-        <div>
-          <h1 onClick={e => this.props.removeModal(e)}>X</h1>
-        <div>
-        <section>
-          <div>
-            <p>Class Title</p>
-            <input
-              type="text"
-              onChange={e => this.handleChange(e, 'name')}
-              value={thisClass.name}/>
-          </div>
-
-          <div>
-            <p>Day</p>
-            <select
-              onChange={e => this.handleChange(e, 'day')}
-              value={thisClass.day}>
-              <option>-</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
-              <option>Sunday</option>
-            </select>
-          </div>
-
-          <div>
-            <p>Time</p>
-            <select
-              type="time"
-              onChange={e => this.handleChange(e, 'time')}
-              value={thisClass.time} >
-              {times}
-            </select>
-          </div>
-
-          <div className="duration-inputs">
-            <p>Duration</p>
-            <section style={{padding: "0px"}}>
-              <p style={{fontSize: "8px", width: "52px"}}>Hours</p>
-              <p style={{fontSize: "8px"}}>Minutes</p>
-            </section>
-
-            <section style={{padding: "0px"}}>
+        <div className="add-class-modal">
+          <section>
+            <div>
+              <p>Class Title</p>
               <input
-                type="number"
-                onChange={e => this.handleDurationChange(e, 'hours')}
-                value={thisClass.duration.hours}/>
+                type="text"
+                onChange={e => this.handleChange(e, 'name')}
+                value={thisClass.name}/>
+            </div>
 
-              <input
-                type="number"
-                onChange={e => this.handleDurationChange(e, 'min')}
-                value={thisClass.duration.min}/>
-            </section>
-          </div>
-
-          <div>
-            <p>Total Seats</p>
-              <input
-                type="number"
-                onChange={e => this.handleChange(e, 'seats')}
-                value={thisClass.seats}/>
-          </div>
-
-          <div>
-            <p>Workout Type</p>
+            <div>
+              <p>Day</p>
               <select
-                onChange={e => this.handleChange(e, 'type')}
-                value={thisClass.type}>
-                <option>Cardio</option>
-                <option>Boxing</option>
-                <option>Rowing</option>
-                <option>Yoga</option>
-                <option>Pilates</option>
+                onChange={e => this.handleChange(e, 'day')}
+                value={thisClass.day}>
+                <option>-</option>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
               </select>
+            </div>
+
+            <div>
+              <p>Time</p>
+              <select
+                type="time"
+                onChange={e => this.handleChange(e, 'time')}
+                value={thisClass.time} >
+                {times}
+              </select>
+            </div>
+
+            <div className="duration-inputs">
+              <p>Duration</p>
+              <section>
+                <input
+                  type="text"
+                  onChange={e => this.handleDurationChange(e, 'hours')}
+                  value={thisClass.duration.hours}
+                  placeholder="Hours" />
+
+                <input
+                  type="text"
+                  onChange={e => this.handleDurationChange(e, 'min')}
+                  value={thisClass.duration.min}
+                  placeholder="Minutes" />
+              </section>
+            </div>
+
+            <div>
+              <p>Total Seats</p>
+                <input
+                  type="text"
+                  onChange={e => this.handleChange(e, 'seats')}
+                  value={thisClass.seats}/>
+            </div>
+
+            <div>
+              <p>Workout Type</p>
+                <select
+                  onChange={e => this.handleChange(e, 'type')}
+                  value={thisClass.type}>
+                  <option>Cardio</option>
+                  <option>Boxing</option>
+                  <option>Rowing</option>
+                  <option>Yoga</option>
+                  <option>Pilates</option>
+                </select>
+            </div>
+          </section>
+
+          <div className="errors">
+            {error}
+            {errors}
           </div>
 
-        </section>
-
-        <span>
-          {error}
-          {errors}
-          {button}
-        </span>
-      </div>
-      </div>
+          <div className="class-button">
+            <button
+              className="class-cancel-button"
+              onClick={e => this.props.removeModal(e)}>
+              Cancel</button>
+            {button}
+          </div>
+        </div>
       </div>
     )
   }
