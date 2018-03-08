@@ -23,6 +23,7 @@
     top: 30px;
     padding-left: 8px;
     font-size: 22px;
+    max-width: 200px;
     cursor: pointer;
   }
 
@@ -59,6 +60,11 @@
     .class-edit-delete-buttons {
       display: flex;
       padding-top: 0px !important;
+
+      button {
+        cursor: pointer;
+        outline: none;
+      }
     }
 
     .class-delete-button {
@@ -167,4 +173,6 @@
   background-color: rgb(236, 57, 72) !important;
   color: white;
   margin-right: 5px;
+  outline: none;
+  cursor: pointer;
 }
