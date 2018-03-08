@@ -1,6 +1,8 @@
 class ChargesController < ApplicationController
 
   def create
+    print params[:amount], params[:customer]
+
     charge = Stripe::Charge.create(
       :currency => 'usd',
       :amount => params[:amount],

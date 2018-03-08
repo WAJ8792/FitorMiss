@@ -5,7 +5,7 @@ class CardsController < ApplicationController
       :email => params[:name],
       :source  => params[:token][:id]
     )
-    print customer
+    render json: customer
   end
 
 end

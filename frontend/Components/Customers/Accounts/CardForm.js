@@ -9,7 +9,20 @@ class CardForm extends React.Component {
     super(props);
     this.state = {
       firstName: "",
+      user: false
     }
+  }
+
+  componentDidMount() {
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid })
+      }
+    })
   }
 
   handleChange(e) {
@@ -21,9 +34,16 @@ class CardForm extends React.Component {
   createCard(e) {
     e.preventDefault();
     const name = this.state.firstName;
+    const user = this.state.user;
 
     this.props.stripe.createToken({name}).then(({token}) => {
-      saveCard({token, name});
+      saveCard({token, name}, customer => {
+        if (user) {
+          console.log(customer, user);
+          firebase.database()
+          .ref('customers/' + user + '/stripe_id').set(customer)
+        }
+      });
     });
   }
 

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses, getTime } from  '../../../util/classes_util';
-import { maxOutClass, confirmReserve, hitReserve } from  '../../../util/reservation_util';
+import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassFilters from './Filters';
@@ -108,7 +108,9 @@ class CustomerPage extends React.Component {
 
     let thisClass = this.state.thisClass;
     thisClass.user = this.state.user;
-    if (confirmPayment({stripe_id, thisClass})) {
+    const customer = this.state.userInfo.stripe_id;
+    const amount = parseInt(this.state.thisClass.price += '00');
+    if (confirmPayment({customer, amount})) {
       confirmReserve(firebase.database(), thisClass);
       hitReserve({
         userInfo: this.state.userInfo,

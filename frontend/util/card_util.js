@@ -4,6 +4,7 @@ export const saveCard = (token, saveCustomer) => {
     url: '/cards',
     data: token
   }).then( customer => {
-    saveCustomer(customer);
+    console.log(customer);
+    saveCustomer(customer.id);
   })
 }
