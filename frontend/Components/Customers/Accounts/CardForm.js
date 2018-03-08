@@ -1,32 +1,47 @@
 import React from 'react';
 
-// import { injectStripe, CardElement } from 'react-stripe-elements';
+import { injectStripe, CardElement } from 'react-stripe-elements';
 
 
 class CardForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cardNumber: null
+    }
+  }
+
+  handleChange(e) {
+    this.setState({
+      cardNumber: e.target.value
+    })
+  }
+
+  createCard(e) {
+    e.preventDefault();
+    console.log(this.props);
+
+    this.props.stripe.createToken({name: 'Thomas'}).then(({token}) => {
+      console.log('Received Stripe token:', token);
+    });
+    this.props.stripe.createCustomer({name: 'Thomas'}).then(({customer}) => {
+      console.log('Received Stripe customer:', customer);
+    });
+  }
+
   render() {
+    console.log(this.state.cardNumber);
     return (
-      <form action="" id="billing">
+      <form action="" id="billing" onSubmit={e => this.createCard(e)}>
         <p id="billing-header">Billing  and  Payment</p>
-        <div id="cc-info">
-          <div id="cc-number">
-            <p>Credit Card Number</p>
-            <input className="cc-number" type="text" placeholder="XXXX-XXXX-XXXX-4242" />
-          </div>
 
-          <div id="csc">
-            <p>Security Code (CSC)</p>
-            <span>
-              <input className="cc-csc-number" type="password" placeholder="XXX" />
-              <img src={window.images.cvc} alt="CVC Image" />
-            </span>
-          </div>
-        </div>
-
-        <div id="expiration">
-          <p>Expiration Date</p>
-          <input className="expiration-input" type="text" placeholder="MM/YY" />
-        </div>
+        <CardElement  style={{ base: {
+          width: '225px',
+          fontSize: '15px',
+          letterSpacing: '1px',
+          padding: '10px 0 !important',
+          marginRight: '50px'
+        }}}/>
 
         <div id="address">
           <p className="billing-text">Billing Address</p>
@@ -113,9 +128,28 @@ class CardForm extends React.Component {
   }
 }
 
-export default CardForm;
+export default injectStripe(CardForm);
+
+// <div id="cc-info">
+//   <div id="cc-number">
+//     <p>Credit Card Number</p>
+//     <input
+//       className="cc-number" type="text"
+//       placeholder="XXXX-XXXX-XXXX-4242"
+//       onChange={e => this.handleChange(e)}
+//       value={this.state.cardNumber} />
+//   </div>
 //
-// <label>
-// Card Details
-// <CardElement />
-// </label>
+//   <div id="csc">
+//     <p>Security Code (CSC)</p>
+//     <span>
+//       <input className="cc-csc-number" type="password" placeholder="XXX" />
+//       <img src={window.images.cvc} alt="CVC Image" />
+//     </span>
+//   </div>
+// </div>
+//
+// <div id="expiration">
+//   <p>Expiration Date</p>
+//   <input className="expiration-input" type="text" placeholder="MM/YY" />
+// </div>
