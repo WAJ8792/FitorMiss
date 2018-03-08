@@ -56,6 +56,7 @@ export default class DisplayClassInfo extends React.Component {
     if (this.state.pricing != null && this.state.pricing.length > 1) {
       price = this.state.pricing[hoursOut];
     } else { price = ""}
+    thisClass.price = price;
 
     return (
       <section className="class-info">

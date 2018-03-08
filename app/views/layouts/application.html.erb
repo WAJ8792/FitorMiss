@@ -7,6 +7,16 @@
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
     <%= favicon_link_tag asset_path('favicon.png'), :rel => 'icon', :type =>  'image/png' %>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="text/javascript">
+      // This identifies your website in the createToken call below. Make this secret later
+      Stripe.api_key = 'pk_test_UAp7yozrCLE5cUKw1lyzIc54'
+      console.log(Stripe.api_key);
+      window.Stripe = Stripe
+      // Stripe.setPublishableKey('pk_test_UAp7yozrCLE5cUKw1lyzIc54');
+    </script>
+
   </head>
 
   <body>

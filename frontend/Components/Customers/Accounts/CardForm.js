@@ -1,46 +1,40 @@
 import React from 'react';
 
 import { injectStripe, CardElement } from 'react-stripe-elements';
+import { saveCard } from '../../../util/card_util';
 
 
 class CardForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardNumber: null
+      firstName: "",
     }
   }
 
   handleChange(e) {
     this.setState({
-      cardNumber: e.target.value
+      firstName: e.target.value
     })
   }
 
   createCard(e) {
     e.preventDefault();
-    console.log(this.props);
+    const name = this.state.firstName;
 
-    this.props.stripe.createToken({name: 'Thomas'}).then(({token}) => {
-      console.log('Received Stripe token:', token);
-    });
-    this.props.stripe.createCustomer({name: 'Thomas'}).then(({customer}) => {
-      console.log('Received Stripe customer:', customer);
+    this.props.stripe.createToken({name}).then(({token}) => {
+      saveCard({token, name});
     });
   }
 
   render() {
-    console.log(this.state.cardNumber);
     return (
       <form action="" id="billing" onSubmit={e => this.createCard(e)}>
         <p id="billing-header">Billing  and  Payment</p>
 
         <CardElement  style={{ base: {
-          width: '225px',
           fontSize: '15px',
           letterSpacing: '1px',
-          padding: '10px 0 !important',
-          marginRight: '50px'
         }}}/>
 
         <div id="address">
@@ -117,7 +111,9 @@ class CardForm extends React.Component {
         </div>
         <div id="contact-info">
           <div className="contact-name">
-              <input type="text" placeholder="First Name" />
+              <input
+                type="text" placeholder="First Name"
+                onChange={(e) => this.handleChange(e)}/>
               <input type="text" placeholder="Last Name" />
           </div>
           <input type="text" placeholder="Billing Email" />

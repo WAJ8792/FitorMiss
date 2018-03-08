@@ -10,7 +10,19 @@ export const maxOutClass = (db, thisClass, action) => {
   }
 };
 
-export const confirmReserve = (db, thisClass, seats) => {
+export const confirmPayment = data => {
+  return $.ajax({
+    method: 'POST',
+    url: '/charges',
+    data
+  }).then(() => {
+      return true;
+    }).catch(() => {
+      return false;
+    })
+}
+
+export const confirmReserve = (db, thisClass) => {
   const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,

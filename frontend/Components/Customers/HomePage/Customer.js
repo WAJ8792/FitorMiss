@@ -108,16 +108,18 @@ class CustomerPage extends React.Component {
 
     let thisClass = this.state.thisClass;
     thisClass.user = this.state.user;
-    confirmReserve(firebase.database(), thisClass);
-    hitReserve({
-      userInfo: this.state.userInfo,
-      resInfo: {
-        time: getTime(thisClass.time),
-        gymName: thisClass.vendor,
-        email: thisClass.vendorEmail,
-        name: thisClass.name
-      }
-    })
+    if (confirmPayment({stripe_id, thisClass})) {
+      confirmReserve(firebase.database(), thisClass);
+      hitReserve({
+        userInfo: this.state.userInfo,
+        resInfo: {
+          time: getTime(thisClass.time),
+          gymName: thisClass.vendor,
+          email: thisClass.vendorEmail,
+          name: thisClass.name
+        }
+      })
+    }
     this.setState({modal: null});
   }
 
@@ -170,7 +172,6 @@ class CustomerPage extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.user === "") { return null; }
     let errors;
     let classes = this.displayClasses();

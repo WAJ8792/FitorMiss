@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   resources :users, only: [:create, :show]
   resources :reservations, only: [:create, :show]
+  resources :cards, only: [:create, :update, :destroy]
+  resources :charges, only: [:create]
 end
