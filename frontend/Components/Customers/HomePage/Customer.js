@@ -109,7 +109,8 @@ class CustomerPage extends React.Component {
     let thisClass = this.state.thisClass;
     thisClass.user = this.state.user;
     const customer = this.state.userInfo.stripe_id;
-    const amount = parseInt(this.state.thisClass.price += '00');
+    // remember to add '00' to price since Stripe takes money in cents
+    const amount = parseInt(this.state.thisClass.price);
     if (confirmPayment({customer, amount})) {
       confirmReserve(firebase.database(), thisClass);
       hitReserve({

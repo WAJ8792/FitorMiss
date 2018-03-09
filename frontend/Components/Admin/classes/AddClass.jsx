@@ -64,7 +64,6 @@ export default class AddClass extends React.Component {
 
   handleDurationChange(e, field) {
     let duration = this.state.thisClass.duration;
-    console.log(duration[field], e.target.value);
     duration[field] = e.target.value;
     this.setState({
       thisClass: {
@@ -116,7 +115,6 @@ export default class AddClass extends React.Component {
 
   updateRes(resId) {
     const time = this.state.thisClass.time
-    console.log(resId);
     this.app.ref('reservations/' + resId + '/time').set(time);
     // this.app.ref('reservations/' + resId + '/day').set(this.state.day);
     // this.app.ref('reservations/' + resId + '/time').set(this.state.duration);
