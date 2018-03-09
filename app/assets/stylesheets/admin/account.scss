@@ -1,0 +1,47 @@
+.vendor-edit-account {
+  padding: 0 10px;
+  color: black;
+
+  .vendor-edit-account-header {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .vendor-account-text {
+    font-weight: 200;
+    color: #1fd1ad;
+    font-size: 16px;
+    margin: 20px 0;
+    text-transform: uppercase;
+  }
+
+  .vendor-account-subtext {
+    font-size: 12px;
+    margin-top: 0;
+  }
+
+  input[type="text"] {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 200px;
+    padding-bottom: 5px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none;
+    margin: 20px 0;
+  }
+
+  .vendor-reset-password {
+    background-color: rgb(255, 161, 0);
+  }
+
+  .vendor-submit-button {
+    background-color: #1fd1ad;
+  }
+
+}
