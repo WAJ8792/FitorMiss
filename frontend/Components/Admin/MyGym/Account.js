@@ -118,49 +118,55 @@ export default class Account extends React.Component {
     return(
       <div id="page-background">
       <div className="page-container">
-        <h2>Edit Account</h2>
-        {loading}
-        <section>
+        <div className="vendor-edit-account">
+          <p className="vendor-edit-account-header">Edit Account</p>
+          {loading}
 
-          <div className="vendor-account">
-            <h3>Billing Adress</h3>
-            <p>Street Address</p>
-            <input type="text"
+          <section>
+            <div className="vendor-account-info">
+              <p className="vendor-account-text">Billing Address</p>
+              <p>Street Address</p>
+              <input type="text"
               onChange={e => this.handleAddressChange(e, "street")}
-              value={address.street}/>
-            <p>City</p>
-            <input type="text"
+              value={address.street} />
+              <p>City</p>
+              <input type="text"
               onChange={e => this.handleAddressChange(e, "city")}
               value={address.city}/>
-            <p>State</p>
-            <input type="text"
+              <p>State</p>
+              <input type="text"
               onChange={e => this.handleAddressChange(e, "state")}
               value={address.state}/>
+            </div>
 
-          </div>
-
-          <div>
-            <h3>Email</h3>
-            <p>This is not necessarily the email used for login</p>
-            <input type="text"
+            <div>
+              <p className="vendor-account-text">Email</p>
+              <p className="vendor-account-subtext">This is not necessarily the email used to login</p>
+              <input type="text"
               onChange={this.handleChange("email")}
               value={this.state.email}/>
 
-            <h3>Phone</h3>
-            <input type="text"
+              <p className="vendor-account-text">Phone</p>
+              <input type="text"
               onChange={this.handleChange("phone")}
               value={this.state.phone}/>
-          </div>
+            </div>
 
-          <button onClick={this.resetPassword.bind(this)}>
-            Reset Password
+            <button
+              className="vendor-reset-password"
+              onClick={this.resetPassword.bind(this)}>
+              Reset Password
+            </button>
+          </section>
+          <button
+            className="vendor-submit-button"
+            onClick={() => submitAddress()}>
+            Submit
           </button>
 
-        </section>
-        <button onClick={() => submitAddress()} style={{float: 'right'}}>Submit</button>
-
+          </div>
+        </div>
       </div>
-      </div>
-    )
+    );
   }
 }

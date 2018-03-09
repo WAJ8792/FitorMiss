@@ -103,7 +103,7 @@ class Header extends React.Component {
         return (
           <div className="header" style={{
             zIndex: "10",
-            backgroundColor: '#002e5d',
+            backgroundColor: '#1C2F5A',
           }}>
             <div className="loading-message">
               <img src={window.images.logo} />
