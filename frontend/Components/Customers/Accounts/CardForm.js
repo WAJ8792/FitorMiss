@@ -37,6 +37,7 @@ class CardForm extends React.Component {
     const user = this.state.user;
 
     this.props.stripe.createToken({name}).then(({token}) => {
+      console.log(token);
       saveCard({token, name}, customer => {
         if (user) {
           console.log(customer, user);
