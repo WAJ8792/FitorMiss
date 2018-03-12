@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 
+import { isThisMonth } from '../../../util/classes_util';
+
 class MyGym extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: "",
       amenities: [],
+      totalReservations: 0,
     }
   }
 
@@ -20,6 +23,7 @@ class MyGym extends React.Component {
       if (user) {
         this.setState({ user: user.uid, loggedOut: false });
         this.fetchUserInfo(user.uid);
+        this.getClasses(user.uid);
         this.getUserType(user.uid);
       }
     });
@@ -42,6 +46,29 @@ class MyGym extends React.Component {
     })
   }
 
+  getClasses(user) {
+    firebase.database().ref("classes")
+    .orderByChild("vendor_id").equalTo(user).on("value", snap => {
+      this.getReservations(snap.val())
+    })
+  }
+
+  getReservations(classes) {
+    let totalReservations = 0;
+
+    Object.keys(classes).forEach(classId => {
+      const thisClass = classes[classId];
+      if (thisClass.reservations) {
+        Object.keys(thisClass.reservations).forEach(date => {
+          if (isThisMonth(date)) {
+            totalReservations += Object.keys(thisClass.reservations[date]).length
+          }
+        })
+      }
+    })
+    this.setState({totalReservations})
+  }
+
   render() {
 
     if (!this.state.gymName) {
@@ -56,7 +83,7 @@ class MyGym extends React.Component {
           <section>
             <Note
               title="Users"
-              stat="140"
+              stat={this.state.totalReservations}
               note="Users  are registered for a class this month!" />
             </section>
           </section>

@@ -19,6 +19,17 @@ function indexOfDay(day) {
   }
 }
 
+export const isThisMonth = date => {
+  const classDate = new Date(date);
+
+  if (classDate.getMonth() === new Date().getMonth()
+    && classDate.getYear() === new Date().getYear()) {
+    return true;
+  } else {
+    return false;
+   }
+}
+
 function indexOfTomorrow(idx) {
   if (idx + 1 === 7) { return 0; }
   else { return idx + 1; }
