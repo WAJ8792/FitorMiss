@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTime, getTimeRange } from '../../../util/classes_util';
+import { getTime, getTimeRange } from '../../../util/time_and_date_util';
 
 export default class GymClass extends React.Component {
   constructor(props) {

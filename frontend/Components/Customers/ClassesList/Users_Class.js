@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTimeRange } from '../../../util/classes_util';
+import { getTimeRange } from '../../../util/time_and_date_util';
 
 export default class UsersClassInfo extends React.Component {
   constructor(props) {

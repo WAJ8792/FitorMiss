@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { getTimeRange, getHoursOut,  } from '../../../util/classes_util';
+import { getTimeRange, getHoursOut,  } from '../../../util/time_and_date_util';
 
 export default class DisplayClassInfo extends React.Component {
   constructor(props) {

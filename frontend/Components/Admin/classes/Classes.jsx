@@ -2,7 +2,6 @@ import React from 'react';
 
 import AddClass from './AddClass';
 import GymClass from './Class';
-import ClassesList from './ClassesList';
 
 export default class Classes extends React.Component {
   constructor(props) {

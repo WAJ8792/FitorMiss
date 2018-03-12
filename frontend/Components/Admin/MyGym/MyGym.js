@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Redirect } from 'react-router-dom';
 
-import { isThisMonth } from '../../../util/classes_util';
+import { isThisMonth } from '../../../util/time_and_date_util';
 
 class MyGym extends React.Component {
   constructor(props) {

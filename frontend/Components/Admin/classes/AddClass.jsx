@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-import { getTime } from '../../../util/classes_util';
+import { getTime } from '../../../util/time_and_date_util';
 
 export default class AddClass extends React.Component {
   constructor(props) {

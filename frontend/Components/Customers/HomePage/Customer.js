@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
-import { getClassesByDay, filterClasses, getTime } from  '../../../util/classes_util';
+import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
+import { getTime } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
-import ClassFilters from './Filters';
 import ClassesSidebar from './ClassesSidebar';
 
 class CustomerPage extends React.Component {
@@ -210,9 +210,6 @@ class CustomerPage extends React.Component {
     )
   }
 }
-// <ClassFilters
-// typeFilter={this.state.typeFilter}
-// changeType={this.changeType.bind(this)} />
 
 class ConfirmReservation extends React.Component {
   constructor(props) {
