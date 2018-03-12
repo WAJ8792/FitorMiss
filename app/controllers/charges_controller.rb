@@ -1,7 +1,8 @@
 class ChargesController < ApplicationController
 
   def create
-    Stripe.api_key = ENV['STRIPE_SK']
+    # Stripe.api_key = ENV['STRIPE_SK']
+    print Stripe.api_key
 
     charge = Stripe::Charge.create(
       :currency => 'usd',
