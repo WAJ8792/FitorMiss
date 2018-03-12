@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
 
   def create
-    # Stripe.api_key = ENV['STRIPE_SK']
+    Stripe.api_key = ENV['STRIPE_SK']
     print Stripe.api_key
 
     customer = Stripe::Customer.create(
