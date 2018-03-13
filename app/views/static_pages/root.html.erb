@@ -22,12 +22,6 @@
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
 
     <script>
-      // Get Sendgrid apiKey
-      echo "export SENDGRID_API_KEY='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'" > sendgrid.env
-      echo "sendgrid.env" >> .gitignore
-      source ./sendgrid.env
-    </script>
-    <script>
       // Initialize Firebase
       var config = {
         apiKey: "AIzaSyANG-gseZGcnTmUsnTemMQM1Zr9ah7ob4o",
@@ -50,15 +44,7 @@
           window.user = snap.val()[user];
         })
       }
-
-
     </script>
-    <!-- Load Stripe -->
-    <script>
-    // <!-- src="https://js.stripe.com/v3/"> -->
-    // Stripe.api_key = 'pk_test_UAp7yozrCLE5cUKw1lyzIc54'
-  </script>
-
 
     <script>
       // get images

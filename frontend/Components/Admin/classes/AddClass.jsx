@@ -62,29 +62,37 @@ export default class AddClass extends React.Component {
   }
 
   handleDurationChange(e, field) {
-    let duration = this.state.thisClass.duration;
-    duration[field] = e.target.value;
+    let value;
+    if (e.target.value === "") {
+      value = e.target.value;
+    } else { value = parseInt(e.target.value); }
+
     this.setState({
       thisClass: {
         ...this.state.thisClass,
-        duration,
+        duration: {
+          ...this.state.thisClass.duration,
+          [field]: value
+        }
       },
       updateRes: true
     });
   }
 
   checkValidInput() {
-    let errors = [];
+    const errors = [];
     let state = this.state.thisClass;
+
     if (state.name.length < 1) { errors.push("Please enter a valid class name."); }
     if (state.time.length < 1) { errors.push("Please choose a valid time."); }
-    if (0 >= parseInt(state.duration)) { errors.push("Please enter a duration above 0.")}
     if (!state.day.includes("day")) { errors.push("Please choose a valid day."); }
     if (0 >= parseInt(state.seats)) { errors.push("Please enter an availability number greate than 0 under 'seats'"); }
-    let length = state.duration.hours + state.duration.min;
-    if (length < 1) { errors.push("Please add a class duration.")}
+    if (state.duration.hours === "" && state.duration.min === "") {
+      errors.push("Please add a class duration.")
+    } else if (state.duration.hours === "") { state.duration.hours = 0; }
+    else if (state.duration.min === "") { state.duration.min = 0; }
 
-    if (errors.length < 1) { return true; }
+    if (errors.length < 1) { return state; }
     else {
       this.setState({errors});
       return false;
@@ -92,8 +100,9 @@ export default class AddClass extends React.Component {
   }
 
   handleAdd() {
-    if (this.checkValidInput()) {
-      this.props.handleAdd(this.state.thisClass)
+    const state = this.checkValidInput();
+    if (state) {
+      this.props.handleAdd(state);
       this.setState({
         thisClass: {
           vendor_id: "",

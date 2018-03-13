@@ -62,6 +62,7 @@ class CustomerPage extends React.Component {
   }
 
   fetchNeighborhood(neighborhoodId) {
+    neighborhoodId = neighborhoodId.toString();
     firebase.database().ref('neighborhoods')
     .orderByKey().equalTo(neighborhoodId).on("value", snap => {
       this.setState({neighborhood: snap.val()[neighborhoodId]})

@@ -3,7 +3,8 @@ import {
   indexOfTomorrow,
   in24Hours,
   getTime,
-  getReservationDate
+  getReservationDate,
+  afterCurrentHours,
 } from './time_and_date_util';
 
 export const getClassesByDay = classes => {

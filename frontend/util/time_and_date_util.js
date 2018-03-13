@@ -47,16 +47,28 @@ export const afterCurrentHours = classTime => {
   else { return true; }
 }
 
-export const getTimeRange = (time, duration) => {
-  let startHour = parseInt(time.slice(0, 2));
-  let startMin = parseInt(time.slice(3, 5));
-  let finish = [startHour + duration.hours, startMin + duration.min];
-  let ampm = (finish[0] > 12) ? ' PM' : ' AM'
+export const getTimeRange = (classTime, duration) => {
+  const startHour = parseInt(classTime.slice(0, 2));
+  const startMin = parseInt(classTime.slice(3, 5));
 
-  let start = formatTime([startHour, startMin]);
-  finish = formatTime(finish);
+  const ampm = ((startHour + duration.hours) > 12) ? ' PM' : ' AM'
+  const start = formatTime([startHour, startMin]);
+  const finish = endsAt(startHour, startMin, duration);
 
   return start + " - " + finish + ampm;
+}
+
+function endsAt(startHour, startMin, duration) {
+  let endHour = startHour + duration.hours;
+  let endMin = startMin + duration.min;
+
+  if (endHour > 24) { endHour -= 24; }
+  if (endMin > 60) {
+    endHour += 1;
+    endMin -= 60;
+   }
+
+  return formatTime([endHour, endMin]);
 }
 
 export const formatTime = time => {
@@ -83,13 +95,42 @@ export const getTime = (time) => {
     let min = time.slice(2, 5);
     time = hour.toString() + min;
     time += " PM";
-  } else { time += " AM"}
+  } else { time += " AM" }
 
   let firstDigit = time.slice(0, 1);
   if (firstDigit === '0') {
     time = time.slice(1, 8);
   }
   return time;
+}
+
+export const getTimes = () => {
+  let times = [];
+  for (let i = 0; i < 24; i++) {
+    let time;
+    if (i === 0) {
+      time = "12:";
+    } else if (i < 10) {
+      time = '0' + i.toString() + ':';
+    } else {
+      time = i.toString() + ':';
+    }
+    for (let j = 0; j < 4; j++) {
+      if (j === 0) {
+        times.push(<option
+          key={time+j+i}
+          value={time + '00'}
+          >{ getTime(time + '00')}</option>);
+      } else {
+        let min = j * 15;
+        times.push(<option
+          key={time+j+i}
+          value={time + min.toString()}
+          >{ getTime(time + min.toString())}</option>);
+      }
+    }
+  }
+  return times;
 }
 
 export const getHoursOut = (time) => {
