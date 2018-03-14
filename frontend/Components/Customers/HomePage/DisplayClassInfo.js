@@ -67,7 +67,6 @@ export default class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{thisClass.vendor}</h5>
-          <p>Class description</p>
         </div>
 
         <div>
