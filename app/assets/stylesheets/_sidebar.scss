@@ -11,7 +11,15 @@
 }
 
 .outer-list {
-  margin-top: 150px;
+  margin-top: 115px;
+
+  #side-link:first-child {
+    border-bottom: none;
+  }
+}
+
+#filter-header {
+  font-size: 20px;
 }
 
 .body-background {

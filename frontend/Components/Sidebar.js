@@ -22,11 +22,20 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    let list1, list2, list3;
+    let list1, list2, list3, listHeader;
     if (this.props.location.pathname.includes('customer/classes')) {
+      listHeader = ( <div id="side-link">
+          <li id="filter-header">Search by:</li>
+        </div>
+      )
       list1 = ( <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list1')} >My Location
-        </li>
+          <li
+            onClick={e => this.dropDown(e, 'list1')}
+            style={{
+              color: '#f0efef7d',
+              cursor: 'default'
+            }}>My Location
+          </li>
         </div>
       )
       list2 = <AmenityFilter
@@ -52,7 +61,7 @@ export default class Sidebar extends Component {
           </ul>
         </li>
       </div>
-      );
+      )
       list2 = (
         <div id="side-link">
         <li onClick={e => this.dropDown(e, 'list2')} >Billing
@@ -84,6 +93,7 @@ export default class Sidebar extends Component {
         <section className="sidebar">
           <ul className="outer-list">
 
+          {listHeader}
           {list1}
           {list2}
           {list3}

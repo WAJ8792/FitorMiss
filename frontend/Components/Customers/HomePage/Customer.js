@@ -24,7 +24,7 @@ class CustomerPage extends React.Component {
       typeFilter: false,
       amenityFilter: false,
       classes: [],
-      errors: [],
+      errors: null,
       modal: null,
     }
     this.handleReserve = this.handleReserve.bind(this);
@@ -83,6 +83,7 @@ class CustomerPage extends React.Component {
 
   isValidReservation(thisClass) {
     let errors = [];
+    console.log(thisClass, this.state.classes);
     if (!this.state.userInfo.stripe_id) {
       errors.push("To reserve a class a credit card must be registered with your account. Add a credit card by clicking 'Billing' in the top-right menu.");
     }
@@ -182,17 +183,13 @@ class CustomerPage extends React.Component {
 
   render() {
     if (this.state.user === "") { return null; }
-    let errors;
+    const errors = this.state.errors;
     const dayAndDate = getDayAndDate();
     let classes = this.displayClasses();
     classes = filterClasses(classes, this.props.filters);
 
     if (classes.length < 1) {
       classes = <div id="no-classes">No upcoming classes today.</div>
-    }
-
-    if (this.state.errors.length > 0) {
-      let errors = this.state.errors;
     }
 
     return(
@@ -202,8 +199,8 @@ class CustomerPage extends React.Component {
             <div id="upcoming-classes-page">
               <br />
               <h1 id="classes-header">{`${dayAndDate.day}, ${dayAndDate.month} ${dayAndDate.date}`}</h1>
+              <p id="reservation-errors">{errors}</p>
 
-              {errors}
               {this.state.modal}
 
               <ul className="display-class-info">
