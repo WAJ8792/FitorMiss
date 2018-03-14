@@ -104,35 +104,6 @@ export const getTime = (time) => {
   return time;
 }
 
-export const getTimes = () => {
-  let times = [];
-  for (let i = 0; i < 24; i++) {
-    let time;
-    if (i === 0) {
-      time = "12:";
-    } else if (i < 10) {
-      time = '0' + i.toString() + ':';
-    } else {
-      time = i.toString() + ':';
-    }
-    for (let j = 0; j < 4; j++) {
-      if (j === 0) {
-        times.push(<option
-          key={time+j+i}
-          value={time + '00'}
-          >{ getTime(time + '00')}</option>);
-      } else {
-        let min = j * 15;
-        times.push(<option
-          key={time+j+i}
-          value={time + min.toString()}
-          >{ getTime(time + min.toString())}</option>);
-      }
-    }
-  }
-  return times;
-}
-
 export const getHoursOut = (time) => {
   let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
   switch (hoursOut) {

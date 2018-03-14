@@ -2,6 +2,7 @@ import React from 'react';
 
 import AddClass from './AddClass';
 import GymClass from './Class';
+import DeleteClass from './Modals';
 
 export default class Classes extends React.Component {
   constructor(props) {
@@ -21,6 +22,23 @@ export default class Classes extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser();
+  }
+
+  handleDelete(classId) {
+    return () => {
+      console.log(classId);
+      const db = firebase.database();
+      db.ref("classes/" + classId).remove();
+
+      db.ref("reservations")
+      .orderByChild("class_id").equalTo(classId).on("value", snap => {
+        if (snap.val() != null) {
+          Object.keys(snap.val()).forEach(resId => {
+            db.ref("reservations/" + resId + "/canceled").set(true);
+          })
+        }
+      })
+    }
   }
 
   getCurrentUser() {
@@ -61,34 +79,38 @@ export default class Classes extends React.Component {
   }
 
   populateClasses(user) {
-    this.setState({classes: []});
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_added", snap => {
+      this.updateClasses(user);
+    });
+    this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_changed", snap => {
+      // this.updateClasses(user);
+      this.removeFromClassList(snap.getRef().key);
       this.addClassToList(snap.val(), snap.getRef().key);
     });
-    // this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_changed", snap => {
-    //   this.setState({classes: []});
-    //   this.addClassToList(snap.val(), snap.getRef().key);
-    // });
-
     this.classesRef.orderByChild("vendor_id").equalTo(user).on("child_removed", snap => {
-      this.removeFromClassList(snap.getRef().key)
+      this.updateClasses(user);
     });
   }
 
   addClassToList(thisClass, class_id) {
     let newState = this.state;
-
-    newState.classes.push({
-      class_id: class_id,
-      name: thisClass.name,
-      day: thisClass.day,
-      time: thisClass.time,
-      duration: thisClass.duration,
-      seats: thisClass.seats,
-      functionality: 'read',
-    });
+    thisClass.class_id = class_id;
+    newState.push(thisClass);
 
     this.setState({classes: newState.classes});
+  }
+
+  updateClasses(user) {
+    this.setState({classes: []});
+    this.classesRef.orderByChild("vendor_id").equalTo(user).on("value", snap => {
+      const classes = [];
+      Object.keys(snap.val()).forEach(classId => {
+        const thisClass = snap.val()[classId];
+        thisClass.class_id = classId;
+        classes.push(thisClass);
+      })
+      this.setState({classes, modal: null});
+    })
   }
 
   removeFromClassList(class_id) {
@@ -112,6 +134,7 @@ export default class Classes extends React.Component {
     newClass.vendor_id = this.state.user;
     newClass.created_at = new Date().getTime();
     this.props.addClass(newClass, app);
+    this.updateClasses(this.state.user);
   }
 
   updateDay(day) {
@@ -126,6 +149,8 @@ export default class Classes extends React.Component {
        neighborhood_id: 1,
        vendor: userInfo.gym_name,
        updated_at: new Date().getTime(),
+       created_at: thisClass.created_at,
+       type: thisClass.type,
        name: thisClass.name,
        day: thisClass.day,
        time: thisClass.time,
@@ -138,18 +163,34 @@ export default class Classes extends React.Component {
   saveChanges(thisClass) {
     firebase.database().ref('classes/' + thisClass.class_id)
       .set(this.getClass(thisClass));
+    this.updateClasses(this.state.user);
   }
 
-  openModal(thisClass) {
-    this.setState({
-      modal: <AddClass
-        handleAdd={this.handleAdd.bind(this)}
-        saveChanges={this.saveChanges.bind(this)}
-        user={this.props.user.uid}
-        thisClass={thisClass}
-        removeModal={this.removeModal.bind(this)}
-        error={this.props.classes.error} />
-    });
+  closeModal() {
+    this.setState({modal: null});
+  }
+
+  openModal(thisClass, modalType) {
+    const classId = thisClass.class_id;
+    switch (modalType) {
+      case "delete":
+        this.setState({
+          modal: <DeleteClass
+          delete={this.handleDelete(classId)}
+          closeModal={this.closeModal} />
+        });
+        break;
+      case "class":
+        this.setState({
+          modal: <AddClass
+          handleAdd={this.handleAdd.bind(this)}
+          saveChanges={this.saveChanges.bind(this)}
+          user={this.props.user.uid}
+          thisClass={thisClass}
+          removeModal={this.removeModal.bind(this)}
+          error={this.props.classes.error} />
+        });
+    }
   }
 
   render() {
@@ -203,7 +244,7 @@ export default class Classes extends React.Component {
           <section className="class-list">
             <div
               className="class-list-add-class"
-              onClick={() => this.openModal(false)}>
+              onClick={() => this.openModal(false, "class")}>
               Add a class
             </div>
             <div className="class-list-header">Your Class Schedule</div>

@@ -124,8 +124,7 @@ export default class AddClass extends React.Component {
   updateRes(resId) {
     const time = this.state.thisClass.time
     this.app.ref('reservations/' + resId + '/time').set(time);
-    // this.app.ref('reservations/' + resId + '/day').set(this.state.day);
-    // this.app.ref('reservations/' + resId + '/time').set(this.state.duration);
+    // this.app.ref('reservations/' + resId + '/date').set(this.state.date);
   }
 
   getReservations() {
@@ -194,9 +193,6 @@ export default class AddClass extends React.Component {
     if (this.state.errors.length > 0) {
       errors = this.state.errors;
     }
-    // <div>
-    //   <h1 onClick={e => this.props.removeModal(e)}>X</h1>
-    //   </div>
 
     return(
       <div className="add-class">
