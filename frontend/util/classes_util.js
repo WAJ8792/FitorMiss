@@ -115,8 +115,12 @@ function isUpcoming(reservation) {
 }
 
 export const filterClasses = (classes, filters) => {
-  classes = filterByType(classes, filters.workoutType);
-  classes = filterByAmenities(classes, filters.amenities);
+  if (classes.length > 0) {
+    classes = filterByType(classes, filters.workoutType);
+  }
+  if (classes.length > 0) {
+    classes = filterByAmenities(classes, filters.amenities);
+  }
   return classes;
 }
 
