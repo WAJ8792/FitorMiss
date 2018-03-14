@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
-import { getTime } from '../../../util/time_and_date_util'
+import { getTime, getDayAndDate } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
 
 import ClassInfo from './DisplayClassInfo';
@@ -181,6 +181,7 @@ class CustomerPage extends React.Component {
   render() {
     if (this.state.user === "") { return null; }
     let errors;
+    const dayAndDate = getDayAndDate();
     let classes = this.displayClasses();
     classes = filterClasses(classes, this.props.filters);
 
@@ -197,8 +198,8 @@ class CustomerPage extends React.Component {
         <div className="page-container">
           <div className="page-detail">
             <div id="upcoming-classes-page">
-              <h1>{this.state.neighborhood}</h1>
               <br />
+              <h1 id="classes-header">{`${dayAndDate.day}, ${dayAndDate.month} ${dayAndDate.date}`}</h1>
 
               {errors}
               {this.state.modal}

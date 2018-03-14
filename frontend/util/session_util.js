@@ -32,7 +32,7 @@ export const createCustomer = function(user, db, userInfo) {
     first_name: userInfo.firstName,
     last_name: userInfo.lastName,
     email: userInfo.email,
-    neighborhood_id: userInfo.neighborhood,
+    neighborhood_id: "1",
   });
   db.database().ref('user_type/' + user.user.uid).set("customer");
 
