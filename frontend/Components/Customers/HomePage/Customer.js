@@ -83,6 +83,9 @@ class CustomerPage extends React.Component {
 
   isValidReservation(thisClass) {
     let errors = [];
+    if (!this.state.userInfo.stripe_id) {
+      errors.push("To reserve a class a credit card must be registered with your account. Add a credit card by clicking 'Billing' in the top-right menu.");
+    }
     if (thisClass.id.length < 1) { errors.push("This class is not available.")}
     if (this.state.user.length < 1) { errors.push("Something is wrong with your registration. Please try signing out and try again.")}
     if (thisClass.date.length != 11) {
@@ -111,7 +114,7 @@ class CustomerPage extends React.Component {
     thisClass.user = this.state.user;
     const customer = this.state.userInfo.stripe_id;
     // remember to add '00' to price since Stripe takes money in cents
-    const amount = parseInt(this.state.thisClass.price);
+    const amount = parseInt(this.state.thisClass.price + '00');
     if (confirmPayment({customer, amount})) {
       confirmReserve(firebase.database(), thisClass);
       hitReserve({
@@ -182,7 +185,7 @@ class CustomerPage extends React.Component {
     classes = filterClasses(classes, this.props.filters);
 
     if (classes.length < 1) {
-      classes = <h4 id="no-classes">No upcoming classes today.</h4>
+      classes = <div id="no-classes">No upcoming classes today.</div>
     }
 
     if (this.state.errors.length > 0) {

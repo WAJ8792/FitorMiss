@@ -29,6 +29,17 @@
   display: flex;
   margin-top: 18.75px;
 
+  #no-classes {
+    margin-top: 20px;
+    color: #f374f3;
+    font-size: 20px;
+    text-align: center;
+    width: 60%;
+    margin-left: 10%;
+    font-family: helvetica;
+    font-weight: 700;
+  }
+
   .summary-and-benefits {
     display: flex;
     flex-direction: column;

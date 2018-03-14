@@ -76,6 +76,10 @@ export default class ClassList extends React.Component {
       ? this.listClasses("upcomingClasses")
       : this.listClasses("pastClasses")
     let state = this.state;
+    if (classes.length < 1) {
+      classes = <div id="no-classes">You have no upcoming classes.
+      Click 'Classes' above to view available classes in your area!</div>
+    }
     return(
       <div id="page-background">
         <div className="page-container">
