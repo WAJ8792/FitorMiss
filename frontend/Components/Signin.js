@@ -125,7 +125,9 @@ export default class SignIn extends React.Component {
             <div>
               <p className="create-text">Create a new account</p>
               <section className="signup-forms">
-                <SignupCustomer signupCustomer={this.props.signupCustomer} />
+                <SignupCustomer
+                  signupCustomer={this.props.signupCustomer}
+                  user={this.props.user} />
                 <button
                   onClick={this.handleLoginRender}
                   className="toggle-button">Already a member? Log In</button>

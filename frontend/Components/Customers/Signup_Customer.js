@@ -45,7 +45,10 @@ export default class SignupCustomer extends React.Component {
   }
 
   render() {
-
+    let error;
+    if (this.props.user.error.length > 0) {
+      error = this.props.user.error;
+    }
 
     return(
       <div className="signup-container">
@@ -54,6 +57,7 @@ export default class SignupCustomer extends React.Component {
           <div>
             <p>Sign up as a customer!</p>
               {this.state.error}
+              {error}
 
               <input
                 type="text"

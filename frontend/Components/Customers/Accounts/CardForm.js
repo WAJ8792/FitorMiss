@@ -147,6 +147,7 @@ class CardForm extends React.Component {
 
 export default injectStripe(CardForm);
 
+// Eric's original code for the card info which was replaced with stripe's UI
 // <div id="cc-info">
 //   <div id="cc-number">
 //     <p>Credit Card Number</p>

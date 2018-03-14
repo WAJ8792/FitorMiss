@@ -36,7 +36,7 @@ export const signupVendor = (userInfo, db) => dispatch =>  (
     .then(user => dispatch(receiveUser(user)))
     .then(user => createVendor(user, db, userInfo))
     .catch(error => dispatch(receiveErrors(error.message)))
-);
+)
 
 export const signupCustomer = (userInfo, db) => dispatch => (
   db.auth()

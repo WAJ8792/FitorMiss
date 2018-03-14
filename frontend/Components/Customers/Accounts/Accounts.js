@@ -4,6 +4,37 @@ import React from 'react';
 import CardForm from './CardForm';
 
 export default class Accounts extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      user: "",
+      userInfo: {
+        first_name: "",
+        last_name: "",
+        email: "",
+        neighborhood: "",
+      }
+    }
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: user.uid, loggedOut: false });
+        this.fetchUserInfo(user.uid);
+      }
+    });
+  }
+
+  fetchUserInfo(user) {
+    firebase.database().ref('customers')
+    .orderByKey().equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        this.setState({userInfo: snap.val()[user]});
+      }
+    })
+  }
 
   resetPassword() {
     firebase.auth().sendPasswordResetEmail(this.state.userInfo.email).then( () => {
@@ -14,6 +45,7 @@ export default class Accounts extends React.Component {
   }
 
   render() {
+    const userInfo = this.state.userInfo;
     return(
       <div id="page-background">
         <div className="page-container">
@@ -26,16 +58,27 @@ export default class Accounts extends React.Component {
               <div id="account-details-name">
                 <p>Account</p>
                 <div id="full-name">
-                  <input type="text" placeholder="First Name" />
-                  <input type="text" placeholder="Last Name" />
+                  <input
+                    type="text"
+                    placeholder="First Name"
+                    value={userInfo.first_name}/>
+                  <input
+                    type="text"
+                    placeholder="Last Name"
+                    value={userInfo.last_name}/>
                 </div>
-                <input type="text" placeholder="Email" />
+                <input type="text" placeholder="Email" value={userInfo.email} />
               </div>
 
               <hr />
 
               <div id="password">
-                Password
+                <p>Password</p>
+                <button
+                  className="reset-password"
+                  onClick={this.resetPassword.bind(this)}>
+                  Reset Password
+                </button>
               </div>
 
               <hr />
@@ -70,8 +113,3 @@ export default class Accounts extends React.Component {
     )
   }
 }
-
-
-// <CardForm />
-// <Elements>
-// </Elements>
