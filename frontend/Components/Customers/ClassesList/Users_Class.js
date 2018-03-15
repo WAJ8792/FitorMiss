@@ -6,7 +6,7 @@ export default class UsersClassInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
+      id: null,
       info: {}
     }
     this.fetchClassInfo();

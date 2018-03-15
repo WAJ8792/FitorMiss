@@ -68,7 +68,7 @@ export default class ClassList extends React.Component {
 
   listClasses(classes) {
     return this.state[classes].map(thisClass =>
-      <ClassInfo key={thisClass.id} thisClass={thisClass} />
+      <ClassInfo key={thisClass.created_at} thisClass={thisClass} />
     )
   }
 
