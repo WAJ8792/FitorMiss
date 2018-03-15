@@ -63,40 +63,35 @@ function orderByTime(list, thisClass) {
   return left.concat(right);
 }
 
-export const orderClassesByDate = (classes) => {
+export const orderClassesByDate = (reservations) => {
   let upcomingList = [];
   let pastList = [];
-  Object.keys(classes).forEach(id => {
-    const thisClass = classes[id];
-    let upcomingListFront = [];
-    let pastListFront = [];
+  Object.keys(reservations).forEach(id => {
+    const thisClass = reservations[id];
     if (isUpcoming(thisClass)) {
-      setClassByTime(upcomingList, upcomingListFront, thisClass);
-    } else {
-      setClassByTime(pastList, pastListFront, thisClass);
+      upcomingList = setClassByTime(upcomingList, thisClass);
+    } else if (!thisClass.canceled){
+      pastList = setClassByTime(pastList, thisClass);
     }
   });
   return {upcomingList, pastList};
 }
 
-function setClassByTime(list, front, thisClass) {
+function setClassByTime(list, thisClass) {
   const length = list.length;
+  let front = [];
   for (let i = 0; i <= length; i++) {
     if (i === length)
     {
       list.push(thisClass);
-      list = front.concat(list.slice(i, length+1));
-      break;
+      return list;
     }
-    else if (list[i].time < thisClass.time)
+    else if (list[i].time > thisClass.time)
     {
-      front.push(list[i]);
-    }
-    else
-    {
+      front = list.slice(0, i);
       front.push(thisClass);
-      list = front.concat(list.slice(i, length+1));
-      break;
+      front.concat(list.slice(i, list.length + 1));
+      return front;
     }
   }
 }

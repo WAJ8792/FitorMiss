@@ -51,7 +51,7 @@ ul {
   width: 500px;
   border-radius: 8px;
   position: fixed;
-  bottom: 250px;
+  bottom: 25%;
   height: 250px;
   text-align: center;
   z-index: 2;
