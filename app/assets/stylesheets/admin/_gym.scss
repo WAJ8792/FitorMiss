@@ -52,6 +52,29 @@
   }
 }
 
+.edit-gym {
+  padding: 0 20px;
+  p {
+    font-size: 16px;
+  }
+  input {
+    padding: 10px;
+    text-align: center;
+  }
+
+  button {
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1ed0b1;
+    color: white;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+}
+
+
 // .my-gym div {
 //   width: 86%;
 //   margin: 6px 0 30px 47px;
