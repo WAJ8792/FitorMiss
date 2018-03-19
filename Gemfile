@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'stripe'
 
+gem 'mindbody-api', :git => 'git://github.com/wingrunr21/mindbody-api.git'
+
 gem 'dotenv-rails', :groups => [:development, :test]
 
 group :development, :test do
