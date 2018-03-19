@@ -100,20 +100,17 @@ class Header extends React.Component {
     }
     else
     {
-        return (
-          <div className="header" style={{
-            zIndex: "10",
-            backgroundColor: '#1C2F5A',
-          }}>
-            <div className="loading-message">
-              <img src={window.images.logo} />
-              <p>Loading Your Info!</p>
-              <div className="line">
-                <div id="c3" />
-              </div>
-            </div>
-          </div>
-        );
+      return (
+        <div className="loading-message">
+          <img src={window.images.logo} />
+            <p>Loading Your Info
+              {/*NOTE: these divs are for the loading animation*/}
+              <span className="loader">
+                <div></div><div></div><div></div><div></div>
+              </span>
+            </p>
+        </div>
+      );
     }
   }
 }
