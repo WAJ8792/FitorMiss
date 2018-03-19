@@ -185,6 +185,27 @@
 
 }
 
+.reservation-modal {
+ position: relative;
+ background-color: #ffffff;
+ top: 30%;
+ width: 650px;
+ margin: 0 auto;
+ background: white;
+ border-radius: 5px;
+ padding: 20px 20px;
+
+ div:first-child {
+   text-align: center;
+   font-family: arial;
+ }
+
+ .class-buttons {
+   display: flex;
+   justify-content: center;
+ }
+}
+
 #upcoming-classes-page {
   margin-right: 20px;
 

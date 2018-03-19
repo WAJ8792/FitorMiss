@@ -149,6 +149,8 @@ class CustomerPage extends React.Component {
         thisClass,
         errors: [],
         modal: <ConfirmReservation
+          title={thisClass.name}
+          thisClass={thisClass}
           cancelReserve={this.cancelReserve}
           confirmReserve={this.confirmReserve}/>
       });
@@ -221,15 +223,31 @@ class ConfirmReservation extends React.Component {
   }
 
   render() {
+    const thisClass = this.props.thisClass;
+    const p1 = {fontSize: '20px', marginBottom: '10px'}
+    const p2 = {fontSize: '17px', margin: '5px'}
+    const p3 = {fontSize: '17px', margin: '0px'}
     return (
-      <div className="confirmation">
-        <div>
-          <h2>Are you sure you want to reserve this class?</h2>
-          <p>class info here</p>
-          <button onClick={e => this.props.confirmReserve(e)}>
-          RESERVE
-          </button>
-          <button onClick={e => this.props.cancelReserve(e)}>X</button>
+      <div className="add-class">
+        <div className="reservation-modal">
+          <div>
+            <h2>Are you sure you want to reserve {thisClass.name}?</h2>
+            <p style={p1}>{thisClass.day}, {thisClass.date} at {thisClass.time}</p>
+            <p style={p2}>{thisClass.neighborhood} with {thisClass.vendor}</p>
+            <p style={p3}>Only {thisClass.seats} seats left!</p>
+          </div>
+
+          <div className="class-buttons">
+            <button onClick={e => this.props.cancelReserve(e)}
+              className="class-cancel-button">
+              Cancel
+            </button>
+            <button onClick={e => this.props.confirmReserve(e)}
+              style={{marginLeft: '50px'}}>
+              RESERVE
+            </button>
+          </div>
+
         </div>
       </div>
     )
