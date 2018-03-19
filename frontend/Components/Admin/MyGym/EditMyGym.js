@@ -9,16 +9,8 @@ export default class EditMyGym extends React.Component {
       gymName: "",
       neighborhood: "",
       email: "",
-      amenities: {
-        parking: false,
-        showers: false,
-        lockers: false,
-        towels: false,
-        mat_rentals: false,
-      },
       user: "",
     }
-
     this.gymRef = firebase.database().ref("vendor");
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
   }
@@ -32,13 +24,6 @@ export default class EditMyGym extends React.Component {
       email = snap.val()[user].email;
       this.setState({gymName, neighborhood, email});
     })
-    firebase.database().ref('amenities')
-    .orderByChild("vendor_id")
-    .equalTo(user).on("value", snap => {
-      amenityKey = Object.keys(snap.toJSON())[0];
-      amenities = snap.val()[amenityKey];
-      this.setState({amenities, amenityKey});
-    });
   }
 
   componentDidMount() {
@@ -56,16 +41,6 @@ export default class EditMyGym extends React.Component {
 
   handleChange(e, field) {
     this.setState({[field]: e.target.value});
-  }
-
-  handleChoose(e, field) {
-    e.preventDefault();
-    let amenities = this.state.amenities;
-    if (amenities[field] === true) {
-      amenities[field] = false;
-    } else { amenities[field] = true; }
-
-    this.setState({amenities});
   }
 
   handleSaveChanges() {
@@ -99,7 +74,7 @@ export default class EditMyGym extends React.Component {
 
   render() {
     let loading;
-    console.log(this.state.amenities);
+
     if (!this.state.gymName) {
       loading = <p style={{color: 'red'}}>Retrieving your information...</p>
     } else { loading = null }
@@ -140,16 +115,6 @@ export default class EditMyGym extends React.Component {
                 </div>
               </section>
             </div>
-
-            <section>
-              <div>
-                <p>MyGym Amenities:</p>
-                <Amenities
-                amenities={this.state.amenities}
-                handleChoose={this.handleChoose.bind(this)}
-                />
-              </div>
-            </section>
 
           </div>
           <button onClick={e => this.handleSaveChanges()}>Save Changes</button>

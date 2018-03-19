@@ -152,7 +152,7 @@ export default class SignIn extends React.Component {
                 </section>
               </div>
               <button
-                onClick={this.handleLoginRender}
+                onClick={() => this.handleLoginRender('signup')}
                 className="toggle-button">Not a member? Sign up!</button>
             </div>
           );
@@ -169,7 +169,7 @@ export default class SignIn extends React.Component {
                     signupCustomer={this.props.signupCustomer}
                     user={this.props.user} />
                   <button
-                    onClick={this.handleLoginRender}
+                    onClick={() => this.handleLoginRender('login')}
                     className="toggle-button">Already a member? Log In</button>
                 </section>
               </div>
