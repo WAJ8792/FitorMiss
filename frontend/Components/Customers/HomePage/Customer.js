@@ -6,6 +6,7 @@ import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
 import { getTime, getDayAndDate } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
+import { getSchedule } from '../../../util/mindbody_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
@@ -39,6 +40,7 @@ class CustomerPage extends React.Component {
     if (neighborhood.length > 0) {
       this.fetchClassInfo(neighborhood);
     }
+    getSchedule();
   }
 
   getCurrentUser() {
