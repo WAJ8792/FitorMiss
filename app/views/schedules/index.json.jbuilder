@@ -7,6 +7,7 @@
   json.vendor_id @vendor_id
   json.vendor thisClass[:name]
   json.description thisClass[:class_description][:description]
+
   json.name thisClass[:class_description][:name]
   json.reservations do
     json.maxCapacity thisClass[:max_capacity]

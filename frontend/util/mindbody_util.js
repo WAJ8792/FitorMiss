@@ -70,6 +70,3 @@ function getDifference(start, end) {
   return parseInt(end) - parseInt(start);
 }
 
-// function apprxType(classString) {
-//   if (string)
-// }

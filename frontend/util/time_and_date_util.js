@@ -1,4 +1,6 @@
 export const indexOfDay = day => {
+  if (typeof day != 'string') { return logDayError(day); }
+  if (day.length === 3) { return indexOfShortenedDay(day) }
   switch (day) {
     case "Sunday":
       return 0
@@ -15,8 +17,34 @@ export const indexOfDay = day => {
     case "Saturday":
       return 6
     default:
-      console.log("indexOfTomorrow a day");
+      logDayError(day);
   }
+}
+
+function indexOfShortenedDay(day) {
+  if (typeof day != 'string') { logDayError(day); }
+  switch (day) {
+    case "Sun":
+      return 0
+    case "Mon":
+      return 1
+    case "Tue":
+      return 2
+    case "Wed":
+      return 3
+    case "Thu":
+      return 4
+    case "Fri":
+      return 5
+    case "Sat":
+      return 6
+    default:
+      logDayError(day);
+  }
+}
+
+function logDayError(data) {
+  console.log(`Looking for string representing a day. Instead saw: ${data}`);
 }
 
 export const dayByIndex = day => {

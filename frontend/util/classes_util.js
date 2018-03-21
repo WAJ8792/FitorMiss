@@ -123,7 +123,7 @@ function filterByAmenities(classes, amenities) {
   let filterList = [];
   let filteredClasses = [];
   Object.keys(amenities).forEach( amenity => {
-    if (amenities[amenity] === true) { filterList.push(amenity)}
+    if (amenities[amenity]) { filterList.push(amenity)}
   });
   if (filterList.length < 1) { return classes }
   else {

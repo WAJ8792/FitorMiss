@@ -1,31 +1,68 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { getTimeRange, getHoursOut,  } from '../../../util/time_and_date_util';
 
-export default class DisplayClassInfo extends React.Component {
+class DisplayClassInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       pricing: null,
-      vendorEmail: null,
+      vendorInfo: {
+        email: null,
+        gym_name: null,
+        neighborhood: null,
+      },
+      // filteredOut: true,
     }
   }
 
   componentDidMount() {
-    this.getPricingSchema(this.props.thisClass.vendor_id);
-    this.getVendorEmail(this.props.thisClass.vendor_id);
+    const thisClass = this.props.thisClass;
+    if (thisClass.vendor_id) {
+      this.getPricingSchema(thisClass.vendor_id);
+      this.getVendorInfo(thisClass.vendor_id);
+    }
   }
 
-  getVendorEmail(vendor) {
-    let vendorEmail = null;
+  getVendorInfo(vendor) {
+    let vendorInfo = null;
     app.database().ref("vendor")
     .orderByKey().equalTo(vendor).on('value', snap => {
       if (snap.val() != null) {
-        vendorEmail = snap.val()[vendor].email
+        vendorInfo = snap.val()[vendor];
+        this.fetchAmenities(vendor);
       }
-      this.setState({vendorEmail});
+      this.setState({vendorInfo});
     })
   }
+
+  fetchAmenities(vendor) {
+    // app.database().ref('amenities').orderByChild('vendor_id')
+    // .equalTo(vendor.toString()).on('value', snap => {
+    //   if (snap.val() != null) {
+    //     const amenities = snap.val()[Object.keys(snap.val())[0]];
+    //     this.filterClass(amenities);
+    //   }
+    // });
+  }
+
+  filterClass(classAtts) {
+    // classAtts[this.props.thisClass.type] = true;
+    // const filters = this.props.filters;
+    // const filteredOut = Object.keys(filters).some(key => {
+    //   const filter = filters[key];
+    //   return Object.keys(filter).some( value => {
+    //     if (filter[value] && !classAtts[value]) {
+    //       return true;
+    //     } else { return false; }
+    //   });
+    // })
+    // console.log(filteredOut);
+    // this.setState({filteredOut});
+  }
+
 
   getPricingSchema(vendor) {
     let pricing = [];
@@ -45,8 +82,11 @@ export default class DisplayClassInfo extends React.Component {
   }
 
   render() {
-    let thisClass = this.props.thisClass;
-    thisClass.vendorEmail = this.state.vendorEmail;
+    if (this.state.filteredOut) { return null; }
+
+    const thisClass = this.props.thisClass;
+    const vendor = this.state.vendorInfo;
+
     let time = getTimeRange(thisClass.time, thisClass.duration);
     let hoursOut;
     let price;
@@ -57,7 +97,6 @@ export default class DisplayClassInfo extends React.Component {
       price = this.state.pricing[hoursOut];
     } else { price = ""}
     thisClass.price = price;
-
     return (
       <section className="class-info">
         <div>
@@ -66,11 +105,11 @@ export default class DisplayClassInfo extends React.Component {
         </div>
 
         <div>
-          <h5 style={{color: '#1ed0b1'}}>{thisClass.vendor}</h5>
+          <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
         </div>
 
         <div>
-          <h5>{thisClass.neighborhood}</h5>
+          <h5>{vendor.neighborhood}</h5>
         </div>
 
         <div>
@@ -87,3 +126,11 @@ export default class DisplayClassInfo extends React.Component {
     )
   }
 }
+
+const mapStateToProps = ( state ) => ({
+  filters: state.filters
+});
+
+export default withRouter(connect(
+  mapStateToProps
+)(DisplayClassInfo));
