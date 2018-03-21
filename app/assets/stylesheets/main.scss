@@ -81,32 +81,6 @@
 
 }
 
-@keyframes loading {
-  0% {left: -36px;}
-  100% {left: 445px; }
-}
-
-.line {
-  width: 500px;
-  height: 10px;
-  background-color: green;
-  margin-top: 20px;
-  position: relative;
-  left: 34%;
-  border-radius: 18px;
-
-  #c3 {
-    background-color: green;
-    height: 20px;
-    width: 20px;
-    border-radius: 12px;
-    position: relative;
-    bottom: 4px;
-    left: -36px;
-    animation-name: loading;
-    animation-duration: 5s;
-  }
-}
 
 .wordmark {
   margin-top: 12px;
@@ -123,16 +97,80 @@
 }
 
 .loading-message {
-  margin-top: 15%;
+  height: 100%;
+  width: 100%;
+  background-color: #1C2F5A;
+  padding-top: 10%;
   text-align: center;
+  position: fixed;
 }
 
 .loading-message img {
   height: 150px;
+  margin: 0;
 }
 
 .loading-message p {
   color: rgba(255, 255, 255, .8);
-  margin-top: 0;
   font-size: 46px;
+  font-weight: 200;
+  margin: 5px auto 15px auto;
+}
+
+.loader {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  top: 28px;
+  left: 5px;
+}
+.loader div {
+  position: absolute;
+  top: 27px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.loader div:nth-child(1) {
+  left: 6px;
+  animation: loader1 0.6s infinite;
+}
+.loader div:nth-child(2) {
+  left: 6px;
+  animation: loader2 0.6s infinite;
+}
+.loader div:nth-child(3) {
+  left: 26px;
+  animation: loader2 0.6s infinite;
+}
+.loader div:nth-child(4) {
+  left: 45px;
+  animation: loader3 0.6s infinite;
+}
+@keyframes loader1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes loader3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes loader2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
 }
