@@ -15,7 +15,7 @@ export const indexOfDay = day => {
     case "Saturday":
       return 6
     default:
-      console.log("Not a day");
+      console.log("indexOfTomorrow a day");
   }
 }
 
@@ -73,7 +73,7 @@ export const in24Hours = classTime => {
 
 export const afterCurrentHours = classTime => {
   let now = new Date().getHours();
-  if (parseInt(classTime.slice(0, 2) - 1) < now) { return false; }
+  if (parseInt(classTime.slice(0, 2)) < now) { return false; }
   else { return true; }
 }
 
