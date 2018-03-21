@@ -6,10 +6,12 @@
   json.canceled thisClass[:is_canceled]
   json.vendor_id @vendor_id
   json.name thisClass[:class_description][:name]
-  json.max_capacity thisClass[:max_capacity]
-  json.total_booked thisClass[:total_booked]
-  json.web_capacity thisClass[:web_capacity]
-  json.web_booked thisClass[:web_booked]
+  json.reservations do
+    json.maxCapacity thisClass[:max_capacity]
+    json.totalBooked thisClass[:total_booked]
+    json.webCapacity thisClass[:web_capacity]
+    json.webBooked thisClass[:web_booked]
+  end
   json.start_date_time thisClass[:start_date_time]
   json.end_date_time thisClass[:end_date_time]
 

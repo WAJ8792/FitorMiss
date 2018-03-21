@@ -6,7 +6,7 @@ import { getCurrentUser } from '../../../util/session_util';
 import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
 import { getTime, getDayAndDate } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
-import { getSchedule } from '../../../util/mindbody_util';
+import { getMBSchedule } from '../../../util/mindbody_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
@@ -24,9 +24,10 @@ class CustomerPage extends React.Component {
       },
       typeFilter: false,
       amenityFilter: false,
-      classes: [],
       errors: null,
       modal: null,
+      fomSchedule: {},
+      mindbodySchedule: {},
     }
     this.handleReserve = this.handleReserve.bind(this);
     this.isValidReservation = this.isValidReservation.bind(this);
@@ -35,12 +36,10 @@ class CustomerPage extends React.Component {
   }
 
   componentDidMount() {
-    let neighborhood = this.state.userInfo.neighborhood;
     this.getCurrentUser();
-    if (neighborhood.length > 0) {
-      this.fetchClassInfo(neighborhood);
-    }
-    getSchedule();
+    getMBSchedule( (mindbodySchedule) => {
+      this.setState({mindbodySchedule});
+    });
   }
 
   getCurrentUser() {
@@ -57,7 +56,7 @@ class CustomerPage extends React.Component {
     .orderByKey().equalTo(user).on('value', snap => {
       if (snap.val() != null) {
         this.setState({userInfo: snap.val()[user]});
-        this.fetchClassInfo(snap.val()[user].neighborhood_id);
+        this.fetchFomSchedule(snap.val()[user].neighborhood_id);
         this.fetchNeighborhood(snap.val()[user].neighborhood_id);
       }
     })
@@ -71,21 +70,19 @@ class CustomerPage extends React.Component {
     })
   }
 
-  fetchClassInfo(neighborhood) {
-    let classes = [];
+  fetchFomSchedule(neighborhood) {
     firebase.database().ref('classes')
     .orderByChild('neighborhood_id').equalTo(parseInt(neighborhood))
     .on("value", snap => {
       if (snap.val() != null) {
-        classes = getClassesByDay(snap.val());
+        this.setState({fomSchedule: snap.val()});
       }
-      this.setState({classes});
     })
   }
 
   isValidReservation(thisClass) {
     let errors = [];
-    console.log(thisClass, this.state.classes);
+
     if (!this.state.userInfo.stripe_id) {
       errors.push("To reserve a class a credit card must be registered with your account. Add a credit card by clicking 'Billing' in the top-right menu.");
     }
@@ -159,12 +156,17 @@ class CustomerPage extends React.Component {
     }
   }
 
-  displayClasses(classList) {
-    let classes = [];
+  displayClasses() {
+    const mergedSchedule = Object.assign(
+      {}, this.state.fomSchedule, this.state.mindbodySchedule
+    )
+    const classes = getClassesByDay(mergedSchedule);
+    const classViews = [];
+
     let filter = this.state.typeFilter;
-    this.state.classes.forEach(thisClass => {
+    classes.forEach(thisClass => {
       if (filter === false || thisClass.type === filter) {
-        classes.push(
+        classViews.push(
           <ClassInfo
           key={thisClass.id}
           thisClass={thisClass}
@@ -172,7 +174,7 @@ class CustomerPage extends React.Component {
         )
       }
     });
-    return classes;
+    return classViews;
   }
 
   updateDay(day) {
