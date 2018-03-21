@@ -182,6 +182,68 @@ class TopHeader extends React.Component {
   }
 }
 
+class Dropdown extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownIsOpen: false
+    };
+
+    this.handleDropdownClick = this.handleDropdownClick.bind(this);
+    this.renderDropdown = this.renderDropdown.bind(this);
+  }
+
+  handleDropdownClick() {
+    this.setState({dropdownIsOpen: !this.state.dropdownIsOpen});
+  }
+
+  renderDropdown() {
+    if (this.state.dropdownIsOpen) {
+      return (
+        <ul className="dropdown-list">
+          <li>Account</li>
+          <hr />
+          <li>Billing</li>
+          <hr />
+          <li onClick={this.props.logout}>Sign Out</li>
+        </ul>
+      );
+    }
+  }
+
+  render() {
+    return(
+      <div
+        className="dropdown-text"
+        onClick={this.handleDropdownClick}>
+        <p className="username-dropdown">John Smith
+          <span><i className="fa fas fa-caret-down" /></span>
+        </p>
+        <div className="dropdown-container">
+          {this.renderDropdown()}
+        </div>
+      </div>
+    );
+  }
+}
+
+// class TopHeader extends React.Component {
+//   render() {
+//     let logout;
+//
+//     if (this.props.logout) {
+//       logout = <div className="logout" onClick={e => this.props.logout(e)}>Sign Out</div>
+//     } else { logout = null; }
+//
+//     return(
+//       <section className="top-header">
+//         <div className="wordmark"><span>Fit</span>or<span>Miss</span></div>
+//         {logout}
+//       </section>
+//     );
+//   }
+// }
+
 const mapStateToProps = ( state ) => {
   return {
     user: state.sessions.user,

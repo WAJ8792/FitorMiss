@@ -74,7 +74,7 @@ class DisplayClassInfo extends React.Component {
           pricing.push(child.val()['tier1']);
           pricing.push(child.val()['tier2']);
           pricing.push(child.val()['tier3']);
-          pricing.push('50');
+          pricing.push(child.val()['tier4']);
         })
       }
       this.setState({pricing});

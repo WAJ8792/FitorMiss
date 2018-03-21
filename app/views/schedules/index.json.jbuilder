@@ -5,6 +5,9 @@
   json.id id
   json.canceled thisClass[:is_canceled]
   json.vendor_id @vendor_id
+  json.vendor thisClass[:name]
+  json.description thisClass[:class_description][:description]
+
   json.name thisClass[:class_description][:name]
   json.reservations do
     json.maxCapacity thisClass[:max_capacity]

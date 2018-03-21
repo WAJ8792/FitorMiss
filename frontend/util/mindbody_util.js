@@ -31,9 +31,8 @@ function formatMindbodyClasse(schedule) {
     thisClass.time = dateTime.time;
     thisClass.duration = dateTime.duration;
     // Get an approximation based on class info
-    thisClass.type = "Cardio";
+    thisClass.type = "";
 
-    thisClass.neighborhood = "Flatiron";
     thisClass.amenities = {
       parking: false,
       towels: false,
@@ -44,20 +43,6 @@ function formatMindbodyClasse(schedule) {
     formattedSchedule[id] = thisClass;
   })
   return formattedSchedule;
-}
-
-
-function fetchVendorInfo(id) {
-  firebase.database().ref('vendors').orderByKey().equalTo(id.toString())
-  .on('value', snap => {
-    if (snap.val() != null) {
-      vendor = snap.val()[id]
-    }
-    return {
-      vendor: vendor.gym_name,
-      neighborhood: vendor.neighborhood
-    }
-  })
 }
 
 function getSeats(reservations) {
@@ -85,13 +70,3 @@ function getDifference(start, end) {
   return parseInt(end) - parseInt(start);
 }
 
-// amenities
-// vendor_name
-// neighborhood / neighborhood_id
-//
-// duration
-// time
-// Date
-// day
-//
-// apprx type
