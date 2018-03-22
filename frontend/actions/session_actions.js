@@ -30,9 +30,9 @@ export const login = (user, db) => dispatch => (
     .catch(error => dispatch(receiveErrors(error.message)))
 );
 
-export const signupVendor = (user, db) => dispatch =>  (
+export const signupVendor = (userInfo, db) => dispatch =>  (
   db.auth()
-    .createUserWithEmailAndPassword(user.email, user.password)
+    .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
     .then(user => createVendor(user, db, userInfo))
     .catch(error => dispatch(receiveErrors(error.message)))
 )

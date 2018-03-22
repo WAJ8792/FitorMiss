@@ -20,7 +20,7 @@ export default class NewVendorForm extends React.Component {
 
             <input type="password"
               value={this.props.vendor.password}
-              placeholder="Email"
+              placeholder="Password"
               onChange={ e => this.props.handleChange(e, "password")} />
             <br />
 

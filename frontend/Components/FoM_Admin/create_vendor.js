@@ -18,6 +18,7 @@ export default class ManageAdmin extends React.Component {
         gym_name: "",
         email: "",
         password: "",
+        phone: "",
         neighborhood: "Flatiron",
         amenities: {
           parking: false,
@@ -31,6 +32,11 @@ export default class ManageAdmin extends React.Component {
           tier2: "",
           tier3: "",
           tier4: ""
+        },
+        address: {
+          city: "",
+          state: "",
+          street: "",
         }
       }
     }
@@ -43,14 +49,17 @@ export default class ManageAdmin extends React.Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
     this.props.signupVendor(this.state.newVendorInfo, app);
     this.setState({
       newVendorInfo: {
         gym_name: "",
         email: "",
         neighborhood: "Flatiron",
+        password: "",
         amenities: { parking: false, mat_rentals: false, showers: false, lockers: false, towels: false },
-        pricing_schema: {tier1: "", tier2: "", tier3: "", tier4: "" }
+        pricing_schema: {tier1: "", tier2: "", tier3: "", tier4: "" },
+        address: {city: "", state: "", street: ""}
       }
     })
   }
@@ -66,12 +75,13 @@ export default class ManageAdmin extends React.Component {
 
   handleTierChange(e, tier) {
     if (this.invalidInput(e.target.value, 'tier')) { return; }
+    const val = parseInt(e.target.value);
     this.setState({
       newVendorInfo: {
         ...this.state.newVendorInfo,
         pricing_schema: {
           ...this.state.newVendorInfo.pricing_schema,
-          [tier]: e.target.value
+          [tier]: val
         }
       }
     })
