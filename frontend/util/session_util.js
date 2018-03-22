@@ -1,30 +1,24 @@
 export const createVendor = function(user, db, userInfo) {
-  db.database().ref('vendor/' + user.user.uid).set({
-    gym_name: userInfo.gymName,
-    neighborhood_id: userInfo.neighborhood,
-    email: user.user.email,
+  debugger;
+  const amenities = userInfo.amenities;
+  amenities.vendor_id = user.uid;
+
+  const pricing_schema = userInfo.pricing_schema;
+  pricing_schema.vendor_id = user.uid;
+
+  const address = userInfo.address;
+  address.vendor_id = user.uid;
+
+  db.database().ref('vendor/' + user.uid).set({
+    gym_name: userInfo.gym_name,
+    neighborhood: userInfo.neighborhood,
+    phone: userInfo.phone,
+    email: userInfo.email,
   });
-  db.database().ref('amenities').push({
-    vendor_id: user.user.uid,
-    parking: false,
-    showers: false,
-    lockers: false,
-    towels: false,
-    mat_rentals: false,
-  });
-  db.database().ref('address').push({
-    city: "",
-    state: "",
-    street: "",
-    vendor_id: user.user.uid,
-  });
-  db.database().ref('pricing_schemas').push({
-    tier1: "10%",
-    tier2: "20%",
-    tier3: "30%",
-    vendor_id: user.user.uid,
-  });
-  db.database().ref('user_type/' + user.user.uid).set("vendor");
+  db.database().ref('amenities').push(amenities);
+  db.database().ref('pricing_schemas').push(pricing_schema);
+  db.database().ref('user_type/' + user.uid).set("vendor");
+  db.database().ref('address').push(address);
 }
 
 export const createCustomer = function(user, db, userInfo) {
