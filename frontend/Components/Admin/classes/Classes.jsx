@@ -52,12 +52,19 @@ export default class Classes extends React.Component {
   }
 
   getAmenities(user) {
-    let userInfo = this.state.userInfo;
     firebase.database().ref("amenities")
     .orderByChild("vendor_id").equalTo(user).on('value', snap => {
       if (snap.val() != null) {
-        userInfo.amenities = Object.values(snap.val())[0];
-        this.setState({userInfo});
+        console.log(
+          snap.val(),
+          Object.keys(snap.val())[0]
+        );
+        this.setState({
+          userInfo: {
+            ...this.state.userInfo,
+            amenities: snap.val()[Object.keys(snap.val())[0]]
+          }
+        })
       }
     })
   }
@@ -194,6 +201,7 @@ export default class Classes extends React.Component {
   }
 
   render() {
+    console.log(this.state.userInfo);
     let day = this.state.day;
     let classes;
     let modal = this.state.modal;
