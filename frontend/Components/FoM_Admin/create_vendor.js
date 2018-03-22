@@ -4,15 +4,20 @@ import { Redirect } from 'react-router-dom';
 
 import NewVendorForm from './new_vendor_form.js';
 import Amenity from './amenity';
+import Tier from './pricing_tier';
+
+import createNewVendor from '../../util/vendor_util';
 
 export default class ManageAdmin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loggedOut: false,
+      errors: [],
       newVendorInfo: {
         gym_name: "",
         email: "",
+        password: "",
         neighborhood: "Flatiron",
         amenities: {
           parking: false,
@@ -20,6 +25,12 @@ export default class ManageAdmin extends React.Component {
           showers: false,
           lockers: false,
           towels: false
+        },
+        pricing_schema: {
+          tier1: "",
+          tier2: "",
+          tier3: "",
+          tier4: ""
         }
       }
     }
@@ -27,11 +38,21 @@ export default class ManageAdmin extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChoose = this.handleChoose.bind(this);
+    this.handleTierChange = this.handleTierChange.bind(this);
+    this.invalidInput = this.invalidInput.bind(this);
   }
 
   handleSubmit(e) {
-    e.preventDefault();
-    console.log("Submitted info", this.state.newVendorInfo);
+    this.props.signupVendor(this.state.newVendorInfo, app);
+    this.setState({
+      newVendorInfo: {
+        gym_name: "",
+        email: "",
+        neighborhood: "Flatiron",
+        amenities: { parking: false, mat_rentals: false, showers: false, lockers: false, towels: false },
+        pricing_schema: {tier1: "", tier2: "", tier3: "", tier4: "" }
+      }
+    })
   }
 
   handleChange(e, field) {
@@ -43,8 +64,20 @@ export default class ManageAdmin extends React.Component {
     })
   }
 
+  handleTierChange(e, tier) {
+    if (this.invalidInput(e.target.value, 'tier')) { return; }
+    this.setState({
+      newVendorInfo: {
+        ...this.state.newVendorInfo,
+        pricing_schema: {
+          ...this.state.newVendorInfo.pricing_schema,
+          [tier]: e.target.value
+        }
+      }
+    })
+  }
+
   handleChoose(e, amenity) {
-    console.log(amenity);
     const amenities = this.state.newVendorInfo.amenities;
     const toggle = (amenities[amenity]) ? false : true
     this.setState({
@@ -58,6 +91,24 @@ export default class ManageAdmin extends React.Component {
     })
   }
 
+  invalidInput(input, fieldType) {
+    const errors = [];
+    switch (fieldType) {
+      case 'tier':
+        if (isNaN(input)) {
+          errors.push("Tier fields only accept number inputs as a value");
+        }
+    }
+    if (errors.length === 0) {
+      this.setState({errors});
+      return false;
+    }
+    else {
+      this.setState({errors});
+      return true;
+    }
+  }
+
   logout() {
     this.props.logout({
         uid: 'ZXIWqUSTpPSd6BTVUu3kf0Rbqhf1',
@@ -67,12 +118,16 @@ export default class ManageAdmin extends React.Component {
   }
 
   render() {
-    console.log(this.state.newVendorInfo.amenities);
-
     if (this.state.loggedOut) { return <Redirect to="/signin" /> }
-
     const vendor = this.state.newVendorInfo;
     const amenities = [];
+    const pricingSchema = Object.keys(vendor.pricing_schema).map(tier =>
+      <Tier
+        key={tier}
+        handleChange={this.handleTierChange}
+        tier={tier}
+        value={vendor.pricing_schema[tier]} />
+    )
     for (let amenity in vendor.amenities) {
       amenities.push(
         <Amenity
@@ -90,10 +145,12 @@ export default class ManageAdmin extends React.Component {
           <div onClick={this.logout}>logout</div>
         </span>
         <h1>Create a new vendor</h1>
+        {this.state.errors}
         <div>
           <NewVendorForm
             vendor={vendor}
             amenities={amenities}
+            pricingSchema={pricingSchema}
             handleSubmit={this.handleSubmit}
             handleChange={this.handleChange} />
         </div>
@@ -112,7 +169,7 @@ function getPrintableAmenity(amenity) {
       return 'Lockers';
     case 'towels':
       return 'Towels';
-    case 'shower':
+    case 'showers':
       return 'Showers';
   }
 }
