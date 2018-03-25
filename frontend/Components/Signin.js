@@ -90,6 +90,8 @@ export default class SignIn extends React.Component {
           return (
             <div id="greeting-container">
               {logo}
+              <p className="tagline">Fit or Miss: Daily Deals for the Best Workouts near You!</p>
+              <p className="tagline">Welcome to #FlexibleFitness!</p>
               <div>
 
               <section className="session-block">
