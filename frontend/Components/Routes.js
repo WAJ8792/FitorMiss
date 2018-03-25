@@ -51,8 +51,8 @@ const Root = ({ store }) => {
             <Route path="/admin/account" component={Account} />
             <Route path="/admin/classes" component={Classes} />
 
-            <Route exact path="/customer" component={ClassList} />
-            <Route path="/customer/classes" component={CustomerPage} />
+            <Route exact path="/customer" component={CustomerPage} />
+            <Route path="/customer/classes" component={ClassList} />
             <Route path="/customer/account" component={CustomerAccounts} />
             <StripeProvider apiKey="pk_live_yyxl71DnK3RqAqLv0Ou6KbaS">
               <Route path="/customer/billing" component={CustomerBilling} />

@@ -169,6 +169,7 @@ export default class Classes extends React.Component {
     return c;
   }
 
+
   saveChanges(thisClass) {
     firebase.database().ref('classes/' + thisClass.class_id)
       .set(this.getClass(thisClass));
