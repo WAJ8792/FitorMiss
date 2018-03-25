@@ -138,7 +138,7 @@ export const getTimeRange = (classTime, duration) => {
   const startHour = parseInt(classTime.slice(0, 2));
   const startMin = parseInt(classTime.slice(3, 5));
 
-  const ampm = ((startHour + duration.hours) > 12) ? ' PM' : ' AM'
+  const ampm = ((startHour + duration.hours) >= 12) ? ' PM' : ' AM'
   const start = formatTime([startHour, startMin]);
   const finish = endsAt(startHour, startMin, duration);
 
@@ -182,7 +182,9 @@ export const getTime = (time) => {
     let min = time.slice(2, 5);
     time = hour.toString() + min;
     time += " PM";
-  } else { time += " AM" }
+  }
+  else if (hour === 12) { time += " PM"}
+  else { time += " AM" }
 
   let firstDigit = time.slice(0, 1);
   if (firstDigit === '0') {
