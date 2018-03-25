@@ -158,6 +158,8 @@ export default class Classes extends React.Component {
        updated_at: new Date().getTime(),
        created_at: thisClass.created_at,
        type: thisClass.type,
+       max: thisClass.max,
+       amenities: thisClass.amenities,
        name: thisClass.name,
        day: thisClass.day,
        time: thisClass.time,
