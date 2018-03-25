@@ -150,7 +150,7 @@ function endsAt(startHour, startMin, duration) {
   let endMin = startMin + duration.min;
 
   if (endHour > 24) { endHour -= 24; }
-  if (endMin > 60) {
+  if (endMin > 59) {
     endHour += 1;
     endMin -= 60;
    }
