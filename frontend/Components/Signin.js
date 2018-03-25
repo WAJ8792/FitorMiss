@@ -27,7 +27,7 @@ export default class SignIn extends React.Component {
       });
   }
 
-  resetPassword() {
+  resetPassword = () => {
     firebase.auth().sendPasswordResetEmail(this.state.email).then( () => {
       console.log("Email sent");
     }).catch(function(error) {
@@ -35,7 +35,7 @@ export default class SignIn extends React.Component {
     });
   }
 
-  logout(e) {
+  logout = (e) => {
 
     let user = {
       uid: this.state.uid,
@@ -45,140 +45,165 @@ export default class SignIn extends React.Component {
     this.setState({loggedOut: true});
   }
 
-  handleChange(field) {
+  handleChange = (field) => {
     return e => this.setState({[field]: e.target.value})
   }
 
-  handleLogin(e) {
+  handleLogin = (e) => {
     e.preventDefault();
     this.props.login(this.state, app);
-  }
-
-  sendEmail() {
-    let msg = {
-      to: 'thomasMaher1210@gmail.com',
-      from: 'thomasMaher1210@gmail.com',
-      subject: 'Sending with SendGrid is Fun',
-      text: 'and easy to do anywhere, even with Node.js',
-      html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-    };
-    console.log(msg);
   }
 
   handleLoginRender(render) {
     this.setState({render});
   }
 
-  render() {
-    let error;
-    if (this.props.user.error.length > 0) {
-      error = this.props.user.error;
+  toggleTabs(name) {
+    const { render } = this.state;
+    let word = (render === name) ? "active" : null;
+    if (render === "pwdReset" && name === "login") {
+      word = "active"
     }
+    return "navlinks" + " " + word;
+  }
+
+  render() {
+    if (this.state.type === "customer") {
+      return ( <Redirect to="/customer/classes" />);
+    } else if (this.state.type === "admin") {
+      return (<Redirect to="/admin" />);
+    }
+
     const logo = <section>
           <img
             src={window.images.logo}
             className="splash-logo" />
         </section>
 
-    if (this.state.type === "customer") {
-      return ( <Redirect to="/customer/classes" />);
-    } else if (this.state.type === "admin") {
-      return (<Redirect to="/admin" />);
-    } else {
-      switch (this.state.render) {
-        case "login":
-          return (
-            <div id="greeting-container">
-              {logo}
-              <p className="tagline">Fit or Miss: Daily Deals for the Best Workouts near You!</p>
-              <p className="tagline">Welcome to #FlexibleFitness!</p>
-              <div>
 
-              <section className="session-block">
-                <div>
-                  <div>
-                    <section className="login">
-                      <input
-                        type="text"
-                        value={this.state.email}
-                        placeholder="Email Address"
-                        onChange={this.handleChange("email")}/>
-                      <input
-                        type="password"
-                        value={this.state.password}
-                        placeholder="Password"
-                        onChange={this.handleChange("password")}/>
-                    </section>
+    return (
+      <div id="greeting-container">
+        {logo}
+        <p className="tagline">Fit or Miss: Daily Deals for the Best Workouts near You!</p>
+        <p className="tagline">Welcome to #FlexibleFitness!</p>
 
-                    <button onClick={e => this.handleLogin(e)}>Login</button>
-                    <div className="forgot-password">
-                      <a onClick={() => this.handleLoginRender("pwdReset")}>
-                        Forgot Password?
-                      </a>
-                    </div>
-                    {error}
-                    </div>
-                  </div>
-                </section>
+        <div className="new-page-container">
+          <div className="page-detail">
+            <div id="sessions-page">
+              <div id="sessions-module">
+                <div className="sessions-module-buttons">
+
+                  <button
+                    className={this.toggleTabs("login")}
+                    onClick={() => this.handleLoginRender("login")}>
+                    Login
+                  </button>
+                  <button
+                    className={this.toggleTabs("signup")}
+                    onClick={() => this.handleLoginRender("signup")}>
+                    SignUp
+                  </button>
+
+                </div>
+                <hr className="sessions-hr" />
+
+                {this.getSessionType()}
+              </div>
             </div>
-            <button
-              onClick={() => this.handleLoginRender("signup")}
-              className="toggle-button">Not a member? Sign up!</button>
           </div>
-          );
+        </div>
+      </div>
+    )
+  }
+
+  getSessionType() {
+    let error;
+    if (this.props.user.error.length > 0) {
+      error = this.props.user.error;
+    }
+
+    switch (this.state.render) {
+      case "login":
+        return (
+          <Login
+            password={this.state.password}
+            email={this.state.email}
+            handleLoginRender={this.handleLoginRender}
+            handleChange={this.handleChange}
+            handleLogin={this.handleLogin}
+            error={error}
+          />
+        );
         case "pwdReset":
           return (
-            <div id="greeting-container">
-              {logo}
-              <div>
-
-              <section className="session-block">
-                <div>
-                  <div>
-                    <section className="login">
-                      <input
-                        type="text"
-                        value={this.state.email}
-                        placeholder="Email Address"
-                        onChange={this.handleChange("email")}
-                        style={{marginLeft: "135px"}}/>
-                    </section>
-
-                    <button onClick={this.resetPassword.bind(this)}>Reset</button>
-                    <div className="forgot-password">
-                      <a onClick={() => this.handleLoginRender("login")}>Back</a>
-                    </div>
-                    {error}
-                    </div>
-                  </div>
-                </section>
-              </div>
-              <button
-                onClick={() => this.handleLoginRender('signup')}
-                className="toggle-button">Not a member? Sign up!</button>
-            </div>
+            <Reset
+              email={this.state.email}
+              handleLoginRender={this.handleLoginRender}
+              resetPassword={this.resetPassword}
+              handleChange={this.handleChange}
+            />
           );
         case "signup":
-            return (
-              <div id="greeting-container">
-                {logo}
-              <div>
-
-              <div>
-                <p className="create-text">Create a new account</p>
-                <section className="signup-forms">
-                  <SignupCustomer
-                    signupCustomer={this.props.signupCustomer}
-                    user={this.props.user} />
-                  <button
-                    onClick={() => this.handleLoginRender('login')}
-                    className="toggle-button">Already a member? Log In</button>
-                </section>
-              </div>
-            </div>
-            </div>
-            );
-        }
+          return (
+            <SignupCustomer
+              signupCustomer={this.props.signupCustomer}
+              user={this.props.user} />
+          );
       }
     }
-  }
+}
+
+const Login = props => [
+  <div className="sign-up-forms">
+    <p className="create-text">Sign In</p>
+    <section className="session-block">
+      <div style={{display: "inline-grid"}}>
+
+        <input
+          type="text"
+          value={props.email}
+          placeholder="Email Address"
+          onChange={props.handleChange("email")}/>
+        <input
+          type="password"
+          value={props.password}
+          placeholder="Password"
+          onChange={props.handleChange("password")}/>
+
+        <button onClick={e => props.handleLogin(e)}>Login</button>
+        <div className="forgot-password-text">
+          <a onClick={() => props.handleLoginRender("pwdReset")}>
+            Forgot Password?
+          </a>
+        </div>
+        {props.error}
+      </div>
+    </section>
+  </div>
+]
+
+const Reset = props => [
+  <section className="sign-up-forms">
+    <section className="password-block">
+      <input
+        type="text"
+        value={props.email}
+        placeholder="Email Address"
+        onChange={props.handleChange("email")}
+      />
+    </section>
+
+    <button
+      className="reset-password-button"
+      onClick={props.resetPassword}>
+      Reset
+    </button>
+
+    <div className="forgot-password-text">
+      <a onClick={() => props.handleLoginRender("login")}>
+        Back
+      </a>
+    </div>
+    {props.error}
+  </section>
+]
