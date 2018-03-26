@@ -15,7 +15,7 @@ function formatMindbodyClasse(schedule) {
   schedule.forEach( thisClass => {
     const id = thisClass.id;
     const vendor_id = thisClass.vendor_id.toString();
-    const vendorInfo = fetchVendorInfo(vendor_id);
+    // const vendorInfo = fetchVendorInfo(vendor_id);
     // console.log(thisClass.start_date_time);
     // console.log(new Date(thisClass.start_date_time).toString());
     const dateTime = parseDateTime(
@@ -25,7 +25,7 @@ function formatMindbodyClasse(schedule) {
 
     thisClass.vendor_id = vendor_id;
     // get through formatting / calculation function
-    thisClass.seats = getSeats(thisClass.reservations);
+    thisClass.seats = getSeats(thisClass.booking);
     const max = (thisClass.seats > 0) ? false : true
     thisClass.day = dateTime.day;
     thisClass.time = dateTime.time;

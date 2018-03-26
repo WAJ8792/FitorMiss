@@ -158,7 +158,7 @@ class CustomerPage extends React.Component {
 
   availableToUser = (id) => {
     return thisClass => {
-      if (!thisClass.reservations) { return true; }
+      if (!thisClass.reservations || thisClass['id'].includes('mindbody')) { return true; }
 
       const upcomingRes = thisClass.reservations[thisClass.date];
       if (upcomingRes >= thisClass.seats || upcomingRes.includes(id)) {

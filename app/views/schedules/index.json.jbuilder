@@ -1,5 +1,5 @@
  json.array! @classes_list do |thisClass|
-  id = 'midbody_' + thisClass[:class_description][:id]
+  id = 'mindbody_' + thisClass[:class_description][:id]
   class_description = thisClass[:class_description]
 
   json.id id
@@ -8,7 +8,7 @@
   json.vendor thisClass[:name]
   json.description thisClass[:class_description][:description]
   json.name thisClass[:class_description][:name]
-  json.reservations do
+  json.booking do
     json.maxCapacity thisClass[:max_capacity]
     json.totalBooked thisClass[:total_booked]
     json.webCapacity thisClass[:web_capacity]
