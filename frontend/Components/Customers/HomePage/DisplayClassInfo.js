@@ -93,6 +93,7 @@ class DisplayClassInfo extends React.Component {
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
+      console.log(this.state.pricing, getHoursOut(thisClass.time));
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
     let time = getTimeRange(thisClass.time, thisClass.duration);
