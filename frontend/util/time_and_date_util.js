@@ -129,9 +129,13 @@ export const in24Hours = classTime => {
 }
 
 export const afterCurrentHours = classTime => {
-  let now = new Date().getHours();
-  if (parseInt(classTime.slice(0, 2)) < now) { return false; }
-  else { return true; }
+  const afterHour = (new Date().getHours()) - (parseInt(classTime.slice(0, 2)));
+  if (afterHour > 0) { return false; }
+  else if (afterHour === 0) {
+    const currentMin = new Date().getMinutes();
+    if (currentMin > parseInt(classTime.slice(3, 5))) { return false;}
+    else { return true; }
+  } else { return true; }
 }
 
 export const getTimeRange = (classTime, duration) => {
