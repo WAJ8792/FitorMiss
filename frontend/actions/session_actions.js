@@ -26,14 +26,13 @@ export const logout = (user, db) => dispatch => (
 export const login = (user, db) => dispatch => (
   db.auth()
     .signInAndRetrieveDataWithEmailAndPassword(user.email, user.password)
-    .then(user => dispatch(receiveUser(user.user)))
+    .then(user => dispatch(receiveUser(user)))
     .catch(error => dispatch(receiveErrors(error.message)))
 );
 
 export const signupVendor = (userInfo, db) => dispatch =>  (
   db.auth()
-    .createUserWithEmailAndPassword(userInfo.newEmail, userInfo.newPassword)
-    .then(user => dispatch(receiveUser(user)))
+    .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
     .then(user => createVendor(user, db, userInfo))
     .catch(error => dispatch(receiveErrors(error.message)))
 )

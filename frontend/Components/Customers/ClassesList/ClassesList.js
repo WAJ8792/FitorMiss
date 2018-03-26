@@ -78,7 +78,7 @@ export default class ClassList extends React.Component {
       : this.listClasses("pastClasses")
     let state = this.state;
     if (classes.length < 1) {
-      classes = <div id="no-classes">You have no upcoming classes.
+      classes = <div id="no-classes">You have no upcoming reservations.
       Click 'Classes' above to view available classes in your area!</div>
     }
     return(

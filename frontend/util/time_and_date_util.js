@@ -21,6 +21,35 @@ export const indexOfDay = day => {
   }
 }
 
+const monthByIndex = month => {
+  switch (month) {
+    case 0:
+      return "January";
+    case 1:
+      return "February";
+    case 2:
+      return "March";
+    case 3:
+      return "April";
+    case 4:
+      return "May";
+    case 5:
+      return "June";
+    case 6:
+      return "July";
+    case 7:
+      return "August";
+    case 8:
+      return "September";
+    case 9:
+      return "October";
+    case 10:
+      return "November";
+    case 11:
+      return "December";
+  }
+}
+
 function indexOfShortenedDay(day) {
   if (typeof day != 'string') { logDayError(day); }
   switch (day) {
@@ -72,7 +101,7 @@ export const getDayAndDate = () => {
   const today = {}
   const date = new Date();
   today.day = dayByIndex(date.getDay());
-  today.month = date.getMonth();
+  today.month = monthByIndex(date.getMonth());
   today.date = date.getDate();
   return today;
 }
@@ -100,16 +129,20 @@ export const in24Hours = classTime => {
 }
 
 export const afterCurrentHours = classTime => {
-  let now = new Date().getHours();
-  if (parseInt(classTime.slice(0, 2) - 1) < now) { return false; }
-  else { return true; }
+  const afterHour = (new Date().getHours()) - (parseInt(classTime.slice(0, 2)));
+  if (afterHour > 0) { return false; }
+  else if (afterHour === 0) {
+    const currentMin = new Date().getMinutes();
+    if (currentMin > parseInt(classTime.slice(3, 5))) { return false;}
+    else { return true; }
+  } else { return true; }
 }
 
 export const getTimeRange = (classTime, duration) => {
   const startHour = parseInt(classTime.slice(0, 2));
   const startMin = parseInt(classTime.slice(3, 5));
 
-  const ampm = ((startHour + duration.hours) > 12) ? ' PM' : ' AM'
+  const ampm = ((startHour + duration.hours) >= 12) ? ' PM' : ' AM'
   const start = formatTime([startHour, startMin]);
   const finish = endsAt(startHour, startMin, duration);
 
@@ -121,7 +154,7 @@ function endsAt(startHour, startMin, duration) {
   let endMin = startMin + duration.min;
 
   if (endHour > 24) { endHour -= 24; }
-  if (endMin > 60) {
+  if (endMin > 59) {
     endHour += 1;
     endMin -= 60;
    }
@@ -153,7 +186,9 @@ export const getTime = (time) => {
     let min = time.slice(2, 5);
     time = hour.toString() + min;
     time += " PM";
-  } else { time += " AM" }
+  }
+  else if (hour === 12) { time += " PM"}
+  else { time += " AM" }
 
   let firstDigit = time.slice(0, 1);
   if (firstDigit === '0') {
@@ -164,16 +199,10 @@ export const getTime = (time) => {
 
 export const getHoursOut = (time) => {
   let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
-  switch (hoursOut) {
-    case 0:
-      return 0;
-    case 1:
-      return 1;
-    case 2:
-      return 2;
-    default:
-      return 3;
+  if (new Date().getMinutes() >= parseInt(time.slice(3, 5))) {
+    hoursOut -= 1;
   }
+  return (hoursOut > 3) ? 3 : hoursOut;
 }
 
 export const getReservationDate = (daysAway) => {

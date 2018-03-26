@@ -61,15 +61,15 @@
     padding: 10px 15px;
     outline: none;
     cursor: pointer;
-  }
 
-  input[type="submit"]:hover {
-    background-color: #1cb594;
-    transition: .3s;
-  }
-
-  input[type="submit"]:active {
+    &:hover {
       background-color: #1cb594;
+      transition: .3s;
+    }
+
+    &:active {
+      background-color: #1cb594;
+    }
   }
 
   .reset-password {

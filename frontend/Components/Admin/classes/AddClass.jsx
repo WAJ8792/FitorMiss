@@ -16,7 +16,7 @@ export default class AddClass extends React.Component {
         },
         day: "-",
         seats: null,
-        type: "cardio",
+        type: "Cardio",
         max: false,
       },
       errors: [],

@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'fitormiss.com'
+  default from: 'support@fitormiss.com'
   layout 'mailer'
 end

@@ -1,5 +1,6 @@
 .my-gym {
   font-family: Helvetica;
+  margin: 40px auto 0 auto;
 
   p {
     color: #1fc7aa;
@@ -80,18 +81,31 @@
 //   margin: 6px 0 30px 47px;
 // }
 //
-// .edit-gym button {
-//   float: right;
-//   height: 38px;
-//   width: 114px;
-//   border-radius: 5px;
-//   border: none;
-//   background-color: #1ed0b1;
-//   color: white;
-//   font-size: 14px;
-//   margin-top: 12px;
-// }
-//
+
+.edit-gym {
+  padding: 0 20px;
+
+  p {
+    font-size: 16px;
+  }
+
+  input {
+    padding: 10px;
+    text-align: center;
+  }
+
+  button {
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1ed0b1;
+    color: white;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+}
+
 // .my-gym select {
 //   border: none;
 //   background-color: #1fd1b1;

@@ -7,7 +7,7 @@ import {
   afterCurrentHours,
 } from './time_and_date_util';
 
-export const getClassesByDay = classes => {
+export const getClassesByDay = (classes, availableToUser) => {
   let today = [];
   let tomorrow = [];
   let todaysIndex = new Date().getDay();
@@ -15,24 +15,24 @@ export const getClassesByDay = classes => {
   Object.keys(classes).forEach(id => {
     let thisClass = classes[id];
     if (thisClass.max) { return; }
-    switch (indexOfDay(thisClass.day)) {
-      case todaysIndex:
-        if (afterCurrentHours(thisClass.time)) {
-          thisClass.date = getReservationDate(0);
-          thisClass.id = id;
-          today = orderByTime(today, thisClass);
-        }
-        break;
-      case tomorrowsIndex:
-        if (in24Hours(thisClass.time)) {
-          thisClass.date = getReservationDate(1);
-          thisClass.id = id;
-          tomorrow = orderByTime(tomorrow, thisClass);
-        }
-        break;
-      default:
-        break;
-    }
+      switch (indexOfDay(thisClass.day)) {
+        case todaysIndex:
+          if (afterCurrentHours(thisClass.time)) {
+            thisClass.date = getReservationDate(0);
+            thisClass.id = id;
+            if (availableToUser(thisClass)) { today = orderByTime(today, thisClass); }
+          }
+          break;
+        case tomorrowsIndex:
+          if (in24Hours(thisClass.time)) {
+            thisClass.date = getReservationDate(1);
+            thisClass.id = id;
+            if (availableToUser(thisClass)) { tomorrow = orderByTime(tomorrow, thisClass); }
+          }
+          break;
+        default:
+          break;
+      }
   })
   return today.concat(tomorrow);
 }

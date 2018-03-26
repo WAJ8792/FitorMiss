@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { getTimeRange, getHoursOut,  } from '../../../util/time_and_date_util';
+import {
+  getTimeRange,
+  getHoursOut,
+  indexOfDay,
+  } from '../../../util/time_and_date_util';
 
 class DisplayClassInfo extends React.Component {
   constructor(props) {
@@ -74,7 +78,7 @@ class DisplayClassInfo extends React.Component {
           pricing.push(child.val()['tier1']);
           pricing.push(child.val()['tier2']);
           pricing.push(child.val()['tier3']);
-          pricing.push('50');
+          pricing.push(child.val()['tier4']);
         })
       }
       this.setState({pricing});
@@ -82,21 +86,18 @@ class DisplayClassInfo extends React.Component {
   }
 
   render() {
-    if (this.state.filteredOut) { return null; }
+    if (this.state.filteredOut || this.state.pricing === null || this.state.pricing.length < 1) {
+      return null;
+    }
 
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
-
+    if (indexOfDay(thisClass.day) === new Date().getDay()) {
+      console.log(this.state.pricing, getHoursOut(thisClass.time));
+      thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
+    } else { thisClass.price = this.state.pricing[3]}
     let time = getTimeRange(thisClass.time, thisClass.duration);
-    let hoursOut;
-    let price;
 
-    hoursOut = getHoursOut(thisClass.time);
-
-    if (this.state.pricing != null && this.state.pricing.length > 1) {
-      price = this.state.pricing[hoursOut];
-    } else { price = ""}
-    thisClass.price = price;
     return (
       <section className="class-info">
         <div>
@@ -119,7 +120,7 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <button onClick={() => this.props.handleReserve(thisClass)}>
-            ${price}
+            ${thisClass.price}
           </button>
         </div>
       </section>

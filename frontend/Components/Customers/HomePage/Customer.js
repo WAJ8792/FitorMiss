@@ -115,10 +115,10 @@ class CustomerPage extends React.Component {
     const customer = this.state.userInfo.stripe_id;
     // remember to add '00' to price since Stripe takes money in cents
     // That should happen in the controller.
-    const amount = '00';
-    // parseInt(this.state.thisClass.price + '00');
-    if (confirmPayment({customer, amount})) {
-      confirmReserve(firebase.database(), thisClass);
+    // const amount = '00';
+    const amount = parseInt(this.state.thisClass.price + '00');
+    confirmPayment({customer, amount}, () => {
+      confirmReserve(firebase.database(), thisClass, this.state.user);
       hitReserve({
         userInfo: this.state.userInfo,
         resInfo: {
@@ -128,7 +128,7 @@ class CustomerPage extends React.Component {
           name: thisClass.name
         }
       })
-    }
+    });
     this.setState({modal: null});
   }
 
@@ -156,11 +156,22 @@ class CustomerPage extends React.Component {
     }
   }
 
+  availableToUser = (id) => {
+    return thisClass => {
+      if (!thisClass.reservations) { return true; }
+
+      const upcomingRes = thisClass.reservations[thisClass.date];
+      if (upcomingRes >= thisClass.seats || upcomingRes.includes(id)) {
+        return false;
+      } else { return true; }
+    }
+  }
+
   displayClasses() {
     const mergedSchedule = Object.assign(
       {}, this.state.fomSchedule, this.state.mindbodySchedule
     )
-    const classes = getClassesByDay(mergedSchedule);
+    const classes = getClassesByDay(mergedSchedule, this.availableToUser(this.state.user));
     const classViews = [];
 
     let filter = this.state.typeFilter;
@@ -228,17 +239,21 @@ class ConfirmReservation extends React.Component {
 
   render() {
     const thisClass = this.props.thisClass;
+    const seats = parseInt(thisClass.seats);
     const p1 = {fontSize: '20px', marginBottom: '10px'}
     const p2 = {fontSize: '17px', margin: '5px'}
     const p3 = {fontSize: '17px', margin: '0px'}
+    const seatsLeft = (thisClass.reservations)
+    ? seats - Object.keys(thisClass.reservations[thisClass.date]).length
+    : seats
     return (
       <div className="add-class">
         <div className="reservation-modal">
           <div>
             <h2>Are you sure you want to reserve {thisClass.name}?</h2>
-            <p style={p1}>{thisClass.day}, {thisClass.date} at {thisClass.time}</p>
-            <p style={p2}>{thisClass.neighborhood} with {thisClass.vendor}</p>
-            <p style={p3}>Only {thisClass.seats} seats left!</p>
+            <p style={p1}>{thisClass.day}, {thisClass.date} at {getTime(thisClass.time)}</p>
+            <p style={p2}>In {thisClass.neighborhood} with {thisClass.vendor}</p>
+            <p style={p3}>Only {seatsLeft} seats left!</p>
           </div>
 
           <div className="class-buttons">

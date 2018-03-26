@@ -70,10 +70,13 @@ class Header extends React.Component {
         );
       }
     }
+    else if (this.state.type === "fom") {
+      return (<Redirect to="/createvendor" />);
+    }
     else if (this.state.type === "customer")
     {
       if (!this.props.location.pathname.includes('customer')) {
-        return (<Redirect to="/customer" />);
+        return (<Redirect to="/customer/classes" />);
       } else {
         return (
           <div className="header">
@@ -149,7 +152,7 @@ class CustomerHeader extends React.Component {
             to="/customer"
             exact
             activeStyle={{color: '#1fc7aa'}}>
-            My Fitness
+            Classes
           </NavLink>
         </div>
 
@@ -157,7 +160,7 @@ class CustomerHeader extends React.Component {
           <NavLink
             to="/customer/classes"
             activeStyle={{color: '#1fc7aa'}}>
-            Classes
+            Reservations
           </NavLink>
         </div>
       </section>
@@ -181,6 +184,68 @@ class TopHeader extends React.Component {
     );
   }
 }
+
+// class Dropdown extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       dropdownIsOpen: false
+//     };
+//
+//     this.handleDropdownClick = this.handleDropdownClick.bind(this);
+//     this.renderDropdown = this.renderDropdown.bind(this);
+//   }
+//
+//   handleDropdownClick() {
+//     this.setState({dropdownIsOpen: !this.state.dropdownIsOpen});
+//   }
+//
+//   renderDropdown() {
+//     if (this.state.dropdownIsOpen) {
+//       return (
+//         <ul className="dropdown-list">
+//           <li>Account</li>
+//           <hr />
+//           <li>Billing</li>
+//           <hr />
+//           <li onClick={this.props.logout}>Sign Out</li>
+//         </ul>
+//       );
+//     }
+//   }
+//
+//   render() {
+//     return(
+//       <div
+//         className="dropdown-text"
+//         onClick={this.handleDropdownClick}>
+//         <p className="username-dropdown">John Smith
+//           <span><i className="fa fas fa-caret-down" /></span>
+//         </p>
+//         <div className="dropdown-container">
+//           {this.renderDropdown()}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
+// class TopHeader extends React.Component {
+//   render() {
+//     let logout;
+//
+//     if (this.props.logout) {
+//       logout = <div className="logout" onClick={e => this.props.logout(e)}>Sign Out</div>
+//     } else { logout = null; }
+//
+//     return(
+//       <section className="top-header">
+//         <div className="wordmark"><span>Fit</span>or<span>Miss</span></div>
+//         {logout}
+//       </section>
+//     );
+//   }
+// }
 
 const mapStateToProps = ( state ) => {
   return {

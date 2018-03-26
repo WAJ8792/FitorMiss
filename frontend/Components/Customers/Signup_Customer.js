@@ -39,7 +39,7 @@ export default class SignupCustomer extends React.Component {
       this.setState({error});
     } else {
       this.props.signupCustomer(this.state, app);
-      <Redirect to="/customerclasses" />
+      // <Redirect to="/customerclasses" />
     }
 
   }
@@ -51,44 +51,47 @@ export default class SignupCustomer extends React.Component {
     }
 
     return(
-      <div className="signup-container">
-        <section className="session-block">
-          <div>
-          <div>
-            <p>Sign up as a customer!</p>
-              {this.state.error}
-              {error}
-
-              <input
-                type="text"
-                value={this.state.firstName}
-                placeholder="First Name"
-                onChange={this.handleChange("firstName")} />
-
-              <input
-                type="text"
-                value={this.state.lastName}
-                placeholder="Last Name"
-                onChange={this.handleChange("lastName")}
-                />
+      <div className="sign-up-forms">
+      <p className="create-text">Create a new account</p>
+        <div className="signup-container">
+          <section className="session-block">
+            <div>
+            <div>
+              <p>Sign up as a customer!</p>
+                {this.state.error}
+                {error}
 
                 <input
-                type="text"
-                value={this.state.email}
-                placeholder="Email Address"
-                onChange={this.handleChange("email")}/>
+                  type="text"
+                  value={this.state.firstName}
+                  placeholder="First Name"
+                  onChange={this.handleChange("firstName")} />
 
                 <input
-                type="password"
-                value={this.state.password}
-                placeholder="Password"
-                onChange={this.handleChange("password")}/>
+                  type="text"
+                  value={this.state.lastName}
+                  placeholder="Last Name"
+                  onChange={this.handleChange("lastName")}
+                  />
+
+                  <input
+                  type="text"
+                  value={this.state.email}
+                  placeholder="Email Address"
+                  onChange={this.handleChange("email")}/>
+
+                  <input
+                  type="password"
+                  value={this.state.password}
+                  placeholder="Password"
+                  onChange={this.handleChange("password")}/>
 
 
-              <button onClick={e => this.handleSubmit(e)}>Sign up</button>
-          </div>
-          </div>
-        </section>
+                <button onClick={e => this.handleSubmit(e)}>Sign up</button>
+            </div>
+            </div>
+          </section>
+        </div>
       </div>
     )
   }

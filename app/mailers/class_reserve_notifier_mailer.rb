@@ -1,5 +1,5 @@
 class ClassReserveNotifierMailer < ApplicationMailer
-  default :from => 'FitOrMiss@example.com'
+  default :from => 'support@fitormiss.com'
 
   def send_reservation_email(user_info, res_info)
     @user_info = user_info

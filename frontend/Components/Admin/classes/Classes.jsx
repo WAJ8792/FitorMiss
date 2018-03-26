@@ -26,7 +26,6 @@ export default class Classes extends React.Component {
 
   handleDelete(classId) {
     return () => {
-      console.log(classId);
       const db = firebase.database();
       db.ref("classes/" + classId).remove();
 
@@ -52,12 +51,19 @@ export default class Classes extends React.Component {
   }
 
   getAmenities(user) {
-    let userInfo = this.state.userInfo;
     firebase.database().ref("amenities")
     .orderByChild("vendor_id").equalTo(user).on('value', snap => {
       if (snap.val() != null) {
-        userInfo.amenities = Object.values(snap.val())[0];
-        this.setState({userInfo});
+        console.log(
+          snap.val(),
+          Object.keys(snap.val())[0]
+        );
+        this.setState({
+          userInfo: {
+            ...this.state.userInfo,
+            amenities: snap.val()[Object.keys(snap.val())[0]]
+          }
+        })
       }
     })
   }
@@ -151,14 +157,18 @@ export default class Classes extends React.Component {
        updated_at: new Date().getTime(),
        created_at: thisClass.created_at,
        type: thisClass.type,
+       max: thisClass.max,
+       amenities: thisClass.amenities,
        name: thisClass.name,
        day: thisClass.day,
        time: thisClass.time,
        duration: thisClass.duration,
        seats: thisClass.seats
     };
+    if (thisClass.reservations) { c.reservations = thisClass.reservations; }
     return c;
   }
+
 
   saveChanges(thisClass) {
     firebase.database().ref('classes/' + thisClass.class_id)

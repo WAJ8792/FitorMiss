@@ -26,7 +26,6 @@ class SchedulesController < ApplicationController
 
     @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
     @vendor_id = site_ids['int']
-    print @classes_list[0]
 
     render 'schedules/index.json'
   end
