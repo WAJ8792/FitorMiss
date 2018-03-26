@@ -76,7 +76,7 @@ class Header extends React.Component {
     else if (this.state.type === "customer")
     {
       if (!this.props.location.pathname.includes('customer')) {
-        return (<Redirect to="/customer" />);
+        return (<Redirect to="/customer/classes" />);
       } else {
         return (
           <div className="header">

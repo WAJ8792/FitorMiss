@@ -125,12 +125,9 @@ class CardForm extends React.Component {
             </div>
           </div>
 
-          <div id="zipcode">
-              <p>Zip Code</p>
-              <input id="zipcode-input" type="text" placeholder="10010" />
-          </div>
         </div>
         <div id="contact-info">
+          <p className="billing-text">Contact Info</p>
           <div className="contact-name">
               <input
                 type="text" placeholder="First Name"

@@ -204,7 +204,6 @@ export default class Classes extends React.Component {
   }
 
   render() {
-    console.log(this.state.userInfo);
     let day = this.state.day;
     let classes;
     let modal = this.state.modal;

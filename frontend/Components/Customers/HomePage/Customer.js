@@ -172,7 +172,6 @@ class CustomerPage extends React.Component {
       {}, this.state.fomSchedule, this.state.mindbodySchedule
     )
     const classes = getClassesByDay(mergedSchedule, this.availableToUser(this.state.user));
-    console.log(classes);
     const classViews = [];
 
     let filter = this.state.typeFilter;
