@@ -195,16 +195,10 @@ export const getTime = (time) => {
 
 export const getHoursOut = (time) => {
   let hoursOut = parseInt(time.slice(0, 2)) - new Date().getHours();
-  switch (hoursOut) {
-    case 0:
-      return 0;
-    case 1:
-      return 1;
-    case 2:
-      return 2;
-    default:
-      return 3;
+  if (new Date().getMinutes() <= parseInt(time.slice(3, 5))) {
+    hoursOut -= 1;
   }
+  return (hoursOut > 3) ? 3 : hoursOut - 1;
 }
 
 export const getReservationDate = (daysAway) => {
