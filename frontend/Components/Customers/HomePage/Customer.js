@@ -117,8 +117,8 @@ class CustomerPage extends React.Component {
     // That should happen in the controller.
     // const amount = '00';
     const amount = parseInt(this.state.thisClass.price + '00');
-    if (confirmPayment({customer, amount})) {
-      confirmReserve(firebase.database(), thisClass);
+    confirmPayment({customer, amount}, () => {
+      confirmReserve(firebase.database(), thisClass, this.state.user);
       hitReserve({
         userInfo: this.state.userInfo,
         resInfo: {
@@ -128,7 +128,7 @@ class CustomerPage extends React.Component {
           name: thisClass.name
         }
       })
-    }
+    });
     this.setState({modal: null});
   }
 
@@ -156,11 +156,23 @@ class CustomerPage extends React.Component {
     }
   }
 
+  availableToUser = (id) => {
+    return thisClass => {
+      if (!thisClass.reservations) { return true; }
+
+      const upcomingRes = thisClass.reservations[thisClass.date];
+      if (upcomingRes >= thisClass.seats || upcomingRes.includes(id)) {
+        return false;
+      } else { return true; }
+    }
+  }
+
   displayClasses() {
     const mergedSchedule = Object.assign(
       {}, this.state.fomSchedule, this.state.mindbodySchedule
     )
-    const classes = getClassesByDay(mergedSchedule);
+    const classes = getClassesByDay(mergedSchedule, this.availableToUser(this.state.user));
+    console.log(classes);
     const classViews = [];
 
     let filter = this.state.typeFilter;

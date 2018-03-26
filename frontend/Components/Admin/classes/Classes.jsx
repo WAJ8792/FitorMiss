@@ -26,7 +26,6 @@ export default class Classes extends React.Component {
 
   handleDelete(classId) {
     return () => {
-      console.log(classId);
       const db = firebase.database();
       db.ref("classes/" + classId).remove();
 
@@ -166,6 +165,7 @@ export default class Classes extends React.Component {
        duration: thisClass.duration,
        seats: thisClass.seats
     };
+    if (thisClass.reservations) { c.reservations = thisClass.reservations; }
     return c;
   }
 
