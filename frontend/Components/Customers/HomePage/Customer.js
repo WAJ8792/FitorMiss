@@ -37,9 +37,6 @@ class CustomerPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser();
-    getMBSchedule( (mindbodySchedule) => {
-      this.setState({mindbodySchedule});
-    });
   }
 
   getCurrentUser() {
@@ -66,7 +63,14 @@ class CustomerPage extends React.Component {
     neighborhoodId = neighborhoodId.toString();
     firebase.database().ref('neighborhoods')
     .orderByKey().equalTo(neighborhoodId).on("value", snap => {
-      this.setState({neighborhood: snap.val()[neighborhoodId]})
+      if (snap.val() != null) {
+        const neighborhood = snap.val()[neighborhoodId];
+        const info = {neighborhood, neighborhoodId}
+        getMBSchedule(firebase.database(), info, mindbodySchedule => {
+          this.setState({mindbodySchedule});
+        })
+        this.setState({neighborhood})
+      }
     })
   }
 
@@ -75,7 +79,13 @@ class CustomerPage extends React.Component {
     .orderByChild('neighborhood_id').equalTo(parseInt(neighborhood))
     .on("value", snap => {
       if (snap.val() != null) {
-        this.setState({fomSchedule: snap.val()});
+        const fomSchedule = {}
+        Object.keys(snap.val()).forEach(id => {
+          if (!id.includes('mindbody')) {
+            fomSchedule[id] = snap.val()[id];
+          }
+        })
+        this.setState({fomSchedule});
       }
     })
   }
@@ -128,7 +138,7 @@ class CustomerPage extends React.Component {
           name: thisClass.name
         }
       })
-    });
+    }, errors => { this.setState({errors})});
     this.setState({modal: null});
   }
 

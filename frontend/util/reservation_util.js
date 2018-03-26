@@ -1,6 +1,6 @@
 export const maxOutClass = (db, thisClass, action) => {
 
-  if (thisClass.reservations && action === "hold") {
+  if (thisClass.reservations && !thisClass.id.includes('mindbody') && action === "hold") {
       const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
       if (numReservations + 1 >= thisClass.seats) {
       db.ref('classes/' + thisClass.id + '/max').set(true);
@@ -10,15 +10,15 @@ export const maxOutClass = (db, thisClass, action) => {
   }
 };
 
-export const confirmPayment = (data, makeReservation) => {
+export const confirmPayment = (data, makeReservation, logError) => {
   return $.ajax({
     method: 'POST',
     url: '/charges',
     data
   }).done(() => {
-      makeReservation()
+      makeReservation();
     }).fail(() => {
-      console.log('error');
+      logError("Unable to complete your request");
     })
 }
 
@@ -31,8 +31,14 @@ export const confirmReserve = (db, thisClass, user) => {
     time: thisClass.time,
     created_at: new Date().getTime(),
   });
-  const ref = db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`)
-    .set(true);
+  db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
+    if (snap.val() != null) {
+      db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
+    } else {
+      thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
+      db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
+    }
+  })
 };
 
 export const hitReserve = reservation => {

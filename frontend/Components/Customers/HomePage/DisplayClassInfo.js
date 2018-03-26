@@ -37,19 +37,24 @@ class DisplayClassInfo extends React.Component {
       if (snap.val() != null) {
         vendorInfo = snap.val()[vendor];
         this.fetchAmenities(vendor);
+        this.getNeighborhoodId(vendorInfo.neighborhood);
       }
       this.setState({vendorInfo});
     })
   }
+  
+  getNeighborhoodId(neighborhood) {
+    
+  }
 
   fetchAmenities(vendor) {
-    // app.database().ref('amenities').orderByChild('vendor_id')
-    // .equalTo(vendor.toString()).on('value', snap => {
-    //   if (snap.val() != null) {
-    //     const amenities = snap.val()[Object.keys(snap.val())[0]];
-    //     this.filterClass(amenities);
-    //   }
-    // });
+    app.database().ref('amenities').orderByChild('vendor_id')
+    .equalTo(vendor.toString()).on('value', snap => {
+      if (snap.val() != null) {
+        const amenities = snap.val()[Object.keys(snap.val())[0]];
+        this.filterClass(amenities);
+      }
+    });
   }
 
   filterClass(classAtts) {
@@ -83,6 +88,26 @@ class DisplayClassInfo extends React.Component {
       }
       this.setState({pricing});
     });
+  }
+  
+  insertVendorInfo(thisClass) {
+    const c = {
+      amenities: thisClass.amenities,
+      created_at: new Date().getTime(),
+      day: thisClass.day,
+      duration: thisClass.duration,
+      max: thisClass.max,
+      name: thisClass.name,
+      neighborhood: thisClass.neighborhood,
+      neighborhood_id: thisClass.neighborhood_id,
+      seats: thisClass.booking.webCapacity,
+      time: thisClass.time,
+      type: thisClass.type,
+      vendor: thisClass.vendor,
+      vendor_id: thisClass.vendor_id
+    }
+    thisClass.classInfo = c;
+    this.props.handleReserve(thisClass);
   }
 
   render() {
@@ -118,7 +143,13 @@ class DisplayClassInfo extends React.Component {
         </div>
 
         <div>
-          <button onClick={() => this.props.handleReserve(thisClass)}>
+          <button onClick={() => {
+            if (thisClass.id.includes('mindbody')) {
+              this.insertVendorInfo(thisClass);
+            } else {
+              this.props.handleReserve(thisClass);
+            }
+          }}>
             ${thisClass.price}
           </button>
         </div>

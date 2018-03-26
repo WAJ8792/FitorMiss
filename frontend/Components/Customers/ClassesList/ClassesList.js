@@ -45,7 +45,6 @@ export default class ClassList extends React.Component {
       if (snap.val() != null) {
         classes = orderClassesByDate(snap.val());
       }
-      // console.log(classes);
       this.setState({
         upcomingClasses: classes.upcomingList,
         pastClasses: classes.pastList

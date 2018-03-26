@@ -11,12 +11,14 @@ class SchedulesController < ApplicationController
       'Username' => 'Siteowner',
       'Password' => 'apitest1234',
       'SiteIDs' => site_ids
-    }
+    } 
 
     http_request = {
       'SourceCredentials' => source_credentials,
       'UserCredentials' => user_credentials
     }
+    print params
+    @vendor_info = params
 
     params = { 'Request' => http_request }
 

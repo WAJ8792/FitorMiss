@@ -1,9 +1,33 @@
 import { dayByIndex } from './time_and_date_util';
 
-export const getMBSchedule = (setState) => {
+export const getMBSchedule = (db, info, setState) => {
+  db.ref('vendor').orderByChild('neighborhood').equalTo(info.neighborhood).on('value', snap => {
+    Object.keys(snap.val()).forEach(vendorId => {
+      let vendor = snap.val()[vendorId];
+      vendor.id = vendorId;
+      vendor = Object.assign({}, vendor, info);
+      if (vendor.has_mindbody_classes) {
+        fetchAmenities(db, vendor, setState);
+      }
+    }) 
+  })
+}
+
+function fetchAmenities(db, vendor, setState) {
+  db.ref('amenities').orderByChild('vendor_id').equalTo(vendor.id).on('value', snap => {
+    if (snap.val() != null) {
+      const amenities = Object.values(snap.val())[0];
+      vendor.amenities = amenities;
+      fetchMBSchedule(vendor, setState);
+    }
+  })
+}
+
+const fetchMBSchedule = (data, setState) => {
   return $.ajax({
     method: 'GET',
-    url: '/schedules'
+    url: '/schedules',
+    data
   }).then ( schedule => {
     const formattedSchedule = formatMindbodyClasse(schedule);
     setState(formattedSchedule);
@@ -15,31 +39,19 @@ function formatMindbodyClasse(schedule) {
   schedule.forEach( thisClass => {
     const id = thisClass.id;
     const vendor_id = thisClass.vendor_id.toString();
-    // const vendorInfo = fetchVendorInfo(vendor_id);
-    // console.log(thisClass.start_date_time);
-    // console.log(new Date(thisClass.start_date_time).toString());
     const dateTime = parseDateTime(
       thisClass.start_date_time,
       thisClass.end_date_time
     );
-
     thisClass.vendor_id = vendor_id;
     // get through formatting / calculation function
     thisClass.seats = getSeats(thisClass.booking);
-    const max = (thisClass.seats > 0) ? false : true
+    thisClass.max = (thisClass.seats > 0) ? false : true
     thisClass.day = dateTime.day;
     thisClass.time = dateTime.time;
     thisClass.duration = dateTime.duration;
     // Get an approximation based on class info
-    thisClass.type = "";
-
-    thisClass.amenities = {
-      parking: false,
-      towels: false,
-      showers: false,
-      lockers: false,
-      mat_rentals: false
-    }
+    thisClass.type = apprxType(thisClass.name + thisClass.description);
     formattedSchedule[id] = thisClass;
   })
   return formattedSchedule;
@@ -70,6 +82,12 @@ function getDifference(start, end) {
   return parseInt(end) - parseInt(start);
 }
 
-// function apprxType(classString) {
-//   if (string)
-// }
+function apprxType(classString) {
+  const str = classString.toLowerCase();
+  if (str.includes('cardio')) { return 'Cardio'; }
+  if (str.includes('pilates')) { return 'Pilates'; }
+  if (str.includes('yoga')) { return 'Yoga'; } 
+  if (str.includes('boxing')) { return 'Boxing'; }
+  if (str.includes('rowing')) { return 'Rowing'; }
+  return "";
+}
