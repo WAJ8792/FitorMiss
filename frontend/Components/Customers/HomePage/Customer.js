@@ -228,17 +228,21 @@ class ConfirmReservation extends React.Component {
 
   render() {
     const thisClass = this.props.thisClass;
+    const seats = parseInt(thisClass.seats);
     const p1 = {fontSize: '20px', marginBottom: '10px'}
     const p2 = {fontSize: '17px', margin: '5px'}
     const p3 = {fontSize: '17px', margin: '0px'}
+    const seatsLeft = (thisClass.reservations)
+    ? seats - Object.keys(thisClass.reservations[thisClass.date]).length
+    : seats
     return (
       <div className="add-class">
         <div className="reservation-modal">
           <div>
             <h2>Are you sure you want to reserve {thisClass.name}?</h2>
-            <p style={p1}>{thisClass.day}, {thisClass.date} at {thisClass.time}</p>
-            <p style={p2}>{thisClass.neighborhood} with {thisClass.vendor}</p>
-            <p style={p3}>Only {thisClass.seats} seats left!</p>
+            <p style={p1}>{thisClass.day}, {thisClass.date} at {getTime(thisClass.time)}</p>
+            <p style={p2}>In {thisClass.neighborhood} with {thisClass.vendor}</p>
+            <p style={p3}>Only {seatsLeft} seats left!</p>
           </div>
 
           <div className="class-buttons">
