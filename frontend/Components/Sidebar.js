@@ -24,6 +24,35 @@ export default class Sidebar extends Component {
   render() {
     let list1, list2, list3, listHeader;
     if (this.props.location.pathname.includes('customer/classes')) {
+        listHeader = ( <div id="side-link">
+            <li id="filter-header">Search by:</li>
+          </div>
+        )
+        list1 = ( <div id="side-link">
+          <li
+            onClick={e => this.dropDown(e, 'list1')}
+            style={{
+              color: '#f0efef7d',
+              cursor: 'default'
+            }}>
+              My Location
+            </li>
+        </div>
+      )
+      list2 = <AmenityFilter
+        dropDown={this.dropDown}
+        state={this.state}
+        filters={this.props.filters}
+        toggleAmenities={this.props.toggleAmenities} />
+
+      list3 = <TypeFilter
+        dropDown={this.dropDown}
+        state={this.state}
+        filters={this.props.filters}
+        toggleType={this.props.toggleType} />
+
+    }
+    else if (this.props.location.pathname.includes('customer')) {
       list1 = (
         <div id="side-link">
         <li onClick={e => this.dropDown(e, 'list1')} >Account
@@ -44,35 +73,6 @@ export default class Sidebar extends Component {
         </li>
         </div>
       )
-    }
-    else if (this.props.location.pathname.includes('customer')) {
-      listHeader = ( <div id="side-link">
-          <li id="filter-header">Search by:</li>
-        </div>
-      )
-      list1 = ( <div id="side-link">
-          <li
-            onClick={e => this.dropDown(e, 'list1')}
-            style={{
-              color: '#f0efef7d',
-              cursor: 'default'
-            }}>My Location
-          </li>
-        </div>
-      )
-      list2 = <AmenityFilter
-        dropDown={this.dropDown}
-        state={this.state}
-        filters={this.props.filters}
-        toggleAmenities={this.props.toggleAmenities} />
-
-      list3 = <TypeFilter
-        dropDown={this.dropDown}
-        state={this.state}
-        filters={this.props.filters}
-        toggleType={this.props.toggleType} />
-
-
     }
     else {
       list1 = (

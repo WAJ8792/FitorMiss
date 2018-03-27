@@ -149,8 +149,7 @@ class CustomerHeader extends React.Component {
       <section className="user-header">
         <div>
           <NavLink
-            to="/customer"
-            exact
+            to="/customer/classes"
             activeStyle={{color: '#1fc7aa'}}>
             Classes
           </NavLink>
@@ -158,7 +157,8 @@ class CustomerHeader extends React.Component {
 
         <div>
           <NavLink
-            to="/customer/classes"
+            to="/customer"
+            exact
             activeStyle={{color: '#1fc7aa'}}>
             Reservations
           </NavLink>
