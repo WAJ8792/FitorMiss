@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import NewVendorForm from './new_vendor_form.js';
 import Amenity from './amenity';
 import Tier from './pricing_tier';
+import Metrics from './metrics';
 
 import createNewVendor from '../../util/vendor_util';
 
@@ -164,6 +165,8 @@ export default class ManageAdmin extends React.Component {
             handleSubmit={this.handleSubmit}
             handleChange={this.handleChange} />
         </div>
+        
+        <Metrics />
       </div>
     )
   }
