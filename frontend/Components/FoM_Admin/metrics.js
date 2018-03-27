@@ -36,6 +36,7 @@ export default class Metrics extends React.Component {
 
   createdToday(value) {
     if (value.created_at && value.created_at > this.startTime) {
+      console.log(value.created_at, this.startTime);
       return true;
     } else { return false; }
   }
