@@ -2,8 +2,12 @@ import React from 'react';
 
 export default class Metrics extends React.Component {
   
-  customersToday() {
-    firebase.database().ref('customers')
+  totalCustomers() {
+    let count;
+    firebase.database().ref('customers').on('value', snap => {
+      count = Object.keys(snap.val()).length;
+    });
+    return count;
   }
   
   render() {
@@ -26,6 +30,7 @@ export default class Metrics extends React.Component {
           
           <div>
             <p>Current total customers</p>
+            {this.totalCustomers()}
           </div>
         
         </section>
