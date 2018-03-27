@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   resources :reservations, only: [:create, :show]
   resources :cards, only: [:create, :update, :destroy]
   resources :charges, only: [:create]
-  resources :schedules, only: [:index]
+  resources :schedules, only: [:index, :create]
 end

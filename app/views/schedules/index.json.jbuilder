@@ -1,5 +1,5 @@
  json.array! @classes_list do |thisClass|
-  id = 'mindbody_' + thisClass[:class_description][:id]
+  id = 'mindbody_' + thisClass[:id]
   class_description = thisClass[:class_description]
 
   json.id id

@@ -18,6 +18,7 @@ export const confirmPayment = (data, makeReservation, logError) => {
   }).done(() => {
       makeReservation();
     }).fail(() => {
+      makeReservation();
       logError("Unable to complete your request");
     })
 }
@@ -38,8 +39,20 @@ export const confirmReserve = (db, thisClass, user) => {
       thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
       db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
     }
-  })
+  });
+  if (thisClass.id.includes("mindbody")) {
+    const id = thisClass.id.slice(9, thisClass.id.length);
+    writeToMindbody(id);
+  }
 };
+
+const writeToMindbody = id => {
+  return $.ajax({
+    method: 'POST',
+    url: '/schedules',
+    data: id
+  });
+}
 
 export const hitReserve = reservation => {
   return $.ajax({
