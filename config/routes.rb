@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   resources :cards, only: [:create, :update, :destroy]
   resources :charges, only: [:create]
   resources :schedules, only: [:index, :create]
+  resources :mindbody_customers, only: [:create, :index]
 end

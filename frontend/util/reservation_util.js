@@ -18,7 +18,6 @@ export const confirmPayment = (data, makeReservation, logError) => {
   }).done(() => {
       makeReservation();
     }).fail(() => {
-      makeReservation();
       logError("Unable to complete your request");
     })
 }
@@ -41,12 +40,34 @@ export const confirmReserve = (db, thisClass, user) => {
     }
   });
   if (thisClass.id.includes("mindbody")) {
-    const id = thisClass.id.slice(9, thisClass.id.length);
-    writeToMindbody(id);
+    const classId = thisClass.id.slice(9, thisClass.id.length);
+    if (user.mindbody_id) {
+      addCustomerToClass(classId, user.mindbody_id);
+    } else {
+      createMindbodyCustomer(user, (clientId) => {
+        addCustomerToClass(classId, clientId);
+        addClientIdToCustomer(thisClass.user, clientId);
+      })
+    }
   }
 };
 
-const writeToMindbody = id => {
+function addClientIdToCustomer(uid, mindbodyId) {
+  firebase.database().ref('customers/' + uid + '/mindbody_id').set(mindbodyId);
+}
+
+export const createMindbodyCustomer = (data, registerOnSuccess) => {
+  return $.ajax({
+    method: 'POST',
+    url: '/mindbody_customers',
+    data
+  }).done( response => {
+    registerOnSuccess(response)
+  })
+}
+
+export const addCustomerToClass = id => {
+
   return $.ajax({
     method: 'POST',
     url: '/schedules',
