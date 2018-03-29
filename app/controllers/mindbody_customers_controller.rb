@@ -19,4 +19,19 @@ class MindbodyCustomersController < ApplicationController
     # @result = response.body.....
   end
 
+  def index
+    http_request = getRequestParams
+    search_text = params[:email]
+    print search_text
+    http_request["SearchText"] = search_text
+    message = { 'Request' => http_request }
+    client = Savon::Client.new(wsdl: "https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl")
+
+    response = client.call(:get_clients, :message => message)
+
+    print response.body
+
+    render nil
+  end
+
 end

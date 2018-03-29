@@ -11,49 +11,60 @@ export const maxOutClass = (db, thisClass, action) => {
 };
 
 export const confirmPayment = (data, makeReservation, logError) => {
-  return $.ajax({
-    method: 'POST',
-    url: '/charges',
-    data
-  }).done(() => {
-      makeReservation();
-    }).fail(() => {
-      logError("Unable to complete your request");
-    })
+  makeReservation();
+  // return $.ajax({
+  //   method: 'POST',
+  //   url: '/charges',
+  //   data
+  // }).done(() => {
+  //     makeReservation();
+  //   }).fail(() => {
+  //     logError("Unable to complete your request");
+  //   })
 }
 
-export const confirmReserve = (db, thisClass, user) => {
+export const confirmReserve = (db, thisClass, userInfo) => {
+  const user = thisClass.user;
   const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,
-    customer_id: thisClass.user,
+    customer_id: user,
     date: thisClass.date,
     time: thisClass.time,
     created_at: new Date().getTime(),
   });
-  db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
-    if (snap.val() != null) {
-      db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
-    } else {
-      thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
-      db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
-    }
-  });
+  // db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
+  //   if (snap.val() != null) {
+  //     db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
+  //   } else {
+  //     thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
+  //     db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
+  //   }
+  // });
   if (thisClass.id.includes("mindbody")) {
     const classId = thisClass.id.slice(9, thisClass.id.length);
-    if (user.mindbody_id) {
-      addCustomerToClass(classId, user.mindbody_id);
+    if (currentMindbodyCustomer(userInfo)) {
+      addCustomerToClass(classId, userInfo);
     } else {
       createMindbodyCustomer(user, (clientId) => {
-        addCustomerToClass(classId, clientId);
-        addClientIdToCustomer(thisClass.user, clientId);
+
       })
     }
   }
 };
 
-function addClientIdToCustomer(uid, mindbodyId) {
-  firebase.database().ref('customers/' + uid + '/mindbody_id').set(mindbodyId);
+const currentMindbodyCustomer = data => {
+  return $.ajax({
+    method: 'GET',
+    url: '/mindbody_customers',
+    data
+  }).done( response => {
+    if (response) { return true; }
+    else { return false; }
+  }).fail( error => {
+    console.log(error);
+    return false;
+  })
 }
 
 export const createMindbodyCustomer = (data, registerOnSuccess) => {
