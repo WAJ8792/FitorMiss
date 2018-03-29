@@ -84,7 +84,7 @@ class CustomerPage extends React.Component {
     let errors = [];
 
     if (!this.state.userInfo.stripe_id) {
-      errors.push("To reserve a class a credit card must be registered with your account. Add a credit card by clicking 'Billing' in the top-right menu.");
+      errors.push("To reserve a class a credit card must be registered with your account. Add a credit card by clicking 'Billing' above.");
     }
     if (thisClass.id.length < 1) { errors.push("This class is not available.")}
     if (this.state.user.length < 1) { errors.push("Something is wrong with your registration. Please try signing out and try again.")}
