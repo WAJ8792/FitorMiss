@@ -206,7 +206,7 @@ class CustomerPage extends React.Component {
     classes = filterClasses(classes, this.props.filters);
 
     if (classes.length < 1) {
-      classes = <div id="no-classes">No upcoming classes today.</div>
+      classes = <div id="loading-classes">Looking for classes in your area.</div>
     }
 
     return(
