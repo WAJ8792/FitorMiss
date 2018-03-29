@@ -12,13 +12,13 @@ class DisplayClassInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pricing: null,
+      pricing: [],
       vendorInfo: {
         email: null,
         gym_name: null,
         neighborhood: null,
       },
-      // filteredOut: true,
+      filteredOut: false,
     }
   }
 
@@ -31,14 +31,15 @@ class DisplayClassInfo extends React.Component {
   }
 
   getVendorInfo(vendor) {
-    let vendorInfo = null;
     app.database().ref("vendor")
     .orderByKey().equalTo(vendor).on('value', snap => {
       if (snap.val() != null) {
-        vendorInfo = snap.val()[vendor];
+        let vendorInfo = snap.val()[vendor];
         this.fetchAmenities(vendor);
+        this.setState({vendorInfo});
+      } else {
+        this.setState({filteredOut: true});
       }
-      this.setState({vendorInfo});
     })
   }
 
@@ -80,20 +81,21 @@ class DisplayClassInfo extends React.Component {
           pricing.push(child.val()['tier3']);
           pricing.push(child.val()['tier4']);
         })
+      } else {
+        this.setState({ filteredOut: true })
       }
       this.setState({pricing});
     });
   }
 
   render() {
-    if (this.state.filteredOut || this.state.pricing === null || this.state.pricing.length < 1) {
+    if (this.state.filteredOut) {
       return null;
     }
 
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
-      console.log(this.state.pricing, getHoursOut(thisClass.time));
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
     let time = getTimeRange(thisClass.time, thisClass.duration);
