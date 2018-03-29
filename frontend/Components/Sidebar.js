@@ -55,18 +55,24 @@ export default class Sidebar extends Component {
     else if (this.props.location.pathname.includes('customer')) {
       list1 = (
         <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list1')} >Account
-          <ul className={this.state.list1}>
+          <li>
+          </li>
+        </div>
+      )
+      list2 = (
+        <div id="side-link">
+        <li onClick={e => this.dropDown(e, 'list2')} >Account
+          <ul className={this.state.list2}>
             <li><Link to="/customer/account">Edit Acount</Link></li>
           </ul>
         </li>
       </div>
       )
-      list2 = (
+      list3 = (
         <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list2')} >Billing
+        <li onClick={e => this.dropDown(e, 'list3')} >Billing
 
-          <ul className={this.state.list2}>
+          <ul className={this.state.list3}>
             <li><Link to="/customer/billing">Billing & Payment</Link></li>
             <li><Link to="/customer/billing-history">Billing History</Link></li>
           </ul>

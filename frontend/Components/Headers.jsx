@@ -163,6 +163,15 @@ class CustomerHeader extends React.Component {
             Reservations
           </NavLink>
         </div>
+
+        <div>
+          <NavLink
+            to="/customer/billing"
+            exact
+            activeStyle={{color: '#1fc7aa'}}>
+            Billing
+          </NavLink>
+        </div>
       </section>
     );
   }
