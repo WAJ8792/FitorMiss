@@ -9,7 +9,10 @@ class CardForm extends React.Component {
     super(props);
     this.state = {
       firstName: "",
-      user: false
+      user: false,
+      card: null,
+      cards: {},
+      error: false
     }
   }
 
@@ -20,9 +23,24 @@ class CardForm extends React.Component {
   getCurrentUser() {
     app.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user: user.uid })
+        this.setState({ user: user.uid });
+        this.getUserInfo(user.uid);
       }
     })
+  }
+
+  getUserInfo(user) {
+    firebase.database().ref('customers')
+    .orderByKey().equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        const info = snap.val()[user];
+        let card = null
+        if (info.cards) {
+          card = info.cards[info.stripe_id];
+        }
+        this.setState({ card, cards: info.cards });
+      }
+    });
   }
 
   handleChange(e) {
@@ -33,22 +51,24 @@ class CardForm extends React.Component {
 
   createCard(e) {
     e.preventDefault();
+    this.setState({error: "Processing card info..."});
     const name = this.state.firstName;
     const user = this.state.user;
-
     this.props.stripe.createToken({name}).then(({token}) => {
-      console.log(token);
       saveCard({token, name}, customer => {
         if (user) {
-          console.log(customer, user);
           firebase.database()
           .ref('customers/' + user + '/stripe_id').set(customer)
         }
-      });
+      }, (result) => { this.setState({error: result}) } )
+    }).catch( error => {
+      this.setState({error})
     });
   }
 
   render() {
+    console.log(this.state.card, this.state.cards);
+    const cards = Object.values(this.state.cards);
     return (
       <form action="" id="billing" onSubmit={e => this.createCard(e)}>
         <p id="billing-header">Billing  and  Payment</p>
@@ -136,7 +156,17 @@ class CardForm extends React.Component {
           </div>
           <input type="text" placeholder="Billing Email" />
         </div>
-        <input type="submit" value="Save Billing Information" />
+        <div style={{display: 'flex', marginBottom: '22px'}}>
+          <input type="submit" value="Save Billing Information" />
+          <div style={{marginLeft: "250px"}}>
+            {this.state.error}
+            <select value={this.state.card} style={{WebkitAppearance: 'menulist-button', width: '100px'}}>
+              {cards.map(card =>
+                <option value={card}>{card}</option>
+              )}
+            </select>
+          </div>
+        </div>
     </form>
     );
   }

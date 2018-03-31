@@ -16,9 +16,9 @@ export const confirmPayment = (data, makeReservation) => {
     url: '/charges',
     data
   }).done(() => {
-      makeReservation()
-    }).fail(() => {
-      console.log('error');
+      makeReservation();
+    }).fail((error) => {
+      console.log('error', error);
     })
 }
 
