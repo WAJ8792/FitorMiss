@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   def getRequestParams
-    site_ids = { 'int' => -99 }
+    site_ids = { 'int' => "-99" }
     source_credentials = {
       'SourceName' => 'FitorMiss',
       'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',

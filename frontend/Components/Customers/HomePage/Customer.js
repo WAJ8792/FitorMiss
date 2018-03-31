@@ -130,15 +130,15 @@ class CustomerPage extends React.Component {
     // const amount = parseInt(this.state.thisClass.price + '00');
     confirmPayment({customer, amount}, () => {
       confirmReserve(firebase.database(), thisClass, this.state.userInfo);
-      hitReserve({
-        userInfo: this.state.userInfo,
-        resInfo: {
-          time: getTime(thisClass.time),
-          gymName: thisClass.vendor,
-          email: thisClass.vendorEmail,
-          name: thisClass.name
-        }
-      })
+      // hitReserve({
+      //   userInfo: this.state.userInfo,
+      //   resInfo: {
+      //     time: getTime(thisClass.time),
+      //     gymName: thisClass.vendor,
+      //     email: thisClass.vendorEmail,
+      //     name: thisClass.name
+      //   }
+      // })
     }, errors => { this.setState({errors})});
     this.setState({modal: null});
   }

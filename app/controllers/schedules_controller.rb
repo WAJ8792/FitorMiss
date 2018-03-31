@@ -1,22 +1,7 @@
 class SchedulesController < ApplicationController
 
   def index
-    site_ids = { 'int' => -99 }
-    source_credentials = {
-      'SourceName' => 'FitorMiss',
-      'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',
-      'SiteIDs' => site_ids
-    }
-    user_credentials = {
-      'Username' => 'Siteowner',
-      'Password' => 'apitest1234',
-      'SiteIDs' => site_ids
-    }
-
-    http_request = {
-      'SourceCredentials' => source_credentials,
-      'UserCredentials' => user_credentials
-    }
+    http_request = getRequestParams
     print params
     @vendor_info = params
 
@@ -27,37 +12,43 @@ class SchedulesController < ApplicationController
     response = client.call(:get_classes, :message => params )
 
     @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
-    @vendor_id = site_ids['int']
+    @vendor_id = "-99"
 
     render 'schedules/index.json'
   end
 
   def create
-    print params[:id]
-    site_ids = { 'int' => -99 }
-    source_credentials = {
-      'SourceName' => 'FitorMiss',
-      'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',
-      'SiteIDs' => site_ids
-    }
-    user_credentials = {
-      'Username' => 'Siteowner',
-      'Password' => 'apitest1234',
-      'SiteIDs' => site_ids
-    }
+    http_request = getRequestParams
 
-    http_request = {
-      'SourceCredentials' => source_credentials,
-      'UserCredentials' => user_credentials,
-      'ClientIDs' => { 'int' => 1000 },
-      'ClassIDs' => { 'int' => params[:id] },
+    if params[:clientId]
+      http_request["ClientID"] = params[:clientId]
+    else
+      http_request["ClientID"] = params[:newClientId]
+    end
+
+    http_request["CartItems"] = {
+      "CartItem" => {
+        "Item" => { "ID" => "1249" },
+        "ClassIDs" => { "int" => params[:classId] },
+        "DiscountAmount" => "0",
+        "Quantity" => "1"
+      },
+      :attributes! => { "Item" => {"xsi:type" => "Service"} }
+    }
+    http_request["Payments"] = {
+      "PaymentInfo" => {
+        "Amount" => "10"
+      },
+      :attributes! => { "PaymentInfo" => {"xsi:type" => "CompInfo"} }
     }
 
     params = { 'Request' => http_request }
 
-    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
+    print params
 
-    response = client.call(:add_clients_to_classes, :message => params);
+    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/SaleService.asmx?wsdl')
+
+    response = client.call(:checkout_shopping_cart, :message => params);
 
     render nil
   end

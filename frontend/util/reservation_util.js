@@ -43,24 +43,27 @@ export const confirmReserve = (db, thisClass, userInfo) => {
   // });
   if (thisClass.id.includes("mindbody")) {
     const classId = thisClass.id.slice(9, thisClass.id.length);
-    if (currentMindbodyCustomer(userInfo)) {
-      addCustomerToClass(classId, userInfo);
-    } else {
-      createMindbodyCustomer(user, (clientId) => {
-
-      })
-    }
+    // client_id = currentMindbodyCustomer(userInfo);
+    currentMindbodyCustomer(userInfo, (clientId) => {
+      if (clientId) {
+        addCustomerToClass({classId, clientId})
+      } else {
+        createMindbodyCustomer(userInfo, (newClientId) => {
+          addCustomerToClass({classId, newClientId});
+        })
+      }
+    })
   }
 };
 
-const currentMindbodyCustomer = data => {
+const currentMindbodyCustomer = (data, successCB) => {
   return $.ajax({
     method: 'GET',
     url: '/mindbody_customers',
     data
   }).done( response => {
-    if (response) { return true; }
-    else { return false; }
+    console.log(response);
+    successCB(response);
   }).fail( error => {
     console.log(error);
     return false;
@@ -68,21 +71,23 @@ const currentMindbodyCustomer = data => {
 }
 
 export const createMindbodyCustomer = (data, registerOnSuccess) => {
+  console.log(3, "creating customer with:", data);
   return $.ajax({
     method: 'POST',
     url: '/mindbody_customers',
     data
   }).done( response => {
-    registerOnSuccess(response)
+    console.log(response);
+    registerOnSuccess(response.toString());
   })
 }
 
-export const addCustomerToClass = id => {
-
+export const addCustomerToClass = data => {
+  console.log(4, "About to checkout with:", data);
   return $.ajax({
     method: 'POST',
     url: '/schedules',
-    data: id
+    data
   });
 }
 
