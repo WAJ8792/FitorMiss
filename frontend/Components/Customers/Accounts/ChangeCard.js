@@ -4,7 +4,8 @@ export default class ChangeCard extends React.Component {
   render() {
     const props = this.props;
     return(
-      <form onSubmit={e => props.changeCard(e)}>
+      <form onSubmit={e => props.changeCard(e)} id="change-card-form">
+        <p id="billing-header">Saved Cards</p>
         <select
           value={props.stripe_id}
           onChange={props.selectCard}
