@@ -39,8 +39,8 @@ class CardForm extends React.Component {
         let stripe_id = null
         if (info.cards) {
           stripe_id = info.cards[info.stripe_id];
+          this.setState({ stripe_id, cards: info.cards });
         }
-        this.setState({ stripe_id, cards: info.cards });
       }
     });
   }
@@ -90,6 +90,17 @@ class CardForm extends React.Component {
     const changeCard = (this.state.changeable)
     ? <input type="submit" value="Switch Card"/>
     : <input type="submit" value="Switch Card" disabled/>
+
+    let selectCards;
+    if (cards) {
+      selectCards = <ChangeCard
+                      cards={cards}
+                      stripe_id={this.state.stripe_id}
+                      changeCardButton={changeCard}
+                      selectCard={this.selectCard}
+                      changeCard={this.changeCard}
+                      />
+    }
     return (
       <div>
       <form action="" id="billing" onSubmit={e => this.createCard(e)}>
@@ -182,14 +193,8 @@ class CardForm extends React.Component {
           <input type="submit" value="Save Billing Information" />
         </div>
     </form>
-    <div style={{marginLeft: "200px", marginTop: "16px"}}>
-      <ChangeCard
-        cards={cards}
-        stripe_id={this.state.stripe_id}
-        changeCardButton={changeCard}
-        selectCard={this.selectCard}
-        changeCard={this.changeCard}
-        />
+      <div style={{marginLeft: "200px", marginTop: "16px"}}>
+        {selectCards}
       </div>
     </div>
     );
