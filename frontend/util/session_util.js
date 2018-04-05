@@ -1,5 +1,4 @@
 export const createVendor = function(user, db, userInfo) {
-  debugger;
   const amenities = userInfo.amenities;
   amenities.vendor_id = user.uid;
 

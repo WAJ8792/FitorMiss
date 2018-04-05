@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 import NewVendorForm from './new_vendor_form.js';
 import Amenity from './amenity';
+import AddressField from './address';
 import Tier from './pricing_tier';
 import Metrics from './metrics';
 
@@ -35,9 +36,9 @@ export default class ManageAdmin extends React.Component {
           tier4: ""
         },
         address: {
+          street: "",
           city: "",
           state: "",
-          street: "",
         }
       }
     }
@@ -66,12 +67,24 @@ export default class ManageAdmin extends React.Component {
   }
 
   handleChange(e, field) {
-    this.setState({
-      newVendorInfo: {
-        ...this.state.newVendorInfo,
-        [field]: e.target.value
-      }
-    })
+    if (field === "street" || field === "city" || field === "state") {
+      this.setState({
+        newVendorInfo: {
+          ...this.state.newVendorInfo,
+          address: {
+            ...this.state.newVendorInfo.address,
+            [field]: e.target.value
+          }
+        }
+      })
+    } else {
+      this.setState({
+        newVendorInfo: {
+          ...this.state.newVendorInfo,
+          [field]: e.target.value
+        }
+      })
+    }
   }
 
   handleTierChange(e, tier) {
@@ -131,7 +144,14 @@ export default class ManageAdmin extends React.Component {
   render() {
     if (this.state.loggedOut) { return <Redirect to="/signin" /> }
     const vendor = this.state.newVendorInfo;
-    const amenities = [];
+    const amenities = Object.keys(vendor.amenities).map(amenity =>
+      <Amenity
+        key={amenity}
+        handleChoose={this.handleChoose}
+        amenity={amenity}
+        amenityPrinted={getPrintableAmenity(amenity)}
+        checked={vendor.amenities[amenity]} />
+    );
     const pricingSchema = Object.keys(vendor.pricing_schema).map(tier =>
       <Tier
         key={tier}
@@ -139,16 +159,13 @@ export default class ManageAdmin extends React.Component {
         tier={tier}
         value={vendor.pricing_schema[tier]} />
     )
-    for (let amenity in vendor.amenities) {
-      amenities.push(
-        <Amenity
-          key={amenity}
-          handleChoose={this.handleChoose}
-          amenity={amenity}
-          amenityPrinted={getPrintableAmenity(amenity)}
-          checked={vendor.amenities[amenity]} />
-      )
-    }
+    const address = Object.keys(vendor.address).map(addressField =>
+      <AddressField
+        key={addressField}
+        handleChange={this.handleChange}
+        field={addressField}
+        value={vendor.address[addressField]} />
+    )
 
     return (
       <div>
@@ -161,11 +178,12 @@ export default class ManageAdmin extends React.Component {
           <NewVendorForm
             vendor={vendor}
             amenities={amenities}
+            address={address}
             pricingSchema={pricingSchema}
             handleSubmit={this.handleSubmit}
             handleChange={this.handleChange} />
         </div>
-        
+
         <Metrics />
       </div>
     )
