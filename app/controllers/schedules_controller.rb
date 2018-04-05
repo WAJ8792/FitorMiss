@@ -10,7 +10,7 @@ class SchedulesController < ApplicationController
     client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
 
     response = client.call(:get_classes, :message => params )
-
+    print response
     @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
     @vendor_id = "-99"
 

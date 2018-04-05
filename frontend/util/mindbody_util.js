@@ -9,7 +9,7 @@ export const getMBSchedule = (db, info, setState) => {
       if (vendor.has_mindbody_classes) {
         fetchAmenities(db, vendor, setState);
       }
-    }) 
+    })
   })
 }
 
@@ -28,9 +28,11 @@ const fetchMBSchedule = (data, setState) => {
     method: 'GET',
     url: '/schedules',
     data
-  }).then ( schedule => {
+  }).done( schedule => {
     const formattedSchedule = formatMindbodyClasse(schedule);
     setState(formattedSchedule);
+  }).fail( error => {
+    console.log(error);
   });
 }
 
@@ -86,7 +88,7 @@ function apprxType(classString) {
   const str = classString.toLowerCase();
   if (str.includes('cardio')) { return 'Cardio'; }
   if (str.includes('pilates')) { return 'Pilates'; }
-  if (str.includes('yoga')) { return 'Yoga'; } 
+  if (str.includes('yoga')) { return 'Yoga'; }
   if (str.includes('boxing')) { return 'Boxing'; }
   if (str.includes('rowing')) { return 'Rowing'; }
   return "";
