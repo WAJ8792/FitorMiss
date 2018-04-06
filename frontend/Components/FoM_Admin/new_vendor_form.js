@@ -37,6 +37,10 @@ export default class NewVendorForm extends React.Component {
           <div id="vendor-mgmt-section">
             {this.props.pricingSchema}
           </div>
+
+          <div id="vendor-mgmt-section">
+            {this.props.address}
+          </div>
         </div>
 
         <input type="submit" value="Submit" />

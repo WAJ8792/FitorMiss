@@ -42,10 +42,9 @@ export default class Account extends React.Component {
 
   fetchAccountInfo(user) {
     let newAddress;
-
     firebase.database().ref('address').orderByChild("vendor_id")
       .equalTo(user).on("value", snap => {
-        let addressKey = Object.keys(snap.toJSON())[0];
+        let addressKey = Object.keys(snap.val())[0];
         let info = snap.val()[addressKey];
         newAddress = {
           vendor_id: info.vendor_id,
@@ -57,14 +56,6 @@ export default class Account extends React.Component {
       });
     firebase.database().ref('vendor').orderByKey().equalTo(user).on('value', snap =>{
       this.setState({email: snap.val()[user].email});
-    })
-    firebase.database().ref('card').orderByChild("vendor_id")
-      .equalTo(user).on('value', snap => {
-        if (snap.val() != null) {
-          let ccKey = Object.keys(snap.toJSON())[0];
-          let cc = snap.val()[ccKey];
-          this.setState({cc, ccKey});
-        }
     })
   }
 
