@@ -34,7 +34,13 @@ export default class Account extends React.Component {
   getCurrentUser() {
     app.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user: user.uid, loggedOut: false });
+        this.setState({
+          user: user.uid,
+          address: {
+            ...this.state.address,
+            vendor_id: user.uid
+          },
+          loggedOut: false });
         this.fetchAccountInfo(user.uid);
       }
     });

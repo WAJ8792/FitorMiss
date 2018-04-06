@@ -18,6 +18,11 @@ class DisplayClassInfo extends React.Component {
         gym_name: null,
         neighborhood: null,
       },
+      address: {
+        street: "",
+        city: "",
+        state: "",
+      },
       filteredOut: false,
     }
   }
@@ -36,9 +41,20 @@ class DisplayClassInfo extends React.Component {
       if (snap.val() != null) {
         let vendorInfo = snap.val()[vendor];
         this.fetchAmenities(vendor);
+        this.fetchAddress(vendor);
         this.setState({vendorInfo});
       } else {
         this.setState({filteredOut: true});
+      }
+    })
+  }
+
+  fetchAddress(vendor) {
+    firebase.database().ref("address")
+    .orderByChild("vendor_id").equalTo(vendor).on('value', snap => {
+      if (snap.val() != null) {
+        const address = snap.val()[Object.keys(snap.val())[0]];
+        this.setState({address});
       }
     })
   }
@@ -95,6 +111,7 @@ class DisplayClassInfo extends React.Component {
 
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
+    const address = this.state.address;
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
@@ -109,6 +126,7 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
+          <p>{address.street}</p>
         </div>
 
         <div>
