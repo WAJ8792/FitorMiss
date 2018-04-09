@@ -42,9 +42,9 @@ class DisplayClassInfo extends React.Component {
       this.setState({vendorInfo});
     })
   }
-  
+
   getNeighborhoodId(neighborhood) {
-    
+
   }
 
   fetchAmenities(vendor) {
@@ -89,7 +89,7 @@ class DisplayClassInfo extends React.Component {
       this.setState({pricing});
     });
   }
-  
+
   insertVendorInfo(thisClass) {
     const c = {
       amenities: thisClass.amenities,
@@ -114,9 +114,10 @@ class DisplayClassInfo extends React.Component {
     if (this.state.filteredOut || this.state.pricing === null || this.state.pricing.length < 1) {
       return null;
     }
-
     const thisClass = this.props.thisClass;
+    console.log(thisClass);
     const vendor = this.state.vendorInfo;
+    const mb = (thisClass.mb) ? "minbody" : null
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
@@ -131,6 +132,7 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
+          <p>{mb}</p>
         </div>
 
         <div>

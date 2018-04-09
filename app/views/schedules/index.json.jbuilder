@@ -3,6 +3,9 @@
     id = 'mindbody_' + thisClass[:id]
     class_description = thisClass[:class_description]
     json.id id
+    json.mb true
+    json.site_id thisClass[:location][:site_id]
+    json.location_id thisClass[:location][:id]
     json.amenities @vendor_info["amenities"]
     json.canceled thisClass[:is_canceled]
     json.vendor_id @vendor_info["id"]

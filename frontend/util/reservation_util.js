@@ -33,14 +33,14 @@ export const confirmReserve = (db, thisClass, userInfo) => {
     time: thisClass.time,
     created_at: new Date().getTime(),
   });
-  // db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
-  //   if (snap.val() != null) {
-  //     db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
-  //   } else {
-  //     thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
-  //     db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
-  //   }
-  // });
+  db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
+    if (snap.val() != null) {
+      db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
+    } else {
+      thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
+      db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
+    }
+  });
   if (thisClass.id.includes("mindbody")) {
     const classId = thisClass.id.slice(9, thisClass.id.length);
     // client_id = currentMindbodyCustomer(userInfo);
