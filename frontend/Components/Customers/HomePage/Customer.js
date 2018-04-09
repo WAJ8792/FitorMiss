@@ -180,8 +180,9 @@ class CustomerPage extends React.Component {
 
   displayClasses() {
     const mergedSchedule = Object.assign(
-      {}, this.state.fomSchedule, this.state.mindbodySchedule
+      {},  this.state.mindbodySchedule
     )
+    // this.state.fomSchedule,
     const classes = getClassesByDay(mergedSchedule, this.availableToUser(this.state.user));
     const classViews = [];
 

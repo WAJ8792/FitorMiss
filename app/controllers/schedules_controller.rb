@@ -2,14 +2,14 @@ class SchedulesController < ApplicationController
 
   def index
     http_request = getRequestParams
-    print params
+    print http_request
     @vendor_info = params
 
-    params = { 'Request' => http_request }
+    request = { 'Request' => http_request }
 
     client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
 
-    response = client.call(:get_classes, :message => params )
+    response = client.call(:get_classes, :message => request )
     print response
     @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
     @vendor_id = "-99"
