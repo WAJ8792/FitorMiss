@@ -6,7 +6,8 @@ export const getMBSchedule = (db, info, setState) => {
       let vendor = snap.val()[vendorId];
       vendor.id = vendorId;
       vendor = Object.assign({}, vendor, info);
-      if (vendor.has_mindbody_classes) {
+      console.log(vendor.id);
+      if (vendor.site_id) {
         fetchAmenities(db, vendor, setState);
       }
     })

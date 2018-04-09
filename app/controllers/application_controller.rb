@@ -1,22 +1,21 @@
 class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
-  def getRequestParams
-    site_ids = { 'int' => ['35233', '-99'] }
+  def getRequestParams(site_id)
+    site_id = { 'int' => site_id }
     source_credentials = {
       'SourceName' => 'FitorMiss',
       'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',
-      'SiteIDs' => site_ids
+      'SiteIDs' => site_id
     }
     user_credentials = {
       'Username' => '_FitorMiss',
       'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',
-      'SiteIDs' => site_ids,
-      'LocationID' => "2"
+      'SiteIDs' => site_id,
     }
 
     http_request = {
       'SourceCredentials' => source_credentials,
-      'UserCredentials' => user_credentials
+      'UserCredentials' => user_credentials,
     }
 
     return http_request
