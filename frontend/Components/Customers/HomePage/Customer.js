@@ -160,8 +160,8 @@ class CustomerPage extends React.Component {
     return thisClass => {
       if (!thisClass.reservations) { return true; }
 
-      const upcomingRes = thisClass.reservations[thisClass.date];
-      if (upcomingRes >= thisClass.seats || upcomingRes.includes(id)) {
+      const upcomingRes = Object.keys(thisClass.reservations[thisClass.date]);
+      if (upcomingRes.length >= thisClass.seats || upcomingRes.includes(id)) {
         return false;
       } else { return true; }
     }
