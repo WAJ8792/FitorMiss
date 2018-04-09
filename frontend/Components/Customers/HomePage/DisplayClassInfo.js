@@ -99,7 +99,7 @@ class DisplayClassInfo extends React.Component {
       max: thisClass.max,
       name: thisClass.name,
       neighborhood: thisClass.neighborhood,
-      neighborhood_id: thisClass.neighborhood_id,
+      neighborhood_id: parseInt(thisClass.neighborhood_id),
       seats: thisClass.booking.webCapacity,
       time: thisClass.time,
       type: thisClass.type,

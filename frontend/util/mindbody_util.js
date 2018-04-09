@@ -6,12 +6,11 @@ export const getMBSchedule = (db, info, setState) => {
       let vendor = snap.val()[vendorId];
       vendor.id = vendorId;
       vendor = Object.assign({}, vendor, info);
-      console.log(vendor.id);
       if (vendor.site_id) {
         fetchAmenities(db, vendor, setState);
       }
-    })
-  })
+    });
+  });
 }
 
 function fetchAmenities(db, vendor, setState) {
@@ -74,10 +73,19 @@ function parseDateTime(start, end) {
   const dateTime = {};
   dateTime.day = dayByIndex(new Date(start).getDay());
   dateTime.time = start.slice(11, 16);
-  dateTime.duration = {
+  const duration = {
     hours: parseInt(end.slice(11, 13)) - parseInt(start.slice(11, 13)),
     min: parseInt(end.slice(14, 26)) - parseInt(start.slice(14, 26)),
   }
+  if (duration.hours < 1) {
+    duration.hours = (24 + duration.hours);
+    dateTime.day = dayByIndex((new Date(start).getDay()) - 1);
+  }
+  if (duration.min < 0) {
+    duration.hours -= 1;
+    duration.min = (60 + duration.min);
+  }
+  dateTime.duration = duration;
   return dateTime;
 }
 
