@@ -37,14 +37,9 @@ class DisplayClassInfo extends React.Component {
       if (snap.val() != null) {
         vendorInfo = snap.val()[vendor];
         this.fetchAmenities(vendor);
-        this.getNeighborhoodId(vendorInfo.neighborhood);
       }
       this.setState({vendorInfo});
     })
-  }
-
-  getNeighborhoodId(neighborhood) {
-
   }
 
   fetchAmenities(vendor) {
@@ -106,6 +101,9 @@ class DisplayClassInfo extends React.Component {
       vendor: thisClass.vendor,
       vendor_id: thisClass.vendor_id
     }
+    if (this.state.vendorInfo.service_id) {
+      thisClass.serviceId = this.state.vendorInfo.service_id;
+    }
     thisClass.classInfo = c;
     this.props.handleReserve(thisClass);
   }
@@ -115,7 +113,6 @@ class DisplayClassInfo extends React.Component {
       return null;
     }
     const thisClass = this.props.thisClass;
-    console.log(thisClass);
     const vendor = this.state.vendorInfo;
     const mb = (thisClass.mb) ? "minbody" : null
     if (indexOfDay(thisClass.day) === new Date().getDay()) {

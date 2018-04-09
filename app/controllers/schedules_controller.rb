@@ -16,39 +16,22 @@ class SchedulesController < ApplicationController
   end
 
   def create
-    http_request = getRequestParams
+    http_request = getRequestParams(params[:data][:siteID])
+    http_request["ClientIDs"] = {"string" => params[:clientId]}
+    http_request["ClassIDs"] = {"int" => params[:classId]}
+    http_request["ClientServiceID"] = params[:data][:serviceID]
 
-    if params[:clientId]
-      http_request["ClientID"] = params[:clientId]
-    else
-      http_request["ClientID"] = params[:newClientId]
-    end
+    message = { 'Request' => http_request }
 
-    http_request["CartItems"] = {
-      "CartItem" => {
-        "Item" => { "ID" => "1249" },
-        "ClassIDs" => { "int" => params[:classId] },
-        "DiscountAmount" => "0",
-        "Quantity" => "1"
-      },
-      :attributes! => { "Item" => {"xsi:type" => "Service"} }
-    }
-    http_request["Payments"] = {
-      "PaymentInfo" => {
-        "Amount" => "10"
-      },
-      :attributes! => { "PaymentInfo" => {"xsi:type" => "CompInfo"} }
-    }
+    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
 
-    params = { 'Request' => http_request }
+    response = client.call(:add_clients_to_classes, :message => message);
+    result = response.body
+      [:add_clients_to_classes_response]
+      [:add_clients_to_classes_result]
+      [:status]
 
-    print params
-
-    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/SaleService.asmx?wsdl')
-
-    response = client.call(:checkout_shopping_cart, :message => params);
-
-    render nil
+    render json: [result]
   end
 
 end
