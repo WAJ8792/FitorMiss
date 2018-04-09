@@ -84,6 +84,15 @@ class DisplayClassInfo extends React.Component {
     // this.setState({filteredOut});
   }
 
+  getDiscountPercent(price) {
+    const listPrice = parseInt(this.state.pricing[3]);
+    price = parseInt(price);
+
+    if (price === listPrice) { return null; }
+    const discount = Math.round(((listPrice - price) / listPrice) * 100);
+    return `${discount}% off`
+  }
+
 
   getPricingSchema(vendor) {
     let pricing = [];
@@ -142,6 +151,7 @@ class DisplayClassInfo extends React.Component {
           <button onClick={() => this.props.handleReserve(thisClass)}>
             ${thisClass.price}
           </button>
+          <p id="discount">{this.getDiscountPercent(thisClass.price)}</p>
         </div>
       </section>
     )
