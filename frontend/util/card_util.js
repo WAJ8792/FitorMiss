@@ -1,10 +1,14 @@
-export const saveCard = (token, saveCustomer) => {
+export const saveCard = (token, saveCustomer, setState) => {
   return $.ajax({
     method: 'POST',
     url: '/cards',
     data: token
-  }).then( customer => {
+  }).done( customer => {
     console.log(customer);
-    saveCustomer(customer.id);
+    const last4 = customer.sources.data[0].last4;
+    saveCustomer(customer.id, last4);
+    setState("Card successfully added");
+  }).fail( error => {
+    setState("Card number is incorrect");
   })
 }

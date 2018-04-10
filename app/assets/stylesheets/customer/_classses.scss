@@ -28,8 +28,17 @@
 // Should this be moved elsewhere?
 #classes-header {
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 33px;
+  letter-spacing: 1px;
+}
+
+#discount {
+  width: 76px;
+  font-weight: 500;
+  font-family: arial;
+  font-size: 20px;
+  color: #f374f3;
 }
 
 #classes-page,
@@ -234,6 +243,12 @@
   width: 50%;
   margin: 0 auto;
   height: 500px;
+}
+
+#loading-classes {
+  text-align: center;
+  font-size: 18px;
+  color: #778583;
 }
 
 #upcoming-classes-page {

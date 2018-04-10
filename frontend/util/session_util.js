@@ -1,5 +1,4 @@
 export const createVendor = function(user, db, userInfo) {
-  debugger;
   const amenities = userInfo.amenities;
   amenities.vendor_id = user.uid;
 
@@ -22,11 +21,12 @@ export const createVendor = function(user, db, userInfo) {
 }
 
 export const createCustomer = function(user, db, userInfo) {
+  const created_at = new Date().getTime();
   db.database().ref('customers/' + user.user.uid).set({
     first_name: userInfo.firstName,
     last_name: userInfo.lastName,
     email: userInfo.email,
-    created_at: new Date(),
+    created_at,
     neighborhood_id: "1",
   });
   db.database().ref('user_type/' + user.user.uid).set("customer");

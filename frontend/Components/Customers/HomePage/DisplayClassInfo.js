@@ -12,13 +12,18 @@ class DisplayClassInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pricing: null,
+      pricing: [],
       vendorInfo: {
         email: null,
         gym_name: null,
         neighborhood: null,
       },
-      // filteredOut: true,
+      address: {
+        street: "",
+        city: "",
+        state: "",
+      },
+      filteredOut: false,
     }
   }
 
@@ -31,14 +36,26 @@ class DisplayClassInfo extends React.Component {
   }
 
   getVendorInfo(vendor) {
-    let vendorInfo = null;
     app.database().ref("vendor")
     .orderByKey().equalTo(vendor).on('value', snap => {
       if (snap.val() != null) {
-        vendorInfo = snap.val()[vendor];
+        let vendorInfo = snap.val()[vendor];
         this.fetchAmenities(vendor);
+        this.fetchAddress(vendor);
+        this.setState({vendorInfo});
+      } else {
+        this.setState({filteredOut: true});
       }
-      this.setState({vendorInfo});
+    })
+  }
+
+  fetchAddress(vendor) {
+    firebase.database().ref("address")
+    .orderByChild("vendor_id").equalTo(vendor).on('value', snap => {
+      if (snap.val() != null) {
+        const address = snap.val()[Object.keys(snap.val())[0]];
+        this.setState({address});
+      }
     })
   }
 
@@ -67,6 +84,15 @@ class DisplayClassInfo extends React.Component {
     // this.setState({filteredOut});
   }
 
+  getDiscountPercent(price) {
+    const listPrice = parseInt(this.state.pricing[3]);
+    price = parseInt(price);
+
+    if (price === listPrice) { return null; }
+    const discount = Math.round(((listPrice - price) / listPrice) * 100);
+    return `${discount}% off`
+  }
+
 
   getPricingSchema(vendor) {
     let pricing = [];
@@ -80,6 +106,8 @@ class DisplayClassInfo extends React.Component {
           pricing.push(child.val()['tier3']);
           pricing.push(child.val()['tier4']);
         })
+      } else {
+        this.setState({ filteredOut: true })
       }
       this.setState({pricing});
     });
@@ -109,12 +137,12 @@ class DisplayClassInfo extends React.Component {
   }
 
   render() {
-    if (this.state.filteredOut || this.state.pricing === null || this.state.pricing.length < 1) {
+    if (this.state.filteredOut) {
       return null;
     }
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
-
+    const address = this.state.address;
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
@@ -129,6 +157,7 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
+          <p>{address.street}</p>
         </div>
 
         <div>
@@ -150,6 +179,7 @@ class DisplayClassInfo extends React.Component {
           }}>
             ${thisClass.price}
           </button>
+          <p id="discount">{this.getDiscountPercent(thisClass.price)}</p>
         </div>
       </section>
     )

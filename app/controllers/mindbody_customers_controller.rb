@@ -6,7 +6,6 @@ class MindbodyCustomersController < ApplicationController
       'Email' => params[:userInfo][:email],
       'FirstName' => params[:userInfo][:first_name],
       'LastName' => params[:userInfo][:last_name],
-      # "BirthDate" => "1989-12-12"
     }}
     http_request['Clients'] = c
     message = { 'Request' => http_request }

@@ -2,15 +2,20 @@ import React from 'react';
 
 import { injectStripe, CardElement } from 'react-stripe-elements';
 import { saveCard } from '../../../util/card_util';
-
+import ChangeCard from './ChangeCard';
 
 class CardForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       firstName: "",
-      user: false
+      user: false,
+      stripe_id: null,
+      cards: {},
+      changeable: false,
+      error: false
     }
+    this.changeCard = this.changeCard.bind(this);
   }
 
   componentDidMount() {
@@ -20,9 +25,24 @@ class CardForm extends React.Component {
   getCurrentUser() {
     app.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ user: user.uid })
+        this.setState({ user: user.uid });
+        this.getUserInfo(user.uid);
       }
     })
+  }
+
+  getUserInfo(user) {
+    firebase.database().ref('customers')
+    .orderByKey().equalTo(user).on('value', snap => {
+      if (snap.val() != null) {
+        const info = snap.val()[user];
+        let stripe_id = null
+        if (info.cards) {
+          stripe_id = info.cards[info.stripe_id];
+          this.setState({ stripe_id, cards: info.cards });
+        }
+      }
+    });
   }
 
   handleChange(e) {
@@ -31,28 +51,61 @@ class CardForm extends React.Component {
     })
   }
 
+  changeCard(e) {
+    e.preventDefault();
+    const user = this.state.user;
+    const stripe_id = this.state.stripe_id;
+    firebase.database().ref('customers/' + user + '/stripe_id').set(stripe_id);
+  }
+
+  selectCard = (e) => {
+    this.setState({
+      stripe_id: e.target.value,
+      changeable: true
+    });
+  }
+
   createCard(e) {
     e.preventDefault();
+    this.setState({error: "Processing card info..."});
     const name = this.state.firstName;
     const user = this.state.user;
-
+    let cards = this.state.cards;
     this.props.stripe.createToken({name}).then(({token}) => {
-      console.log(token);
-      saveCard({token, name}, customer => {
+      saveCard({token, name}, (stripe_id, last4) => {
+        cards[stripe_id] = last4;
         if (user) {
-          console.log(customer, user);
           firebase.database()
-          .ref('customers/' + user + '/stripe_id').set(customer)
+          .ref('customers/' + user + '/stripe_id').set(stripe_id);
+          firebase.database().ref('customers/' + user + '/cards').set(cards)
         }
-      });
+      }, (result) => { this.setState({error: result}) } )
+    }).catch( error => {
+      this.setState({error})
     });
   }
 
   render() {
+    const cards = this.state.cards;
+    const changeCard = (this.state.changeable)
+    ? <input type="submit" value="Switch Card"/>
+    : <input type="submit" value="Switch Card" disabled/>
+
+    let selectCards;
+    if (cards) {
+      selectCards = <ChangeCard
+                      cards={cards}
+                      stripe_id={this.state.stripe_id}
+                      changeCardButton={changeCard}
+                      selectCard={this.selectCard}
+                      changeCard={this.changeCard}
+                      />
+    }
     return (
+      <div>
       <form action="" id="billing" onSubmit={e => this.createCard(e)}>
         <p id="billing-header">Billing  and  Payment</p>
-
+        <div style={{fontSize: "15px", color: "#f374f3"}}>{this.state.error}</div>
         <CardElement  style={{ base: {
           fontSize: '15px',
           letterSpacing: '1px',
@@ -136,8 +189,14 @@ class CardForm extends React.Component {
           </div>
           <input type="text" placeholder="Billing Email" />
         </div>
-        <input type="submit" value="Save Billing Information" />
+        <div style={{display: 'flex', marginBottom: '22px'}}>
+          <input type="submit" value="Save Billing Information" />
+        </div>
     </form>
+      <div style={{marginLeft: "200px", marginTop: "16px"}}>
+        {selectCards}
+      </div>
+    </div>
     );
   }
 }

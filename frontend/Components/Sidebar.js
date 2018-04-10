@@ -24,40 +24,19 @@ export default class Sidebar extends Component {
   render() {
     let list1, list2, list3, listHeader;
     if (this.props.location.pathname.includes('customer/classes')) {
-      list1 = (
-        <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list1')} >Account
-          <ul className={this.state.list1}>
-            <li><Link to="/customer/account">Edit Acount</Link></li>
-          </ul>
-        </li>
-      </div>
-      )
-      list2 = (
-        <div id="side-link">
-        <li onClick={e => this.dropDown(e, 'list2')} >Billing
-
-          <ul className={this.state.list2}>
-            <li><Link to="/customer/billing">Billing & Payment</Link></li>
-            <li><Link to="/customer/billing-history">Billing History</Link></li>
-          </ul>
-        </li>
-        </div>
-      )
-    }
-    else if (this.props.location.pathname.includes('customer')) {
-      listHeader = ( <div id="side-link">
-          <li id="filter-header">Search by:</li>
-        </div>
-      )
-      list1 = ( <div id="side-link">
+        listHeader = ( <div id="side-link">
+            <li id="filter-header">Search by:</li>
+          </div>
+        )
+        list1 = ( <div id="side-link">
           <li
             onClick={e => this.dropDown(e, 'list1')}
             style={{
               color: '#f0efef7d',
               cursor: 'default'
-            }}>My Location
-          </li>
+            }}>
+              My Location
+            </li>
         </div>
       )
       list2 = <AmenityFilter
@@ -72,7 +51,34 @@ export default class Sidebar extends Component {
         filters={this.props.filters}
         toggleType={this.props.toggleType} />
 
+    }
+    else if (this.props.location.pathname.includes('customer')) {
+      list1 = (
+        <div id="side-link">
+          <li>
+          </li>
+        </div>
+      )
+      list2 = (
+        <div id="side-link">
+        <li onClick={e => this.dropDown(e, 'list2')} >Account
+          <ul className={this.state.list2}>
+            <li><Link to="/customer/account">Edit Acount</Link></li>
+          </ul>
+        </li>
+      </div>
+      )
+      list3 = (
+        <div id="side-link">
+        <li onClick={e => this.dropDown(e, 'list3')} >Billing
 
+          <ul className={this.state.list3}>
+            <li><Link to="/customer/billing">Billing & Payment</Link></li>
+            <li><Link to="/customer/billing-history">Billing History</Link></li>
+          </ul>
+        </li>
+        </div>
+      )
     }
     else {
       list1 = (

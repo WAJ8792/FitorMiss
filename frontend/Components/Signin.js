@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 import SignupCustomer from './Customers/Signup_Customer';
 import SignupVendor from './Admin/Signup_Vendor';
+import HowItWorks from './how_it_works';
 
 export default class SignIn extends React.Component {
   constructor(props) {
@@ -74,7 +75,7 @@ export default class SignIn extends React.Component {
       return (<Redirect to="/admin" />);
     }
 
-    const logo = <section>
+    const logo = <section id="logo-container">
           <img
             src={window.images.logo}
             className="splash-logo" />
@@ -84,34 +85,39 @@ export default class SignIn extends React.Component {
     return (
       <div id="greeting-container">
         {logo}
-        <p className="tagline">Fit or Miss: Daily Deals for the Best Workouts near You!</p>
-        <p className="tagline">Welcome to #FlexibleFitness!</p>
 
-        <div className="new-page-container">
-          <div className="page-detail">
-            <div id="sessions-page">
-              <div id="sessions-module">
-                <div className="sessions-module-buttons">
+          <p className="tagline">Fit or Miss: Daily Deals for the Best Workouts near You!</p>
+          <p className="tagline">Welcome to #FlexibleFitness!</p>
+          <div style={{height: "15px"}} />
+          <p id="get-started">Browse classes happening today, reserve your seat, and show your confirmation email at the door.</p>
+          <p id="get-started">It's that easy!</p>
 
-                  <button
-                    className={this.toggleTabs("login")}
-                    onClick={() => this.handleLoginRender("login")}>
-                    Login
-                  </button>
-                  <button
-                    className={this.toggleTabs("signup")}
-                    onClick={() => this.handleLoginRender("signup")}>
-                    SignUp
-                  </button>
+          <div className="new-page-container">
+            <div className="page-detail">
+              <div id="sessions-page">
 
+                <div id="sessions-module">
+                  <div className="sessions-module-buttons">
+
+                    <button
+                      className={this.toggleTabs("login")}
+                      onClick={() => this.handleLoginRender("login")}>
+                      Login
+                    </button>
+                    <button
+                      className={this.toggleTabs("signup")}
+                      onClick={() => this.handleLoginRender("signup")}>
+                      SignUp
+                    </button>
+
+                  </div>
+                  <hr className="sessions-hr" />
+
+                  {this.getSessionType()}
                 </div>
-                <hr className="sessions-hr" />
-
-                {this.getSessionType()}
               </div>
             </div>
           </div>
-        </div>
       </div>
     )
   }
@@ -207,3 +213,6 @@ const Reset = props => [
     {props.error}
   </section>
 ]
+
+// page-detail - style={{backgroundColor: "#f1f0f0"}}
+// sessions-paage - style={{marginTop: "30px"}}

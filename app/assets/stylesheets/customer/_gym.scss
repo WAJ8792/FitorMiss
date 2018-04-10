@@ -4,7 +4,6 @@
   width: 100%;
   min-width: 300px;
   max-height: 425px;
-  overflow: scroll;
 
   .class-info:first-child {
     margin-top: 0px;
@@ -41,14 +40,14 @@
   }
 
   button {
-    height: 32px;
+    height: 29px;
     width: 76px;
     border-radius: 5px;
     border: none;
     background-color: #1ed0b1;
     color: white;
     font-size: 11px;
-    margin-bottom: 6px;
+    margin-bottom: 9px;
     text-align: center;
   }
 

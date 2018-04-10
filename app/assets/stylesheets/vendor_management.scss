@@ -29,3 +29,20 @@
   }
 
 }
+
+.metrics  {
+  margin: 10px;
+  margin-bottom: 30px;
+
+  section {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #mgmt-customer-info {
+    span {
+      display: flex;
+    }
+  }
+
+}

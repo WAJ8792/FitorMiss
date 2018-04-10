@@ -20,5 +20,4 @@ class ApplicationController < ActionController::Base
 
     return http_request
   end
-
 end
