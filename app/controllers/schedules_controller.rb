@@ -1,33 +1,37 @@
 class SchedulesController < ApplicationController
 
   def index
-    site_ids = { 'int' => -99 }
-    source_credentials = {
-      'SourceName' => 'FitorMiss',
-      'Password' => 'KsrvE/bc9IOl/4lKi7o1nbQwDoQ=',
-      'SiteIDs' => site_ids
-    }
-    user_credentials = {
-      'Username' => 'Siteowner',
-      'Password' => 'apitest1234',
-      'SiteIDs' => site_ids
-    }
+    http_request = getRequestParams(
+      params["site_id"]
+    )
+    print http_request
 
-    http_request = {
-      'SourceCredentials' => source_credentials,
-      'UserCredentials' => user_credentials
-    }
+    request = { 'Request' => http_request }
+    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
+    response = client.call(:get_classes, :message => request )
+    @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
+    @vendor_info = params
 
-    params = { 'Request' => http_request }
+    render 'schedules/index.json'
+  end
+
+  def create
+    http_request = getRequestParams(params[:data][:siteID])
+    http_request["ClientIDs"] = {"string" => params[:clientId]}
+    http_request["ClassIDs"] = {"int" => params[:classId]}
+    http_request["ClientServiceID"] = params[:data][:serviceID]
+
+    message = { 'Request' => http_request }
 
     client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
 
-    response = client.call(:get_classes, :message => params )
+    response = client.call(:add_clients_to_classes, :message => message);
+    result = response.body
+      [:add_clients_to_classes_response]
+      [:add_clients_to_classes_result]
+      [:status]
 
-    @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
-    @vendor_id = site_ids['int']
-
-    render 'schedules/index.json'
+    render json: [result]
   end
 
 end

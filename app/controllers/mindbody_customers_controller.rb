@@ -1,37 +1,40 @@
 class MindbodyCustomersController < ApplicationController
 
   def create
-      # Build a function to search for an existing mindbody client record by email FIRST.
-      # A customer could have signed up with the gym but is reserving the class through us.
-    http_request = getRequestParams
+    http_request = getRequestParams(params[:siteID])
     c = { "Client" => {
-      'email': params[:email],
-      'firstName': params[:first_name],
-      'lastName': params[:last_name]
+      'Email' => params[:userInfo][:email],
+      'FirstName' => params[:userInfo][:first_name],
+      'LastName' => params[:userInfo][:last_name],
     }}
     http_request['Clients'] = c
     message = { 'Request' => http_request }
 
-    client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl')
+    client_service = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl')
+    response = client_service.call(:add_or_update_clients, :message => message)
+    id = response.body[:add_or_update_clients_response][:add_or_update_clients_result][:clients][:client][:id]
 
-    response = client.call(:add_or_update_clients, :message => message)
-
-    # @result = response.body.....
+    render json: id
   end
 
   def index
-    http_request = getRequestParams
-    search_text = params[:email]
-    print search_text
-    http_request["SearchText"] = search_text
+    http_request = getRequestParams(params[:siteID])
+    http_request["SearchText"] = params[:userInfo][:email]
     message = { 'Request' => http_request }
-    client = Savon::Client.new(wsdl: "https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl")
 
-    response = client.call(:get_clients, :message => message)
+    client_service = Savon::Client.new(wsdl: "https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl")
+    response = client_service.call(:get_clients, :message => message)
+    result = response.body[:get_clients_response][:get_clients_result]
+    thisUser = false
+    print result
+    if result[:clients]
+      user = result[:clients][:client]
+      if user[:last_name] == params[:userInfo][:last_name] && user[:email] == params[:userInfo][:email]
+          thisUser = user[:id]
+      end
+    end
 
-    print response.body
-
-    render nil
+    render json: thisUser
   end
 
 end

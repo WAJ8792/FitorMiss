@@ -37,9 +37,6 @@ class CustomerPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser();
-    getMBSchedule( (mindbodySchedule) => {
-      this.setState({mindbodySchedule});
-    });
   }
 
   getCurrentUser() {
@@ -66,7 +63,14 @@ class CustomerPage extends React.Component {
     neighborhoodId = neighborhoodId.toString();
     firebase.database().ref('neighborhoods')
     .orderByKey().equalTo(neighborhoodId).on("value", snap => {
-      this.setState({neighborhood: snap.val()[neighborhoodId]})
+      if (snap.val() != null) {
+        const neighborhood = snap.val()[neighborhoodId];
+        const info = {neighborhood, neighborhoodId}
+        getMBSchedule(firebase.database(), info, mindbodySchedule => {
+          this.setState({mindbodySchedule});
+        })
+        this.setState({neighborhood})
+      }
     })
   }
 
@@ -75,7 +79,13 @@ class CustomerPage extends React.Component {
     .orderByChild('neighborhood_id').equalTo(parseInt(neighborhood))
     .on("value", snap => {
       if (snap.val() != null) {
-        this.setState({fomSchedule: snap.val()});
+        const fomSchedule = {}
+        Object.keys(snap.val()).forEach(id => {
+          if (!id.includes('mindbody')) {
+            fomSchedule[id] = snap.val()[id];
+          }
+        })
+        this.setState({fomSchedule});
       }
     })
   }
@@ -110,24 +120,26 @@ class CustomerPage extends React.Component {
   confirmReserve(e) {
     e.preventDefault();
 
-    let thisClass = this.state.thisClass;
-    thisClass.user = this.state.user;
-    const customer = this.state.userInfo.stripe_id;
-    // remember to add '00' to price since Stripe takes money in cents
-    // That should happen in the controller.
-    // const amount = '00';
-    const amount = parseInt(this.state.thisClass.price + '00');
-    confirmPayment({customer, amount}, () => {
-      confirmReserve(firebase.database(), thisClass, this.state.user);
+    const resInfo = {
+      user: this.state.user,
+      thisClass: this.state.thisClass,
+      userInfo: this.state.userInfo
+    }
+
+    confirmReserve(firebase.database(), resInfo, () => {
+      confirmPayment({
+        customer: resInfo.userInfo.stripe_id,
+        thisClass: resInfo.thisClass
+      }, errors => { this.setState({errors})});
       hitReserve({
-        userInfo: this.state.userInfo,
+        userInfo: resInfo.userInfo,
         resInfo: {
-          time: getTime(thisClass.time),
-          gymName: thisClass.vendor,
-          email: thisClass.vendorEmail,
-          name: thisClass.name
+          time: getTime(resInfo.thisClass.time),
+          gymName: resInfo.thisClass.vendor,
+          email: resInfo.thisClass.vendorEmail,
+          name: resInfo.thisClass.name
         }
-      })
+      });
     });
     this.setState({modal: null});
   }
@@ -158,7 +170,9 @@ class CustomerPage extends React.Component {
 
   availableToUser = (id) => {
     return thisClass => {
-      if (!thisClass.reservations) { return true; }
+      if (!thisClass.reservations || !thisClass.reservations[thisClass.date]) {
+        return true;
+      }
 
       const upcomingRes = Object.keys(thisClass.reservations[thisClass.date]);
       if (upcomingRes.length >= thisClass.seats || upcomingRes.includes(id)) {
@@ -171,6 +185,7 @@ class CustomerPage extends React.Component {
     const mergedSchedule = Object.assign(
       {}, this.state.fomSchedule, this.state.mindbodySchedule
     )
+
     const classes = getClassesByDay(mergedSchedule, this.availableToUser(this.state.user));
     const classViews = [];
 
@@ -243,7 +258,7 @@ class ConfirmReservation extends React.Component {
     const p1 = {fontSize: '20px', marginBottom: '10px'}
     const p2 = {fontSize: '17px', margin: '5px'}
     const p3 = {fontSize: '17px', margin: '0px'}
-    const seatsLeft = (thisClass.reservations)
+    const seatsLeft = (thisClass.reservations && thisClass.reservations[thisClass.date])
     ? seats - Object.keys(thisClass.reservations[thisClass.date]).length
     : seats
     return (

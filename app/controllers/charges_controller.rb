@@ -2,14 +2,15 @@ class ChargesController < ApplicationController
 
   def create
     Stripe.api_key = ENV['STRIPE_SK']
-    print Stripe.api_key
+    amount = (params[:thisClass][:price] + '00').to_i
 
-    charge = Stripe::Charge.create(
-      :currency => 'usd',
-      :amount => params[:amount],
-      :customer => params[:customer]
-    )
-    print charge
+    print amount
+    # charge = Stripe::Charge.create(
+    #   :currency => 'usd',
+    #   :amount => (params[:thisClass][:price] + '00').to_i,
+    #   :customer => params[:customer]
+    # )
+    render json: ["Success"];
   end
 
 end

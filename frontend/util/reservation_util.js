@@ -1,6 +1,9 @@
 export const maxOutClass = (db, thisClass, action) => {
 
-  if (thisClass.reservations && action === "hold") {
+  if (thisClass.reservations &&
+      thisClass.reservations[thisClass.date] &&
+      !thisClass.id.includes('mindbody') &&
+      action === "hold") {
       const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
       if (numReservations + 1 >= thisClass.seats) {
       db.ref('classes/' + thisClass.id + '/max').set(true);
@@ -10,35 +13,113 @@ export const maxOutClass = (db, thisClass, action) => {
   }
 };
 
-export const confirmPayment = (data, makeReservation) => {
+export const confirmPayment = (data, logCompletion) => {
+  console.log("ConfirmPayment with: ", data);
   return $.ajax({
     method: 'POST',
     url: '/charges',
     data
   }).done(() => {
-      makeReservation();
-    }).fail((error) => {
-      console.log('error', error);
+      logCompletion("Thank you for siging up! Check your email and show it at the door!")
+    }).fail(() => {
+      logCompletion("Unable to complete your request");
     })
 }
 
-export const confirmReserve = (db, thisClass, user) => {
+const createReservation = (db, {user, userInfo, thisClass}, succesCB) => {
   const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,
-    customer_id: thisClass.user,
+    customer_id: user,
     date: thisClass.date,
     time: thisClass.time,
     created_at: new Date().getTime(),
   });
-  const ref = db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`)
-    .set(true);
+  db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
+    if (snap.val() != null) {
+      db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
+      succesCB();
+    } else {
+      thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
+      db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
+      succesCB();
+    }
+  });
+}
+
+export const confirmReserve = (db, resInfo, successCB) => {
+  if (resInfo.thisClass.id.includes("mindbody")) {
+    checkoutMindbody(resInfo, () => {
+      createReservation(db, resInfo, successCB);
+    })
+  } else {
+    createReservation(db, resInfo, successCB);
+  }
 };
 
-export const hitReserve = reservation => {
+const checkoutMindbody = ({thisClass, userInfo}, successCB) => {
+  const classId = thisClass.id.slice(9, thisClass.id.length);
+  const data = {
+    siteID: thisClass.site_id,
+    locationID: thisClass.location_id,
+    serviceID: thisClass.serviceId,
+    userInfo
+  }
+  currentMindbodyCustomer(data, (clientId) => {
+    if (clientId) {
+      addCustomerToClass({classId, clientId, data}, successCB)
+    } else {
+      createMindbodyCustomer(data, (newClientId) => {
+        addCustomerToClass({classId, newClientId, data}, successCB);
+      })
+    }
+  })
+}
+
+const currentMindbodyCustomer = (data, successCB) => {
+  return $.ajax({
+    method: 'GET',
+    url: '/mindbody_customers',
+    data
+  }).done( response => {
+    console.log("currentMBC: sucess:", response);
+    successCB(response);
+  }).fail( error => {
+    console.log("curretnMBC: failed", error);
+    return false;
+  })
+}
+
+export const createMindbodyCustomer = (data, registerOnSuccess) => {
   return $.ajax({
     method: 'POST',
-    url: '/reservations',
-    data: reservation
-  });
+    url: '/mindbody_customers',
+    data
+  }).done( response => {
+    console.log("createMBC: success:", response);
+    registerOnSuccess(response);
+  }).fail( error => {
+    console.log("createMBC: failed:", error);
+  })
+}
+
+export const addCustomerToClass = (data, successCB) => {
+  console.log("addCustomerToClass with:", data);
+  // return $.ajax({
+  //   method: 'POST',
+  //   url: '/schedules',
+  //   data
+  // }).done( response => {
+  //   console.log(response);
+    successCB();
+  // });
+}
+
+export const hitReserve = reservation => {
+  console.log("Send emails with:", reservation);
+  // return $.ajax({
+  //   method: 'POST',
+  //   url: '/reservations',
+  //   data: reservation
+  // });
 };
