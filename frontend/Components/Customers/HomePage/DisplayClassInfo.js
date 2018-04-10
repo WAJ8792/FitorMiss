@@ -114,7 +114,7 @@ class DisplayClassInfo extends React.Component {
     }
     const thisClass = this.props.thisClass;
     const vendor = this.state.vendorInfo;
-    const mb = (thisClass.mb) ? "minbody" : null
+
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
       thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
     } else { thisClass.price = this.state.pricing[3]}
@@ -129,7 +129,6 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
-          <p>{mb}</p>
         </div>
 
         <div>
