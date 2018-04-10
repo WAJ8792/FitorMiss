@@ -14,7 +14,6 @@ export const maxOutClass = (db, thisClass, action) => {
 };
 
 export const confirmPayment = (data, logCompletion) => {
-  console.log("ConfirmPayment with: ", data);
   return $.ajax({
     method: 'POST',
     url: '/charges',
@@ -82,10 +81,8 @@ const currentMindbodyCustomer = (data, successCB) => {
     url: '/mindbody_customers',
     data
   }).done( response => {
-    console.log("currentMBC: sucess:", response);
     successCB(response);
   }).fail( error => {
-    console.log("curretnMBC: failed", error);
     return false;
   })
 }
@@ -96,30 +93,26 @@ export const createMindbodyCustomer = (data, registerOnSuccess) => {
     url: '/mindbody_customers',
     data
   }).done( response => {
-    console.log("createMBC: success:", response);
     registerOnSuccess(response);
   }).fail( error => {
-    console.log("createMBC: failed:", error);
+    console.log(error);
   })
 }
 
 export const addCustomerToClass = (data, successCB) => {
-  console.log("addCustomerToClass with:", data);
-  // return $.ajax({
-  //   method: 'POST',
-  //   url: '/schedules',
-  //   data
-  // }).done( response => {
-  //   console.log(response);
+  return $.ajax({
+    method: 'POST',
+    url: '/schedules',
+    data
+  }).done( response => {
     successCB();
-  // });
+  });
 }
 
 export const hitReserve = reservation => {
-  console.log("Send emails with:", reservation);
-  // return $.ajax({
-  //   method: 'POST',
-  //   url: '/reservations',
-  //   data: reservation
-  // });
+  return $.ajax({
+    method: 'POST',
+    url: '/reservations',
+    data: reservation
+  });
 };
