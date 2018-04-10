@@ -120,26 +120,27 @@ class CustomerPage extends React.Component {
   confirmReserve(e) {
     e.preventDefault();
 
-    let thisClass = this.state.thisClass;
-    thisClass.user = this.state.user;
-    const customer = this.state.userInfo.stripe_id;
-    const userInfo = this.state.userInfo;
-    // remember to add '00' to price since Stripe takes money in cents
-    // That should happen in the controller.
-    const amount = '00';
-    // const amount = parseInt(this.state.thisClass.price + '00');
-    confirmPayment({customer, amount}, () => {
-      confirmReserve(firebase.database(), thisClass, this.state.userInfo);
-      // hitReserve({
-      //   userInfo: this.state.userInfo,
-      //   resInfo: {
-      //     time: getTime(thisClass.time),
-      //     gymName: thisClass.vendor,
-      //     email: thisClass.vendorEmail,
-      //     name: thisClass.name
-      //   }
-      // })
-    }, errors => { this.setState({errors})});
+    const resInfo = {
+      user: this.state.user,
+      thisClass: this.state.thisClass,
+      userInfo: this.state.userInfo
+    }
+
+    confirmReserve(firebase.database(), resInfo, () => {
+      confirmPayment({
+        customer: resInfo.userInfo.stripe_id,
+        thisClass: resInfo.thisClass
+      }, errors => { this.setState({errors})});
+      hitReserve({
+        userInfo: resInfo.userInfo,
+        resInfo: {
+          time: getTime(resInfo.thisClass.time),
+          gymName: resInfo.thisClass.vendor,
+          email: resInfo.thisClass.vendorEmail,
+          name: resInfo.thisClass.name
+        }
+      });
+    });
     this.setState({modal: null});
   }
 
@@ -169,10 +170,12 @@ class CustomerPage extends React.Component {
 
   availableToUser = (id) => {
     return thisClass => {
-      if (!thisClass.reservations || thisClass['id'].includes('mindbody')) { return true; }
+      if (!thisClass.reservations || !thisClass.reservations[thisClass.date]) {
+        return true;
+      }
 
-      const upcomingRes = thisClass.reservations[thisClass.date];
-      if (upcomingRes >= thisClass.seats || upcomingRes.includes(id)) {
+      const upcomingRes = Object.keys(thisClass.reservations[thisClass.date]);
+      if (upcomingRes.length >= thisClass.seats || upcomingRes.includes(id)) {
         return false;
       } else { return true; }
     }
@@ -255,7 +258,7 @@ class ConfirmReservation extends React.Component {
     const p1 = {fontSize: '20px', marginBottom: '10px'}
     const p2 = {fontSize: '17px', margin: '5px'}
     const p3 = {fontSize: '17px', margin: '0px'}
-    const seatsLeft = (thisClass.reservations)
+    const seatsLeft = (thisClass.reservations && thisClass.reservations[thisClass.date])
     ? seats - Object.keys(thisClass.reservations[thisClass.date]).length
     : seats
     return (

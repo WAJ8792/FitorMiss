@@ -25,10 +25,11 @@ class MindbodyCustomersController < ApplicationController
 
     client_service = Savon::Client.new(wsdl: "https://api.mindbodyonline.com/0_5/ClientService.asmx?wsdl")
     response = client_service.call(:get_clients, :message => message)
-    clients = response.body[:get_clients_response][:get_clients_result][:clients]
+    result = response.body[:get_clients_response][:get_clients_result]
     thisUser = false
-    if clients[:client]
-      user = clients[:client][0]
+    print result
+    if result[:clients]
+      user = result[:clients][:client]
       if user[:last_name] == params[:userInfo][:last_name] && user[:email] == params[:userInfo][:email]
           thisUser = user[:id]
       end

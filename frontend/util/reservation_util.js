@@ -1,6 +1,9 @@
 export const maxOutClass = (db, thisClass, action) => {
 
-  if (thisClass.reservations && !thisClass.id.includes('mindbody') && action === "hold") {
+  if (thisClass.reservations &&
+      thisClass.reservations[thisClass.date] &&
+      !thisClass.id.includes('mindbody') &&
+      action === "hold") {
       const numReservations = Object.keys(thisClass.reservations[thisClass.date]).length;
       if (numReservations + 1 >= thisClass.seats) {
       db.ref('classes/' + thisClass.id + '/max').set(true);
@@ -10,21 +13,20 @@ export const maxOutClass = (db, thisClass, action) => {
   }
 };
 
-export const confirmPayment = (data, makeReservation, logError) => {
-  makeReservation();
+export const confirmPayment = (data, logCompletion) => {
+  console.log("ConfirmPayment with: ", data);
   return $.ajax({
     method: 'POST',
     url: '/charges',
     data
   }).done(() => {
-      makeReservation();
+      logCompletion("Thank you for siging up! Check your email and show it at the door!")
     }).fail(() => {
-      logError("Unable to complete your request");
+      logCompletion("Unable to complete your request");
     })
 }
 
-export const confirmReserve = (db, thisClass, userInfo) => {
-  const user = thisClass.user;
+const createReservation = (db, {user, userInfo, thisClass}, succesCB) => {
   const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,
@@ -36,30 +38,43 @@ export const confirmReserve = (db, thisClass, userInfo) => {
   db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
     if (snap.val() != null) {
       db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
+      succesCB();
     } else {
       thisClass.classInfo.reservations = {[thisClass.date]: {[user]: true}}
       db.ref('classes/' + thisClass.id).set(thisClass.classInfo);
+      succesCB();
     }
   });
-  if (thisClass.id.includes("mindbody")) {
-    const classId = thisClass.id.slice(9, thisClass.id.length);
-    const data = {
-      siteID: thisClass.site_id,
-      locationID: thisClass.location_id,
-      serviceID: thisClass.serviceId,
-      userInfo
-    }
-    currentMindbodyCustomer(data, (clientId) => {
-      if (clientId) {
-        addCustomerToClass({classId, clientId, data})
-      } else {
-        createMindbodyCustomer(data, (newClientId) => {
-          addCustomerToClass({classId, newClientId, data});
-        })
-      }
+}
+
+export const confirmReserve = (db, resInfo, successCB) => {
+  if (resInfo.thisClass.id.includes("mindbody")) {
+    checkoutMindbody(resInfo, () => {
+      createReservation(db, resInfo, successCB);
     })
+  } else {
+    createReservation(db, resInfo, successCB);
   }
 };
+
+const checkoutMindbody = ({thisClass, userInfo}, successCB) => {
+  const classId = thisClass.id.slice(9, thisClass.id.length);
+  const data = {
+    siteID: thisClass.site_id,
+    locationID: thisClass.location_id,
+    serviceID: thisClass.serviceId,
+    userInfo
+  }
+  currentMindbodyCustomer(data, (clientId) => {
+    if (clientId) {
+      addCustomerToClass({classId, clientId, data}, successCB)
+    } else {
+      createMindbodyCustomer(data, (newClientId) => {
+        addCustomerToClass({classId, newClientId, data}, successCB);
+      })
+    }
+  })
+}
 
 const currentMindbodyCustomer = (data, successCB) => {
   return $.ajax({
@@ -67,9 +82,10 @@ const currentMindbodyCustomer = (data, successCB) => {
     url: '/mindbody_customers',
     data
   }).done( response => {
+    console.log("currentMBC: sucess:", response);
     successCB(response);
   }).fail( error => {
-    console.log("failed", error);
+    console.log("curretnMBC: failed", error);
     return false;
   })
 }
@@ -80,25 +96,30 @@ export const createMindbodyCustomer = (data, registerOnSuccess) => {
     url: '/mindbody_customers',
     data
   }).done( response => {
-    console.log(response);
+    console.log("createMBC: success:", response);
     registerOnSuccess(response);
+  }).fail( error => {
+    console.log("createMBC: failed:", error);
   })
 }
 
-export const addCustomerToClass = data => {
-  return $.ajax({
-    method: 'POST',
-    url: '/schedules',
-    data
-  }).done( response => {
-    console.log(response);
-  });
+export const addCustomerToClass = (data, successCB) => {
+  console.log("addCustomerToClass with:", data);
+  // return $.ajax({
+  //   method: 'POST',
+  //   url: '/schedules',
+  //   data
+  // }).done( response => {
+  //   console.log(response);
+    successCB();
+  // });
 }
 
 export const hitReserve = reservation => {
-  return $.ajax({
-    method: 'POST',
-    url: '/reservations',
-    data: reservation
-  });
+  console.log("Send emails with:", reservation);
+  // return $.ajax({
+  //   method: 'POST',
+  //   url: '/reservations',
+  //   data: reservation
+  // });
 };
