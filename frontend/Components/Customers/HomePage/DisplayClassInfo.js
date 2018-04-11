@@ -64,24 +64,8 @@ class DisplayClassInfo extends React.Component {
     .equalTo(vendor.toString()).on('value', snap => {
       if (snap.val() != null) {
         const amenities = snap.val()[Object.keys(snap.val())[0]];
-        this.filterClass(amenities);
       }
     });
-  }
-
-  filterClass(classAtts) {
-    // classAtts[this.props.thisClass.type] = true;
-    // const filters = this.props.filters;
-    // const filteredOut = Object.keys(filters).some(key => {
-    //   const filter = filters[key];
-    //   return Object.keys(filter).some( value => {
-    //     if (filter[value] && !classAtts[value]) {
-    //       return true;
-    //     } else { return false; }
-    //   });
-    // })
-    // console.log(filteredOut);
-    // this.setState({filteredOut});
   }
 
   getDiscountPercent(price) {
@@ -126,6 +110,7 @@ class DisplayClassInfo extends React.Component {
       seats: thisClass.booking.webCapacity,
       time: thisClass.time,
       type: thisClass.type,
+      description: thisClas.description,
       vendor: thisClass.vendor,
       vendor_id: thisClass.vendor_id
     }
@@ -133,7 +118,7 @@ class DisplayClassInfo extends React.Component {
       thisClass.serviceId = this.state.vendorInfo.service_id;
     }
     thisClass.classInfo = c;
-    this.props.handleReserve(thisClass);
+    this.props.openModal(thisClass);
   }
 
   render() {
@@ -157,11 +142,16 @@ class DisplayClassInfo extends React.Component {
 
         <div>
           <h5 style={{color: '#1ed0b1'}}>{vendor.gym_name}</h5>
-          <p>{address.street}</p>
+          <p onClick={ () => this.props.openModal(thisClass, 'info')}
+            style={{cursor: 'pointer', fontWeight: '500',
+                    color: '#272b40', letterSpacing: '.5px'}}>
+            More Info
+          </p>
         </div>
 
         <div>
           <h5>{vendor.neighborhood}</h5>
+          <p>{address.street}</p>
         </div>
 
         <div>
@@ -174,12 +164,12 @@ class DisplayClassInfo extends React.Component {
             if (thisClass.id.includes('mindbody')) {
               this.insertVendorInfo(thisClass);
             } else {
-              this.props.handleReserve(thisClass);
+              this.props.openModal(thisClass);
             }
           }}>
             ${thisClass.price}
           </button>
-          <p id="discount">{this.getDiscountPercent(thisClass.price)}</p>
+          <h5 id="discount">{this.getDiscountPercent(thisClass.price)}</h5>
         </div>
       </section>
     )

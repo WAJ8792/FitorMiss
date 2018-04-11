@@ -10,6 +10,7 @@ import { getMBSchedule } from '../../../util/mindbody_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
+import ConfirmReservation from './modal';
 
 class CustomerPage extends React.Component {
   constructor() {
@@ -29,7 +30,7 @@ class CustomerPage extends React.Component {
       fomSchedule: {},
       mindbodySchedule: {},
     }
-    this.handleReserve = this.handleReserve.bind(this);
+    this.openModal = this.openModal.bind(this);
     this.isValidReservation = this.isValidReservation.bind(this);
     this.confirmReserve = this.confirmReserve.bind(this);
     this.cancelReserve = this.cancelReserve.bind(this);
@@ -144,16 +145,14 @@ class CustomerPage extends React.Component {
     this.setState({modal: null});
   }
 
-  cancelReserve(e) {
-    e.preventDefault();
-
+  cancelReserve() {
     let thisClass = this.state.thisClass;
     maxOutClass(firebase.database(), thisClass, "removeHold");
     this.setState({modal: null});
   }
 
-  handleReserve(thisClass) {
-    if (this.isValidReservation(thisClass)) {
+  openModal(thisClass, modalType) {
+    if (this.isValidReservation(thisClass) || modalType === 'info') {
       maxOutClass(firebase.database(), thisClass, "hold");
 
       this.setState({
@@ -161,8 +160,12 @@ class CustomerPage extends React.Component {
         errors: [],
         modal: <ConfirmReservation
           title={thisClass.name}
+          type={modalType}
           thisClass={thisClass}
-          cancelReserve={this.cancelReserve}
+          cancelReserve={(type) => {
+            if (type !== 'info') { this.cancelReserve() }
+            this.setState({modal: null});
+          }}
           confirmReserve={this.confirmReserve}/>
       });
     }
@@ -196,7 +199,7 @@ class CustomerPage extends React.Component {
           <ClassInfo
           key={thisClass.id}
           thisClass={thisClass}
-          handleReserve={this.handleReserve} />
+          openModal={this.openModal} />
         )
       }
     });
@@ -241,47 +244,6 @@ class CustomerPage extends React.Component {
 
             </div>
           </div>
-        </div>
-      </div>
-    )
-  }
-}
-
-class ConfirmReservation extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const thisClass = this.props.thisClass;
-    const seats = parseInt(thisClass.seats);
-    const p1 = {fontSize: '20px', marginBottom: '10px'}
-    const p2 = {fontSize: '17px', margin: '5px'}
-    const p3 = {fontSize: '17px', margin: '0px'}
-    const seatsLeft = (thisClass.reservations && thisClass.reservations[thisClass.date])
-    ? seats - Object.keys(thisClass.reservations[thisClass.date]).length
-    : seats
-    return (
-      <div className="add-class">
-        <div className="reservation-modal">
-          <div>
-            <h2>Are you sure you want to reserve {thisClass.name}?</h2>
-            <p style={p1}>{thisClass.day}, {thisClass.date} at {getTime(thisClass.time)}</p>
-            <p style={p2}>In {thisClass.neighborhood} with {thisClass.vendor}</p>
-            <p style={p3}>Only {seatsLeft} seats left!</p>
-          </div>
-
-          <div className="class-buttons">
-            <button onClick={e => this.props.cancelReserve(e)}
-              className="class-cancel-button">
-              Cancel
-            </button>
-            <button onClick={e => this.props.confirmReserve(e)}
-              style={{marginLeft: '50px'}}>
-              RESERVE
-            </button>
-          </div>
-
         </div>
       </div>
     )

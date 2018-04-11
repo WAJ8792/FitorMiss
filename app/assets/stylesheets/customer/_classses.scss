@@ -231,12 +231,26 @@
   div:first-child {
     text-align: center;
     font-family: arial;
+
+    #p1 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    #p2 {
+      font-size: 17px;
+      margin: 5px;
+    }
+    #p3 {
+      font-size: 17px;
+      margin: 0px;
+    }
   }
 
   .class-buttons {
     display: flex;
     justify-content: center;
   }
+
 }
 
 #sessions-page {

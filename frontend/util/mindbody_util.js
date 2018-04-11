@@ -51,6 +51,11 @@ function formatMindbodyClasse(schedule) {
     thisClass.max = (thisClass.seats > 0) ? false : true
     thisClass.day = dateTime.day;
     thisClass.time = dateTime.time;
+    if (thisClass.description) {
+      thisClass.description = thisClass.description.slice(
+        5, thisClass.description.length - 12
+      );
+    }
     thisClass.duration = dateTime.duration;
     // Get an approximation based on class info
     thisClass.type = apprxType(thisClass.name + thisClass.description);
@@ -101,4 +106,8 @@ function apprxType(classString) {
   if (str.includes('boxing')) { return 'Boxing'; }
   if (str.includes('rowing')) { return 'Rowing'; }
   return "";
+}
+
+function formatDescription(desc) {
+  desc = desc.slice(5, desc.length - 12);
 }
