@@ -173,6 +173,7 @@ class CustomerPage extends React.Component {
 
   availableToUser = (id) => {
     return thisClass => {
+      if (thisClass.seats === "0") { return false; }
       if (!thisClass.reservations || !thisClass.reservations[thisClass.date]) {
         return true;
       }

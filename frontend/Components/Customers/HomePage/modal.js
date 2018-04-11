@@ -56,7 +56,7 @@ export default class ConfirmReservation extends React.Component {
             <div className="class-buttons">
               <button onClick={e => this.props.cancelReserve(this.props.type)}
                 className="class-cancel-button">
-                Cancel
+                Close
               </button>
             </div>
 
