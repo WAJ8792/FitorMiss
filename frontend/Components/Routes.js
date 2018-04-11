@@ -25,6 +25,7 @@ import CustomerBilling from './Customers/Accounts/Billing';
 
 //FoM Admin
 import CreateVendor from './containers/manager_container';
+import EditVendor from './containers/edit_container';
 
 let store = configureStore();
 
