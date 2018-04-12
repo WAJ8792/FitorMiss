@@ -4,7 +4,7 @@ import {
 } from '../../actions/session_actions';
 import { withRouter } from 'react-router';
 
-import SignIn from '../Signin';
+import SignIn from '../Signin.jsx';
 
 const mapStateToProps = ( state ) => {
   return {user: state.sessions.user}

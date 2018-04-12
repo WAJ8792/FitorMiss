@@ -163,26 +163,30 @@ const Login = props => [
   <div className="sign-up-forms">
     <p className="create-text">Sign In</p>
     <section className="session-block">
-      <div style={{display: "inline-grid"}}>
+      <div>
+        <form onSubmit={e => props.handleLogin(e)} style={{display: "inline-grid"}}>
 
-        <input
-          type="text"
-          value={props.email}
-          placeholder="Email Address"
-          onChange={props.handleChange("email")}/>
-        <input
-          type="password"
-          value={props.password}
-          placeholder="Password"
-          onChange={props.handleChange("password")}/>
+          <input
+            type="text"
+            value={props.email}
+            placeholder="Email Address"
+            onChange={props.handleChange("email")}/>
+          <input
+            type="password"
+            value={props.password}
+            placeholder="Password"
+            onChange={props.handleChange("password")}/>
 
-        <button onClick={e => props.handleLogin(e)}>Login</button>
+          <input type="submit" value="LOGIN" style={{height: '40px'}} />
+        </form>
+
         <div className="forgot-password-text">
           <a onClick={() => props.handleLoginRender("pwdReset")}>
             Forgot Password?
           </a>
         </div>
         {props.error}
+
       </div>
     </section>
   </div>
