@@ -210,3 +210,18 @@ export const getReservationDate = (daysAway) => {
   classDate.setDate(classDate.getDate() + daysAway);
   return classDate.toString().slice(4, 15);
 }
+
+export const dateFormatError = date => {
+  const errorMessage = "Date is formatted incorrectly. ex: '11/11/1111'"
+  date = date.split("");
+
+  if (date.length != 10) { return errorMessage; }
+  for (let i = 0; i < 10; i++) {
+    if (i === 2 || i === 5) {
+      if (date[i] != '/') { return errorMessage; }
+    } else {
+      if (isNaN(parseInt(date[i]))) { return errorMessage; }
+    }
+  }
+  return false;
+}

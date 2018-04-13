@@ -1,6 +1,8 @@
 import React from 'react';
 // import { Elements } from 'react-stripe-elements';
 
+import { dateFormatError } from '../../../util/time_and_date_util';
+
 import CardForm from './CardForm';
 
 export default class Accounts extends React.Component {
@@ -13,9 +15,68 @@ export default class Accounts extends React.Component {
         last_name: "",
         email: "",
         neighborhood: "",
-      }
+        details: {
+          gender: "",
+          emergency_contact: {}
+        }
+      },
+      userErrors: [],
+      detailErrors: []
     }
     this.getCurrentUser();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.invalidInput = this.invalidInput.bind(this);
+  }
+
+  handleChange(field) {
+    return e => {
+      this.setState({
+        ...this.state,
+          userInfo: {
+            ...this.state.userInfo,
+            [field]: e.target.value
+          }
+      });
+    }
+  }
+
+  handleDetailChange(field) {
+    return e => {
+      this.setState({
+        ...this.state,
+          userInfo: {
+            ...this.state.userInfo,
+            details: {
+              ...this.state.userInfo.details,
+              [field]: e.target.value
+            }
+          }
+      });
+    }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const detailErrors = this.invalidInput(this.state.userInfo)
+    if (detailErrors) {
+      console.log(detailErrors);
+      this.setState({detailErrors});
+      return;
+    }
+    const state = this.state.userInfo;
+    state.updated_at = new Date().getTime();
+
+
+    firebase.database().ref("customers/" + this.state.user).set(state);
+  }
+
+  invalidInput(user) {
+    let detailErrors = false;
+
+    const dobError = dateFormatError(user.details.dob)
+    if (dobError) { detailErrors = [dobError] }
+    return detailErrors;
   }
 
   getCurrentUser() {
@@ -46,28 +107,59 @@ export default class Accounts extends React.Component {
 
   render() {
     const userInfo = this.state.userInfo;
+    const details = (userInfo.details) ? userInfo.details : null
+    const dob = (userInfo.details && details.dob) ? details.dob : null
+    console.log(this.state);
+    const genderOptions = ["male", "female", "neither"].map( gender => {
+      const inputV = (details && details.gender && details.gender === gender )
+      ? <input
+        type="radio"
+        id={`radio ${gender}`}
+        name="gender"
+        value={genValue(gender)}
+        onClick={this.handleDetailChange("gender")}
+        checked />
+      : <input
+        type="radio"
+        id={`radio ${gender}`}
+        name="gender"
+        value={genValue(gender)}
+        onClick={this.handleDetailChange("gender")} />
+      return (
+        <div style={{marginRight: '25px'}}>
+          {inputV}
+          <label for={`radio ${gender}`}>{genValue(gender)}</label>
+        </div>
+      )
+    })
+
     return(
       <div id="page-background">
         <div className="page-container">
           <div className="page-detail">
             <div className="account-details-header">Your Account</div>
-            <p>This page is under construction.
-              Any changes here will not affect your Profile.
-            </p>
-            <form action="" id="account-details">
+
+            <form action="" id="account-details" onSubmit={this.handleSubmit}>
               <div id="account-details-name">
                 <p>Account</p>
+                {this.state.userErrors}
                 <div id="full-name">
                   <input
                     type="text"
                     placeholder="First Name"
+                    onChange={this.handleChange("first_name")}
                     value={userInfo.first_name}/>
                   <input
                     type="text"
                     placeholder="Last Name"
+                    onChange={this.handleChange("last_name")}
                     value={userInfo.last_name}/>
                 </div>
-                <input type="text" placeholder="Email" value={userInfo.email} />
+                <input
+                  type="text"
+                  placeholder="Email"
+                  onChange={this.handleChange("email")}
+                  value={userInfo.email} />
               </div>
 
               <hr />
@@ -85,15 +177,17 @@ export default class Accounts extends React.Component {
 
               <div id="account-details-profile">
                 <p>Profile</p>
+                <p id="reservation-errors">{this.state.detailErrors}</p>
                 <p>Gender</p>
-                <input type="radio" id="gender-choice-1" name="gender" value="male" />
-                <label for="gender-choice-1">Male</label>
-                <input type="radio" id="gender-choice-2" name="gender" value="female" />
-                <label for="gender-choice-2">Female</label>
-                <input type="radio" id="gender-choice-3" name="gender" value="neither" />
-                <label for="gender-choice-3">Prefer Not To Say</label>
+
+                <div style={{display: 'flex'}}>{genderOptions}</div>
+
                 <p>Date of Birth</p>
-                <input type="text" placeholder="mm/dd/yyyy" />
+                <input
+                  type="text"
+                  placeholder="mm/dd/yyyy"
+                  value={dob}
+                  onChange={this.handleDetailChange("dob")}/>
               </div>
 
               <hr />
@@ -104,7 +198,7 @@ export default class Accounts extends React.Component {
                 <input type="text" placeholder="Phone Number" />
               </div>
 
-              <input type="submit" value="Save Changes" />
+              <input type="submit" value="Save Changes" style={{marginBottom: '10px'}}/>
 
             </form>
           </div>
@@ -113,3 +207,13 @@ export default class Accounts extends React.Component {
     )
   }
 }
+
+function genValue(g) {
+  let value = (g === "neither") ? "Prefer Not To Say" : g
+  return value;
+}
+
+// <input type="radio" id="gender-choice-2" name="gender" value="female" />
+// <label for="gender-choice-2">Female</label>
+// <input type="radio" id="gender-choice-3" name="gender" value="neither" />
+// <label for="gender-choice-3">Prefer Not To Say</label>
