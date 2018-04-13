@@ -17,7 +17,10 @@ export default class Accounts extends React.Component {
         neighborhood: "",
         details: {
           gender: "",
-          emergency_contact: {}
+          emergency_contact: {
+            name: "",
+            phone: ""
+          }
         }
       },
       userErrors: [],
@@ -49,6 +52,24 @@ export default class Accounts extends React.Component {
             details: {
               ...this.state.userInfo.details,
               [field]: e.target.value
+            }
+          }
+      });
+    }
+  }
+
+  handleEmContactChange(field) {
+    return e => {
+      this.setState({
+        ...this.state,
+          userInfo: {
+            ...this.state.userInfo,
+            details: {
+              ...this.state.userInfo.details,
+              emergency_contact: {
+                ...this.state.userInfo.emergency_contact,
+                [field]: e.target.value
+              }
             }
           }
       });
@@ -109,6 +130,10 @@ export default class Accounts extends React.Component {
     const userInfo = this.state.userInfo;
     const details = (userInfo.details) ? userInfo.details : null
     const dob = (userInfo.details && details.dob) ? details.dob : null
+    const emContact = (userInfo.details && details.emergency_contact) ? details.emergency_contact : null
+    const name = (emContact && emContact.name) ? emContact.name : null
+    const phone = (emContact && emContact.phone) ? emContact.phone : null
+
     console.log(this.state);
     const genderOptions = ["male", "female", "neither"].map( gender => {
       const inputV = (details && details.gender && details.gender === gender )
@@ -194,8 +219,16 @@ export default class Accounts extends React.Component {
 
               <div id="emergency-contact">
                 <p>Emergency Contact</p>
-                <input type="text" placeholder="Name" />
-                <input type="text" placeholder="Phone Number" />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={this.handleEmContactChange("name")}/>
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={this.handleEmContactChange("phone")}/>
               </div>
 
               <input type="submit" value="Save Changes" style={{marginBottom: '10px'}}/>
