@@ -71,6 +71,7 @@ class DisplayClassInfo extends React.Component {
   getDiscountPercent(price) {
     const listPrice = parseInt(this.state.pricing[3]);
     price = parseInt(price);
+    if (isNaN(price) || isNaN(listPrice)) {return null;}
 
     if (price === listPrice) { return null; }
     const discount = Math.round(((listPrice - price) / listPrice) * 100);
