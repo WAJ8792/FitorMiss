@@ -133,7 +133,7 @@ export const afterCurrentHours = classTime => {
   if (afterHour > 0) { return false; }
   else if (afterHour === 0) {
     const currentMin = new Date().getMinutes();
-    if (currentMin > parseInt(classTime.slice(3, 5))) { return false;}
+    if (currentMin >= parseInt(classTime.slice(3, 5))) { return false;}
     else { return true; }
   } else { return true; }
 }
