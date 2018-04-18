@@ -1,4 +1,4 @@
-import { dayByIndex } from './time_and_date_util';
+import { dayByIndex, hoursFromNow } from './time_and_date_util';
 
 export const getMBSchedule = (db, info, setState) => {
   db.ref('vendor').orderByChild('neighborhood').equalTo(info.neighborhood).on('value', snap => {
@@ -24,6 +24,7 @@ function fetchAmenities(db, vendor, setState) {
 }
 
 const fetchMBSchedule = (data, setState) => {
+  data.end_date = hoursFromNow(24);
   return $.ajax({
     method: 'GET',
     url: '/schedules',
@@ -52,9 +53,7 @@ function formatMindbodyClasse(schedule) {
     thisClass.day = dateTime.day;
     thisClass.time = dateTime.time;
     if (thisClass.description) {
-      thisClass.description = thisClass.description.slice(
-        5, thisClass.description.length - 12
-      );
+      thisClass.description = formatDescription(thisClass.description);
     }
     thisClass.duration = dateTime.duration;
     // Get an approximation based on class info
@@ -109,5 +108,24 @@ function apprxType(classString) {
 }
 
 function formatDescription(desc) {
-  desc = desc.slice(5, desc.length - 12);
+  let arr = desc.split(">");
+  let string = findString(arr);
+  return cleanString(string);
+}
+
+function findString(arr) {
+  let string = "";
+  arr.forEach(section => {
+    if (section[0] && section[0] != "<") {
+      string = section;
+      return;
+    }
+  });
+  return string;
+}
+
+function cleanString(string) {
+  string = string.split(".");
+  string = string[0].split("<");
+  return string[0] + ".";
 }

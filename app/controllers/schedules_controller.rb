@@ -4,12 +4,15 @@ class SchedulesController < ApplicationController
     http_request = getRequestParams(
       params["site_id"]
     )
-    print http_request
+    http_request["SchedulingWindow"] = true
+    http_request["EndDateTime"] = params[:end_date]
+    print params[:end_date]
 
     request = { 'Request' => http_request }
     client = Savon::Client.new(wsdl: 'https://api.mindbodyonline.com/0_5/ClassService.asmx?wsdl')
     response = client.call(:get_classes, :message => request )
     @classes_list = response.body[:get_classes_response][:get_classes_result][:classes][:class]
+    print @classes_list[-1]
     @vendor_info = params
 
     render 'schedules/index.json'

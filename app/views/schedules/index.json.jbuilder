@@ -1,4 +1,5 @@
  json.array! @classes_list do |thisClass|
+   print "                         \n", thisClass
    if thisClass[:location][:id] == @vendor_info["location_id"]
     id = 'mindbody_' + thisClass[:id]
     class_description = thisClass[:class_description]

@@ -225,3 +225,16 @@ export const dateFormatError = date => {
   }
   return false;
 }
+
+function d2(n) {
+	if(n<9) return "0"+n;
+	return n;
+}
+
+export const hoursFromNow = (hours) => {
+  const now = new Date().getTime();
+  const tmw = new Date(now + (hours * 1000 * 60 * 60))
+  return tmw.getFullYear() + "-" + d2(parseInt(tmw.getMonth()+1))
+  + "-" + d2(tmw.getDate()) + "T" + d2(tmw.getHours())
+  + ":" + d2(tmw.getMinutes()) + ":" + d2(tmw.getSeconds());
+}
