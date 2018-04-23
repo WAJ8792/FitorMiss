@@ -1,33 +1,14 @@
 import React from 'react';
 
+import { findAvailableDiscount } from '../../../util/discounts_util';
+
 export default class ApplyDiscount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 'loading',
-      discountIds: [],
+      value: false,
       code: ""
     }
-  }
-
-  componentDidMount() {
-    firebase.database().ref('discounts/discount_list').on('value', snap => {
-      if (snap.val()) {
-        this.setState({discountIds: Object.keys(snap.val())});
-        Object.keys(snap.val()).forEach( id => {
-          this.findAvailableDiscount(id);
-        })
-      }
-      if (this.state.value === 'loading') {
-        this.setState({value: false});
-      }
-    });
-  }
-
-  findAvailableDiscount(id) {
-    firebase.database().ref('discounts/' + id + '/value').on('value', snap => {
-      if (snap.val()) { this.setState({value: snap.val()}); }
-    })
   }
 
   handleChange(e) {
@@ -38,21 +19,21 @@ export default class ApplyDiscount extends React.Component {
     e.preventDefault();
     const uid = this.props.uid;
     const code = this.state.code;
-    this.state.discountIds.forEach(id => {
+    this.props.discountIds.forEach(id => {
       firebase.database().ref(`discounts/${id}/${uid}`).set(code)
-      .then(success => console.log(success));
+      .then(success => {
+        findAvailableDiscount(
+          firebase.database(),
+          id,
+          this.props.confirmDiscount
+        )
+      });
     });
   }
 
-
-
   render() {
     let content;
-    if (this.state.value === 'loading') {
-      content = <div className="discount-content">
-        <span>Checking for your discounts</span>
-      </div>
-    } else if (this.state.value === false) {
+    if (this.state.value === false) {
       content = <div className="discount-content">
         <span>Enter discount code.</span>
         <form onSubmit={e => this.checkCode(e)}>

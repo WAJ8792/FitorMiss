@@ -122,6 +122,10 @@ class DisplayClassInfo extends React.Component {
     this.props.openModal(thisClass);
   }
 
+  getDiscount(price) {
+    return Math.round(price - (price * this.props.discount));
+  }
+
   render() {
     if (this.state.filteredOut) {
       return null;
@@ -130,9 +134,15 @@ class DisplayClassInfo extends React.Component {
     const vendor = this.state.vendorInfo;
     const address = this.state.address;
     if (indexOfDay(thisClass.day) === new Date().getDay()) {
-      thisClass.price = this.state.pricing[getHoursOut(thisClass.time)];
-    } else { thisClass.price = this.state.pricing[3]}
+      thisClass.price = this.getDiscount(this.state.pricing[getHoursOut(thisClass.time)]);
+    } else { thisClass.price = this.getDiscount(this.state.pricing[3])}
     let time = getTimeRange(thisClass.time, thisClass.duration);
+
+    // const applyDiscount = (this.props.discount)
+    // ? <div id="apply-discount">
+    //   Reserve for {this.getDiscount(thisClass.price)} With Your Discount!
+    // </div>
+    // : null
 
     return (
       <section className="class-info">

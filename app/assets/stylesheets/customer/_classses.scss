@@ -27,28 +27,37 @@
 
 // Should this be moved elsewhere?
 #classes-header {
-  // text-align: center;
   margin-top: 10px;
   margin-bottom: 33px;
   letter-spacing: 1px;
+  text-align: center;
 
   span:first-child {
     float: left;
     font-size: 10px;
     color: gray;
-  }
-
-  span:nth-child(2) {
-    margin-left: 19%;
+    position: absolute;
+    left: 22px;
+    width: 21%;
+    text-align: center;
   }
 }
 
 #discount {
-  width: 76px;
   font-weight: 500;
   font-family: arial;
   font-size: 20px;
   color: #f374f3;
+}
+
+#apply-discount {
+  width: 30px;
+  font-size: 10px;
+  color: #2416d0;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-left: 0px;
+  width: 8.5%;
 }
 
 #classes-page,

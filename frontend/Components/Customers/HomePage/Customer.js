@@ -7,6 +7,7 @@ import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
 import { getTime, getDayAndDate } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
 import { getMBSchedule } from '../../../util/mindbody_util';
+import { getDiscounts } from '../../../util/discounts_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
@@ -26,6 +27,8 @@ class CustomerPage extends React.Component {
       },
       typeFilter: false,
       amenityFilter: false,
+      discount: null,
+      discountIds: [],
       errors: null,
       modal: null,
       fomSchedule: {},
@@ -40,6 +43,12 @@ class CustomerPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser();
+    getDiscounts(firebase.database(), ids => val => {
+      this.setState({
+        discountIds: ids,
+        discount: val
+      });
+    })
   }
 
   getCurrentUser() {
@@ -200,9 +209,10 @@ class CustomerPage extends React.Component {
       if (filter === false || thisClass.type === filter) {
         classViews.push(
           <ClassInfo
-          key={thisClass.id}
-          thisClass={thisClass}
-          openModal={this.openModal} />
+            key={thisClass.id}
+            thisClass={thisClass}
+            discount={this.state.discount}
+            openModal={this.openModal} />
         )
       }
     });
@@ -223,8 +233,14 @@ class CustomerPage extends React.Component {
     this.setState({
       modal: <ApplyDiscount
               uid={this.props.user.uid}
+              discountIds={this.state.discountIds}
+              confirmDiscount={(val) => this.setState({discount: val})}
               closeModal={() => this.setState({modal: null})}/>
     });
+  }
+
+  getDiscount() {
+
   }
 
   render() {
@@ -238,6 +254,10 @@ class CustomerPage extends React.Component {
       classes = <div id="loading-classes">Looking for classes in your area.</div>
     }
 
+    const applyDiscount = (this.state.discount)
+    ? <span>Your %{this.state.discount * 100} discount has been applied to all class totals.</span>
+    : <span onClick={this.applyDiscount}>Have a discount code?</span>
+
     return(
       <div id="page-background">
         <div className="page-container">
@@ -245,7 +265,7 @@ class CustomerPage extends React.Component {
             <div id="upcoming-classes-page">
               <br />
               <h1 id="classes-header">
-                <span onClick={this.applyDiscount}>Have a discount code?</span>
+                {applyDiscount}
                 <span>
                   {`${dayAndDate.day}, ${dayAndDate.month} ${dayAndDate.date}`}
                 </span>
