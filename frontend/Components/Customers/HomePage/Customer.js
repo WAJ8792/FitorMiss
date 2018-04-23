@@ -10,7 +10,8 @@ import { getMBSchedule } from '../../../util/mindbody_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
-import ConfirmReservation from './modal';
+import ConfirmReservation from './reservation_modal';
+import ApplyDiscount from './discount_modal';
 
 class CustomerPage extends React.Component {
   constructor() {
@@ -34,6 +35,7 @@ class CustomerPage extends React.Component {
     this.isValidReservation = this.isValidReservation.bind(this);
     this.confirmReserve = this.confirmReserve.bind(this);
     this.cancelReserve = this.cancelReserve.bind(this);
+    this.applyDiscount = this.applyDiscount.bind(this);
   }
 
   componentDidMount() {
@@ -217,6 +219,14 @@ class CustomerPage extends React.Component {
     this.setState({typeFilter});
   }
 
+  applyDiscount() {
+    this.setState({
+      modal: <ApplyDiscount
+              uid={this.props.user.uid}
+              closeModal={() => this.setState({modal: null})}/>
+    });
+  }
+
   render() {
     if (this.state.user === "") { return null; }
     const errors = this.state.errors;
@@ -234,7 +244,12 @@ class CustomerPage extends React.Component {
           <div className="page-detail">
             <div id="upcoming-classes-page">
               <br />
-              <h1 id="classes-header">{`${dayAndDate.day}, ${dayAndDate.month} ${dayAndDate.date}`}</h1>
+              <h1 id="classes-header">
+                <span onClick={this.applyDiscount}>Have a discount code?</span>
+                <span>
+                  {`${dayAndDate.day}, ${dayAndDate.month} ${dayAndDate.date}`}
+                </span>
+              </h1>
               <p id="reservation-errors">{errors}</p>
 
               {this.state.modal}

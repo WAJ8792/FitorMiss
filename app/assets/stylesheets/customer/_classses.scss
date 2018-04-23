@@ -27,10 +27,20 @@
 
 // Should this be moved elsewhere?
 #classes-header {
-  text-align: center;
+  // text-align: center;
   margin-top: 10px;
   margin-bottom: 33px;
   letter-spacing: 1px;
+
+  span:first-child {
+    float: left;
+    font-size: 10px;
+    color: gray;
+  }
+
+  span:nth-child(2) {
+    margin-left: 19%;
+  }
 }
 
 #discount {
