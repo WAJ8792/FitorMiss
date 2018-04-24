@@ -7,7 +7,7 @@ import { getClassesByDay, filterClasses } from  '../../../util/classes_util';
 import { getTime, getDayAndDate } from '../../../util/time_and_date_util'
 import { maxOutClass, confirmReserve, confirmPayment, hitReserve } from  '../../../util/reservation_util';
 import { getMBSchedule } from '../../../util/mindbody_util';
-import { getDiscounts } from '../../../util/discounts_util';
+import { getDiscounts, getCodeUse } from '../../../util/discounts_util';
 
 import ClassInfo from './DisplayClassInfo';
 import ClassesSidebar from './ClassesSidebar';
@@ -29,6 +29,7 @@ class CustomerPage extends React.Component {
       amenityFilter: false,
       discount: null,
       discountIds: [],
+      discountName: null,
       errors: null,
       modal: null,
       fomSchedule: {},
@@ -43,11 +44,18 @@ class CustomerPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentUser();
-    getDiscounts(firebase.database(), ids => val => {
+    getDiscounts(firebase.database(), ids => (val, id) => {
+      console.log(ids, id, val);
       this.setState({
         discountIds: ids,
-        discount: val
+        discount: val,
+        discountName: id,
       });
+      getCodeUse(
+        firebase.database(),
+        {uid: this.state.user, discountId: id},
+        () => this.setState({discount: null, discountName: null})
+      )
     })
   }
 
@@ -135,7 +143,8 @@ class CustomerPage extends React.Component {
     const resInfo = {
       user: this.state.user,
       thisClass: this.state.thisClass,
-      userInfo: this.state.userInfo
+      userInfo: this.state.userInfo,
+      discount: this.state.discountName
     }
 
     confirmReserve(firebase.database(), resInfo, () => {

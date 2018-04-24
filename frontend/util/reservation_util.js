@@ -25,13 +25,14 @@ export const confirmPayment = (data, logCompletion) => {
     })
 }
 
-const createReservation = (db, {user, userInfo, thisClass}, succesCB) => {
+const createReservation = (db, {user, userInfo, thisClass, discount}, succesCB) => {
   const resId = db.ref("reservations").push().getKey();
   db.ref('reservations/' + resId).set({
     class_id: thisClass.id,
     customer_id: user,
     date: thisClass.date,
     time: thisClass.time,
+    discount_id: discount,
     created_at: new Date().getTime(),
   });
   db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
