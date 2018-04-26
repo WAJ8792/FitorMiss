@@ -45,17 +45,11 @@ class CustomerPage extends React.Component {
   componentDidMount() {
     this.getCurrentUser();
     getDiscounts(firebase.database(), ids => (val, id) => {
-      console.log(ids, id, val);
       this.setState({
         discountIds: ids,
         discount: val,
         discountName: id,
       });
-      getCodeUse(
-        firebase.database(),
-        {uid: this.state.user, discountId: id},
-        () => this.setState({discount: null, discountName: null})
-      )
     })
   }
 
@@ -161,6 +155,11 @@ class CustomerPage extends React.Component {
           name: resInfo.thisClass.name
         }
       });
+      getCodeUse(
+        firebase.database(),
+        {uid: this.state.user, discountId: resInfo.discount},
+        () => this.setState({discount: null, discountName: null})
+      )
     });
     this.setState({modal: null});
   }

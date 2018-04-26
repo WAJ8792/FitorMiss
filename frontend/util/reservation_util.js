@@ -35,7 +35,7 @@ const createReservation = (db, {user, userInfo, thisClass, discount}, succesCB) 
     discount_id: discount,
     created_at: new Date().getTime(),
   });
-  db.ref('classes').orderByKey().equalTo(thisClass.id).once('value', snap => {
+  db.ref('classes/' + thisClass.id).once('value', snap => {
     if (snap.val() != null) {
       db.ref(`classes/${thisClass.id}/reservations/${thisClass.date}/${user}`).set(true);
       succesCB();

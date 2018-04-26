@@ -35,6 +35,11 @@ function getCodeLimit(app, data, setState) {
   app.ref('discounts/' + data.discountId + '/limit').on('value', snap => {
     if (snap.val() && data.totalUsed >= snap.val()) {
       setState();
+      nullifyCodeUse(app, data);
     }
   })
+}
+
+function nullifyCodeUse(app, data) {
+  app.ref(`discounts/${data.discountId}/${data.uid}`).set(false);
 }
