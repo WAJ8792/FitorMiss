@@ -295,3 +295,19 @@
     font-weight: 500;
   }
 }
+
+.discount-content {
+  font-size: 20px;
+  color: #778583;
+
+  form {
+    input:first-child {
+      width: 150px;
+    }
+
+    input:last-child {
+      height: 35px;
+      margin-left: 30px;
+    }
+  }
+}
