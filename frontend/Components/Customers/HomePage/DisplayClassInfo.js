@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -111,7 +112,7 @@ class DisplayClassInfo extends React.Component {
       seats: thisClass.booking.webCapacity,
       time: thisClass.time,
       type: thisClass.type,
-      description: thisClas.description,
+      description: thisClass.description,
       vendor: thisClass.vendor,
       vendor_id: thisClass.vendor_id
     }

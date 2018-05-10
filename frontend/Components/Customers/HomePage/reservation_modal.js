@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { getTime } from '../../../util/time_and_date_util';
 
 export default class ConfirmReservation extends React.Component {
